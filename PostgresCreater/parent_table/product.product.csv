@@ -1,0 +1,4 @@
+column,type,default,not_null
+product_id,CHAR(32),fffffffffffffffffffffffffffffffff,1
+product_name,text,noname,1
+price,BIGINT,0,1
