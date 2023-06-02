@@ -8,13 +8,10 @@ Created on Fri Jun  2 08:53:13 2023
 from __future__ import annotations
 import abc
 from typing import Final
-import os
 from datetime import datetime
 from pathlib import Path
-from copy import copy
 import hashlib
-import pickle
-import shutil
+
 
 ####//Interface
 class InterfaceLogMaker(metaclass=abc.ABCMeta):
@@ -36,11 +33,17 @@ class LogMaker(InterfaceLogMaker):
         self.name = self.LOG_NAME if name=="" else name
         self.logs=[]
         
-    def write(self):
-        ...
-    def out(self):
-        ...
+    def write(self, *args: str, debug=False) -> None:
+        data = LogData(*args)
+        if debug: print(data)
+        self.logs.append(data)
         
+    def out(self):
+        logs = sorted(self.logs)
+        filepath = self.dst.parent.joinpath(f"{self.name}.txt")
+        with open(filepath, "w") as f:
+            [f.write("%s\n" % log) for log in logs]
+
         
 class LogData:
     def __init__(self, *args: str):
@@ -65,6 +68,8 @@ class LogData:
     
 if __name__ == '__main__':
     
-    logmaker = LogMaker()
+    logmaker = LogMaker(name="TEST")
+    for i in range(10):
+        logmaker.write(str(1))
     
-    
+    logmaker.out()

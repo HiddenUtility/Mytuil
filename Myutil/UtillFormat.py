@@ -15,7 +15,7 @@ import hashlib
 
 #interface
 class Interface(metaclass=abc.ABCMeta):
-    @abs.abstractmethod
+    @abc.abstractmethod
     def foo(self):
         raise NotImplementedError()
         
