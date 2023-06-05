@@ -79,7 +79,7 @@ class Timer(InterfaceTimer):
             label = target_time.strftime('%Y年%m月%d日 %A %H時%M分%S秒')
             print(f"\r{label}まで待ちます.{self._remaining_time(target_time)}", end="")
             time.sleep(1)
-        print("\n Start!!")
+        print("\r Start!!  \n")
         
     def wate_hour(self,weekday:int = None, hour:int = 4, minute:int = 0, second:int = 0):
         if weekday is None:
@@ -95,7 +95,7 @@ class Timer(InterfaceTimer):
             t = "{0:8}".format(secondes - i)
             print(f"\r 一時停止中 残り{t}秒", end="")
             time.sleep(1)
-        print()
+        print("\r Start!!                        \n")
         
     
 

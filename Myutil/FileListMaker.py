@@ -4,15 +4,11 @@ Created on Fri Jun  2 08:53:13 2023
 
 @author: nanik
 """
-
-
-
 from __future__ import annotations
 import abc
 import os
 from pathlib import Path
-import pickle
-import hashlib
+
 import re
 from datetime import datetime
 import random
@@ -23,11 +19,11 @@ class Interface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_filepaths(self):
         raise NotImplementedError()
-        
-
-    
     @abc.abstractmethod
-    def reverce_sort(self)->FilelistMaker:
+    def get_file_size(self):
+        raise NotImplementedError()
+    @abc.abstractmethod
+    def sort(self)->FilelistMaker:
         raise NotImplementedError()
 
 class FilelistMaker(Interface):
@@ -49,12 +45,17 @@ class FilelistMaker(Interface):
         return "".join(["%s\n" % f for f in self.filepaths[10]])+"\n.\n.\n."
     def __repr__(self):
         return self.__str__()
-        
+    
+    def __add__(self, obj: FilelistMaker):
+        if not isinstance(obj, FilelistMaker):raise TypeError
+        filepaths = self.filepaths + obj.filepaths
+        self._return(filepaths)
+
     #//Override
     def get_filepaths(self)->list[Path]:
         return self.filepaths
     #//Override
-    def get_filesize(self,num=10) -> float:
+    def get_file_size(self,num=10) -> float:
         """
         
 
@@ -75,8 +76,9 @@ class FilelistMaker(Interface):
         sizes = [path.stat().st_size for path in filepaths]
         return sum(sizes) / len(sizes) //1000
     
-    def reverce_sort(self)->None:
-        filepaths = sorted(self.filepaths, reverse=True)
+    #@Override
+    def sort(self, reverse=False)->None:
+        filepaths = sorted(self.filepaths, reverse=reverse)
         return self._return(filepaths)
     
     
@@ -113,13 +115,7 @@ class Filepath:
     def get_datetime(self):
         return self._datetime
     
-    
-    
-    
-    
-    
-    
-    
+
         
 if __name__ == "__main__":
     src = Path(r"C:\hrks\TEST\dst\2023-05-31")
