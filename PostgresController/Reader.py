@@ -15,3 +15,13 @@ import psycopg2
 import pandas as pd
 
 from PostgresController.PosgresInterface import AbstractPostgres
+
+
+
+
+
+
+
+
+
+cur.execute("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'your_table_name'")

@@ -5,27 +5,24 @@ Created on Mon Jun  5 22:34:15 2023
 @author: iwill
 """
 from __future__ import annotations
-from typing import Final
 import abc
-import os
-from pathlib import Path
-
 import psycopg2
-import pandas as pd
-
-
+from PostgresController.User import User
 
     
 class InterfacePostgres(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def commit(self):
         pass
+    @abc.abstractmethod
+    def get(self):
+        pass
 
 class AbstractPostgres(InterfacePostgres):
     #//Field
     querys: list[str] 
     
-    def __init__(self, info: InformationSQL):
+    def __init__(self, info: User):
         if not info.canConnect():raise ConnectionError("SQLに接続できません。")
         self.host = info.host
         self.user = info.user
@@ -51,3 +48,23 @@ class AbstractPostgres(InterfacePostgres):
         # close connection
         cur.close()
         conn.close()
+        
+    def get(self) -> None:
+        # connect to PostgreSQL and create table
+        conn = psycopg2.connect(
+            host=self.host, 
+            port=self.port, 
+            user=self.user, 
+            password=self.password, 
+            database=self.database
+        )
+        cur = conn.cursor()
+        for query in self.querys: cur.execute(query)
+        rows = cur.fetchall()
+        
+        # close connection
+        cur.close()
+        conn.close()
+        
+        return rows
+        

@@ -18,11 +18,20 @@ import pandas as pd
 
 
 class User:
-    def __init__(self):
-        pass
 
-class ConnectingInfomation:
     def __init__(self, 
+                 host: str="localhost",
+                 user: str="postgres",
+                 port: int=5432, 
+                 database: str="postgres", 
+                 password: str="postgres"):
+        self.host = host
+        self.user = user
+        self.port = port
+        self.database = database
+        self.password = password
+        
+    def set_local_user(self, 
                  host: str="localhost",
                  user: str="postgres",
                  port: int=5432, 
@@ -53,3 +62,4 @@ class ConnectingInfomation:
         cur.close()
         conn.close()
         return can
+    
