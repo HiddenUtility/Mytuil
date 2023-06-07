@@ -14,9 +14,7 @@ class InterfacePostgres(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def commit(self):
         pass
-    @abc.abstractmethod
-    def get(self):
-        pass
+
 
 class AbstractPostgres(InterfacePostgres):
     #//Field

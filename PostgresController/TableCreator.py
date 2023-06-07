@@ -19,7 +19,7 @@ from PostgresController.PosgresInterface import AbstractPostgres
 from PostgresController.User import User
 from PostgresController.SchemaCreator import SchemaCreator
 
-class Remover(AbstractPostgres):
+class TableCreator(AbstractPostgres):
     DIRNAME_TABLE: Final = SchemaCreator.DIRNAME_TABLE
     COL_COLUMN = "column"
     COL_TYPE = "type"
@@ -33,9 +33,7 @@ class Remover(AbstractPostgres):
         super().__init__(info)
         self.filepaths = [f for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
         
-        
-
-    def set_querys_from_csv(self, filepath: Path):
+    def _set_querys_from_csv(self, filepath: Path):
         df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)
         tableName = filepath.stem
         
@@ -48,15 +46,7 @@ class Remover(AbstractPostgres):
     def _set_table_create_query(self,
                                tableName:str,
                                rows: list[pd.Series]):
-        """
-        CREATE TABLE new_table (
-        column1 datatype1 DEFAULT default_value1 NOT NULL,
-        column2 datatype2 DEFAULT default_value2 NOT NULL,
-        column3 datatype3 DEFAULT default_value3 NOT NULL,
-        ...
-        );
-        
-        """
+
         querys =[]
         for row in rows:
             col = row[self.COL_COLUMN]
@@ -74,7 +64,45 @@ class Remover(AbstractPostgres):
         query = "CREATE TABLE IF NOT EXISTS {} ({})".format(tableName,", ".join(querys))
         self.querys.append(query)
         
-    def run(self):
-        list(map(self.set_querys_from_csv, self.filepaths))
-        self.commit()
+    def set_querys_from_csv(self):
+        list(map(self._set_querys_from_csv, self.filepaths))
+        
+    def set_query(self,
+                  table_name: str,
+                  columns:list[str],
+                  type_names:list[str],
+                  default_values:list[str],
+                  not_null=True
+                  ):
+        """
+                      
+
+                      Parameters
+                      ----------
+                      table_name : str
+                          テーブル名。スキーマある場合はSchema_name.table_name
+                      columns : list[str]
+                          列名のリスト.
+                      type_names : list[str]
+                          列の制約のリスト.
+                      default_values : list[str]
+                          列のデフォルト値のリスト.
+                      not_null : TYPE, optional
+                          NOT　NULLを付与する. The default is True.
+
+                      Returns
+                      -------
+                      None.
+
+                      """
+        querys =[]
+        for i, column in enumerate(columns):
+            if not_null:
+                query = "{} {} DEFAULT '{}' NOT NULL".format(
+                    column, type_names[i], default_values[i])
+            else:
+                query = "{} {} DEFAULT '{}'".format(column, type_names[i], default_values[i])
+                
+        query = "CREATE TABLE IF NOT EXISTS {} ({})".format(table_name,", ".join(querys))
+        self.querys.append(query)
         

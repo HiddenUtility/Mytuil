@@ -15,11 +15,11 @@ import psycopg2
 import pandas as pd
 
 
-from PostgresController.PosgresInterface import AbstractPostgres
+from PostgresController.PostgresInterface import AbstractPostgres
 from PostgresController.User import User
 
 class SchemaCreator(AbstractPostgres):
-    DIRNAME_TABLE: Final = "parent_table"
+    DIRNAME_TABLE: Final = "PostgresController/parent_table"
     
     #//Field
     querys: list[str] 
@@ -27,6 +27,7 @@ class SchemaCreator(AbstractPostgres):
         super().__init__(info)
         self.schema_names = []
         self._set_schemas()
+        self._set_querys()
         
     def _set_schemas(self):
         filenames = [f.stem for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
@@ -43,7 +44,3 @@ class SchemaCreator(AbstractPostgres):
             query = f"CREATE SCHEMA IF NOT EXISTS {schema_name};"
             self.querys.append(query)
             
-
-    def run(self):
-        self._set_querys()
-        self.commit()
