@@ -26,24 +26,11 @@ class InterfaceTimer(metaclass=abc.ABCMeta):
     def stop(self):
         raise NotImplementedError()
 
-class Weekday(Enum):
-    MON = auto()
-    TUE = auto()
-    WED = auto()
-    THU = auto()
-    FRI = auto()
-    SAT = auto()
-    SUN = auto()
 
 class Timer(InterfaceTimer):
     def __init__(self):
         pass
-    
-    @staticmethod
-    def _get_week_name(week_num: int):
-        if not isinstance(week_num, int): TypeError
-        return Weekday(week_num).name
-    
+
     @staticmethod
     def _get_next_hour(hour:int = 4, minute:int = 0, second:int = 0):
         current_time = datetime.now()
@@ -71,25 +58,26 @@ class Timer(InterfaceTimer):
             minutes = int((remaining_time.total_seconds() % 3600) // 60)
             seconds = int(remaining_time.total_seconds() % 60)
             return "残り時間: {}時間 {}分 {}秒".format(hours, minutes, seconds)
-            
-    def wate_datetime(self, target_time: datetime):
+    @classmethod  
+    def wate_datetime(cls, target_time: datetime):
         if not isinstance(target_time, datetime): TypeError
         while True:
             if datetime.now() >= target_time: break
             label = target_time.strftime('%Y年%m月%d日 %A %H時%M分%S秒')
-            print(f"\r{label}まで待ちます.{self._remaining_time(target_time)}", end="")
+            print(f"\r{label}まで待ちます.{cls._remaining_time(target_time)}", end="")
             time.sleep(1)
         print("\r Start!!  \n")
         
-    def wate_hour(self,weekday:int = None, hour:int = 4, minute:int = 0, second:int = 0):
+    @classmethod
+    def wate_hour(cls,weekday:int = None, hour:int = 4, minute:int = 0, second:int = 0):
         if weekday is None:
-            target_time = self._get_next_hour(hour=hour,minute=minute,second=second)
-            self.wate_datetime(target_time)
+            target_time = cls._get_next_hour(hour=hour,minute=minute,second=second)
+            cls.wate_datetime(target_time)
         else:
-            target_time = self._get_next_week(weekday,hour=hour,minute=minute,second=second)
-            self.wate_datetime(target_time)
-        
-    def stop(self, secondes: int):
+            target_time = cls._get_next_week(weekday,hour=hour,minute=minute,second=second)
+            cls.wate_datetime(target_time)
+    @staticmethod
+    def stop(secondes: int):
         if not isinstance(secondes, int): TypeError
         for i in range(secondes):
             t = "{0:8}".format(secondes - i)

@@ -16,20 +16,24 @@ import pandas as pd
 
 
 from PostgresController.PosgresInterface import AbstractPostgres
+from PostgresController.User import User
+from PostgresController.SchemaCreator import SchemaCreator
 
-
-class TableCreator(AbstractPostgres):
-    DIRNAME_TABLE: Final = PostgresSchemaCreator.DIRNAME_TABLE
-    
+class Remover(AbstractPostgres):
+    DIRNAME_TABLE: Final = SchemaCreator.DIRNAME_TABLE
     COL_COLUMN = "column"
     COL_TYPE = "type"
     COL_DEFAULT = "default"
     COL_NOT_NULL = "not_null"
     
+    #//Field
+    querys: list[str] 
     
-    def __init__(self, info: InformationSQL):
+    def __init__(self, info: User):
         super().__init__(info)
         self.filepaths = [f for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
+        
+        
 
     def set_querys_from_csv(self, filepath: Path):
         df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)

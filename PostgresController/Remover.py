@@ -15,3 +15,10 @@ import psycopg2
 import pandas as pd
 
 from PostgresController.PosgresInterface import AbstractPostgres
+from PostgresController.User import User
+
+class Remover(AbstractPostgres):
+    #//Field
+    querys: list[str] 
+    def __init__(self, info: User):
+        super().__init__(info)

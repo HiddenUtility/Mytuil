@@ -16,12 +16,14 @@ import pandas as pd
 
 
 from PostgresController.PosgresInterface import AbstractPostgres
+from PostgresController.User import User
 
-
-class PostgresSchemaCreator(AbstractPostgres):
+class SchemaCreator(AbstractPostgres):
     DIRNAME_TABLE: Final = "parent_table"
     
-    def __init__(self, info: InformationSQL):
+    #//Field
+    querys: list[str] 
+    def __init__(self, info: User):
         super().__init__(info)
         self.schema_names = []
         self._set_schemas()

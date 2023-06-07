@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun  7 21:48:33 2023
+Created on Wed Jun  7 21:50:41 2023
 
 @author: iwill
 """
@@ -17,7 +17,7 @@ import pandas as pd
 from PostgresController.PosgresInterface import AbstractPostgres
 from PostgresController.User import User
 
-class RoleCreator(AbstractPostgres):
+class AuthorityGiver(AbstractPostgres):
     #//Field
     querys: list[str] 
     def __init__(self, info: User):

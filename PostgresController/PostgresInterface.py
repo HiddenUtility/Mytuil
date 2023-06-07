@@ -22,15 +22,18 @@ class AbstractPostgres(InterfacePostgres):
     #//Field
     querys: list[str] 
     
-    def __init__(self, info: User):
-        if not info.canConnect():raise ConnectionError("SQLに接続できません。")
-        self.host = info.host
-        self.user = info.user
-        self.port = info.port
-        self.database = info.database
-        self.password = info.password
-        
+    def __init__(self, user: User):
+        if not isinstance(user, User): raise TypeError("NOT User Object")
+        if not user.canConnect():raise ConnectionError("SQLに接続できません。")
+        self.host = user.host
+        self.user = user.user
+        self.port = user.port
+        self.database = user.database
+        self.password = user.password
         self.querys = []
+        
+    def __repr__(self):
+        return "\n".join(self.querys)
         
     def commit(self) -> None:
         # connect to PostgreSQL and create table
@@ -49,22 +52,5 @@ class AbstractPostgres(InterfacePostgres):
         cur.close()
         conn.close()
         
-    def get(self) -> None:
-        # connect to PostgreSQL and create table
-        conn = psycopg2.connect(
-            host=self.host, 
-            port=self.port, 
-            user=self.user, 
-            password=self.password, 
-            database=self.database
-        )
-        cur = conn.cursor()
-        for query in self.querys: cur.execute(query)
-        rows = cur.fetchall()
-        
-        # close connection
-        cur.close()
-        conn.close()
-        
-        return rows
+
         

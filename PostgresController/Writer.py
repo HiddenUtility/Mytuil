@@ -15,10 +15,12 @@ import psycopg2
 import pandas as pd
 
 from PostgresController.PosgresInterface import AbstractPostgres
-
+from PostgresController.User import User
 
 class PostgresInsert(AbstractPostgres):
-    def __init__(self, info: InformationSQL):
+    #//Field
+    querys: list[str] 
+    def __init__(self, info: User):
         super().__init__(info)
         
     def delete_duplicate(self,table_name, *columns: list[str]):
