@@ -25,7 +25,19 @@ class Interface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def sort(self)->FilelistMaker:
         raise NotImplementedError()
-
+    @abc.abstractmethod
+    def narrow_down_datetime(self,start: datetime, end: datetime)->FilelistMaker:
+        raise NotImplementedError()
+    @abc.abstractmethod
+    def reduce_number(self)->FilelistMaker:
+        raise NotImplementedError()
+    @abc.abstractmethod
+    def reduce_rate(self)->FilelistMaker:
+        raise NotImplementedError()
+    @abc.abstractmethod
+    def drop_filenames(self,names: list[str])->FilelistMaker:
+        raise NotImplementedError()
+        
 class FilelistMaker(Interface):
     filepaths: list[Filepath]
     empty: bool
@@ -42,7 +54,7 @@ class FilelistMaker(Interface):
     def __str__(self):
         if len(self.filepaths) <= 10:
             return "".join(["%s\n" % f for f in self.filepaths])
-        return "".join(["%s\n" % f for f in self.filepaths[10]])+"\n.\n.\n."
+        return "".join(["%s\n" % f for f in self.filepaths[:10]])+"\n.\n.\n."
     def __repr__(self):
         return self.__str__()
     
@@ -53,7 +65,7 @@ class FilelistMaker(Interface):
 
     #//Override
     def get_filepaths(self)->list[Path]:
-        return self.filepaths
+        return [f.get_filepath() for f in self.filepaths]
     #//Override
     def get_file_size(self,num=10) -> float:
         """
@@ -80,21 +92,50 @@ class FilelistMaker(Interface):
     def sort(self, reverse=False)->None:
         filepaths = sorted(self.filepaths, reverse=reverse)
         return self._return(filepaths)
+    #@Override
+    def narrow_down_datetime(self,start: datetime, end: datetime)->FilelistMaker:
+        if not isinstance(start, datetime): raise TypeError
+        if not isinstance(end, datetime): raise TypeError
+        if end < start: raise ValueError
+        filepaths = [f for f in self.filepaths if start < f < end]
+        return self._return(filepaths)
+        
+        
+    #@Override
+    def reduce_number(self, n: int | None)->FilelistMaker:
+        if n is None:return self
+        if not isinstance(n, int): raise TypeError
+        if len(self.filepaths) <= n: return self
+        filepaths = random.sample(self.filepaths, n)
+        return self._return(filepaths)
+    #@Override
+    def reduce_rate(self, r: float | None)->FilelistMaker:
+        if r is None:return self
+        if not (0 < r < 1):raise ValueError
+        n = int(len(self.filepaths) * r)
+        return self.reduce_number(n)
     
+    #@Override
+    def drop_filenames(self,names: list[str])->FilelistMaker:
+        if len(names) == 0:return self
+        filepaths = [f for f in self.filepaths if f.name not in names]
+        return self._return(filepaths)
+
     
     
 class Filepath:
     def __init__(self,f: Path):
         if not f.is_file():raise ValueError
         self.filepath = f
+        self.name = f.name
         self._datetime = self._get_datetime(f.stem)
         self.suffix = f.suffix
         
     @staticmethod
     def _get_datetime(name: str)->datetime:
-        date_string = re.search("\d{14}",name).group()
-        if date_string is None: raise FileExistsError("ファイル名に情報が含まれません。")
-        _datetime = datetime.strptime(date_string, '%Y%m%d%H%M%S')
+        obj = re.search("\d{14}",name)
+        if obj is None: raise FileExistsError(f"name = {name}: ファイル名に日付情報が含まれません。")
+        _datetime = datetime.strptime(obj.group(), '%Y%m%d%H%M%S')
         return _datetime  
     def __eq__(self, o: datetime):
         return self._datetime == o
@@ -114,14 +155,16 @@ class Filepath:
         return self.__str__()
     def get_datetime(self):
         return self._datetime
+    def get_filepath(self):
+        return self.filepath
     
 
         
 if __name__ == "__main__":
-    src = Path(r"C:\hrks\TEST\dst\2023-05-31")
+    src = Path(r"C:\hrks\TEST\src")
     test = FilelistMaker(src)
     print(test)
-    print(test.get_filesize())
-    test = test.reverce_sort()
+    print(test.get_file_size())
+    test = test.sort()
     print("sorted:\n",test)
  

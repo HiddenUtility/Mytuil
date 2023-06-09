@@ -23,7 +23,7 @@ class InterfaceLogMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
         
 ####//ParentClass
-class LogMaker(InterfaceLogMaker):
+class Logger(InterfaceLogMaker):
     LOG_NAME:Final = "ProcessLog"
     name: str
     dst: Path
@@ -68,7 +68,7 @@ class LogData:
     
 if __name__ == '__main__':
     
-    logmaker = LogMaker(name="TEST")
+    logmaker = Logger(name="TEST")
     for i in range(10):
         logmaker.write(str(1))
     
