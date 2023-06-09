@@ -15,7 +15,7 @@ import psycopg2
 import pandas as pd
 
 
-from PostgresController.PosgresInterface import AbstractPostgres
+from PostgresController.PostgresInterface import AbstractPostgres
 from PostgresController.User import User
 from PostgresController.SchemaCreator import SchemaCreator
 
@@ -36,17 +36,14 @@ class TableCreator(AbstractPostgres):
     def _set_querys_from_csv(self, filepath: Path):
         df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)
         tableName = filepath.stem
-        
         rows = []
         for _, row in df.iterrows():
             rows.append(row)
-        
         self._set_table_create_query(tableName, rows)
         
     def _set_table_create_query(self,
                                tableName:str,
                                rows: list[pd.Series]):
-
         querys =[]
         for row in rows:
             col = row[self.COL_COLUMN]
@@ -75,26 +72,24 @@ class TableCreator(AbstractPostgres):
                   not_null=True
                   ):
         """
-                      
+        Parameters
+        ----------
+        table_name : str
+            テーブル名。スキーマある場合はSchema_name.table_name
+        columns : list[str]
+            列名のリスト.
+        type_names : list[str]
+            列の制約のリスト.
+        default_values : list[str]
+            列のデフォルト値のリスト.
+        not_null : TYPE, optional
+            NOT　NULLを付与する. The default is True.
+        Returns
+        -------
+        None.
 
-                      Parameters
-                      ----------
-                      table_name : str
-                          テーブル名。スキーマある場合はSchema_name.table_name
-                      columns : list[str]
-                          列名のリスト.
-                      type_names : list[str]
-                          列の制約のリスト.
-                      default_values : list[str]
-                          列のデフォルト値のリスト.
-                      not_null : TYPE, optional
-                          NOT　NULLを付与する. The default is True.
-
-                      Returns
-                      -------
-                      None.
-
-                      """
+        """
+        
         querys =[]
         for i, column in enumerate(columns):
             if not_null:

@@ -14,14 +14,28 @@ from pathlib import Path
 import psycopg2
 import pandas as pd
 
-from PostgresController.PosgresInterface import AbstractPostgres
+from PostgresController.PostgresInterface import AbstractPostgres
 from PostgresController.User import User
 
-class PostgresInsert(AbstractPostgres):
+class Writer(AbstractPostgres):
     #//Field
     querys: list[str] 
     def __init__(self, info: User):
         super().__init__(info)
+        
+    def set_query(self,table_name: str, datas: dict)->None:
+        
+        conditions = [f"{key} = '{datas[key]}'" for key in datas]
+        where_clause = "WHERE " + " AND ".join(conditions)
+        delete_query = f"delete from {table_name} {where_clause}"
+        
+        columns_query = ", ".join(["%s" % key for key in datas])
+        values_query = ", ".join([f"'{datas[key]}'" for key in datas])
+        insert_query = f"insert into {table_name} ({columns_query}) values ({values_query});"
+
+        self.querys.append(delete_query)
+        self.querys.append(insert_query)
+        
         
     def delete_duplicate(self,table_name, *columns: list[str]):
         if len(columns) == 0:return

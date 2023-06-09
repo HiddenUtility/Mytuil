@@ -32,6 +32,12 @@ class AbstractPostgres(InterfacePostgres):
         
     def __repr__(self):
         return "\n".join(self.querys)
+    
+    def __add__(self,obj):
+        if not isinstance(obj, InterfacePostgres): raise TypeError
+        self.querys += obj.querys
+        return self
+        
         
     def commit(self) -> None:
         # connect to PostgreSQL and create table
@@ -49,6 +55,7 @@ class AbstractPostgres(InterfacePostgres):
         # close connection
         cur.close()
         conn.close()
+        self.querys =[]
         
 
         

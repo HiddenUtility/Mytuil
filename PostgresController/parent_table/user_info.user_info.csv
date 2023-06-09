@@ -2,4 +2,4 @@ column,type,default,not_null
 id,VARCHAR(255),Nothing,1
 name,VARCHAR(255),Nothing,1
 age,INTEGER CHECK (age BETWEEN 0 AND 200),0,1
-lank,"VARCHAR(8) CHECK (lank IN ('copper', 'silver', 'gold'))",copper,1
+rank,"VARCHAR(8) CHECK (rank IN ('copper', 'silver', 'gold'))",copper,1
