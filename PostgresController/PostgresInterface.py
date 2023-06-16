@@ -8,6 +8,7 @@ from __future__ import annotations
 import abc
 import psycopg2
 from PostgresController.User import User
+from copy import copy
 
     
 class InterfacePostgres(metaclass=abc.ABCMeta):
@@ -24,9 +25,9 @@ class AbstractPostgres(InterfacePostgres):
         if not isinstance(user, User): raise TypeError("NOT User Object")
         if not user.canConnect():raise ConnectionError("SQLに接続できません。")
         self.host = user.host
-        self.user = user.user
         self.port = user.port
         self.database = user.database
+        self.username = user.username
         self.password = user.password
         self.querys = []
         
@@ -37,14 +38,21 @@ class AbstractPostgres(InterfacePostgres):
         if not isinstance(obj, InterfacePostgres): raise TypeError
         self.querys += obj.querys
         return self
-        
-        
+
+    def _return(self,*querys:str):
+        if len(querys)==0:return self
+        new = copy(self)
+        for query in querys:
+            if not isinstance(query, str): raise TypeError
+            new.querys.append(query)
+        return new
+          
     def commit(self) -> None:
-        # connect to PostgreSQL and create table
+        # connect to PostgreSQL 
         conn = psycopg2.connect(
             host=self.host, 
             port=self.port, 
-            user=self.user, 
+            user=self.username, 
             password=self.password, 
             database=self.database
         )
@@ -55,6 +63,7 @@ class AbstractPostgres(InterfacePostgres):
         # close connection
         cur.close()
         conn.close()
+        # reset
         self.querys =[]
         
 

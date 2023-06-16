@@ -21,24 +21,38 @@ class User:
 
     def __init__(self, 
                  host: str="localhost",
-                 user: str="postgres",
                  port: int=5432, 
                  database: str="postgres", 
-                 password: str="postgres"):
+                 username: str="postgres",
+                 password: str="passwrod"):
         self.host = host
-        self.user = user
         self.port = port
         self.database = database
+        self.username = username
         self.password = password
+        
+    def __str__(self):
+        strs = [
+            "******************************",
+            f"host = {self.host}",
+            f"port = {self.port}",
+            f"database = {self.database}",
+            f"username = {self.username}",
+            f"password = {self.password}",
+            "******************************"
+            ]
+        return "\n".join(strs)
+    def __repr__(self):
+        return self.__str__()
         
     def set_local_user(self, 
                  host: str="localhost",
-                 user: str="postgres",
                  port: int=5432, 
                  database: str="postgres", 
-                 password: str="postgres"):
+                 username: str="postgres",
+                 password: str="passwrod"):
         self.host = host
-        self.user = user
+        self.username = username
         self.port = port
         self.database = database
         self.password = password
@@ -48,7 +62,7 @@ class User:
             conn = psycopg2.connect(
                 host=self.host, 
                 port=self.port, 
-                user=self.user, 
+                user=self.username, 
                 password=self.password, 
                 database=self.database
             )

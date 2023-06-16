@@ -7,12 +7,11 @@ Created on Mon Jun  5 22:35:41 2023
 
 from __future__ import annotations
 from typing import Final
-import abc
-import os
+
+from copy import copy
 from pathlib import Path
 
-import psycopg2
-import pandas as pd
+
 
 
 from PostgresController.PostgresInterface import AbstractPostgres
@@ -23,12 +22,10 @@ class SchemaCreator(AbstractPostgres):
     
     #//Field
     querys: list[str] 
-    def __init__(self, info: User):
-        super().__init__(info)
+    def __init__(self, user: User):
+        super().__init__(user)
         self.schema_names = []
-        self._set_schemas()
-        self._set_querys()
-        
+    
     def _set_schemas(self):
         filenames = [f.stem for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
         for filename in filenames:
@@ -44,3 +41,12 @@ class SchemaCreator(AbstractPostgres):
             query = f"CREATE SCHEMA IF NOT EXISTS {schema_name};"
             self.querys.append(query)
             
+    def set_schemas_from_csv(self) -> SchemaCreator:
+        new = copy(self)
+        new._set_schemas()
+        new._set_querys()
+        return new
+        
+    def set_schemas(self,schema_name: str) -> SchemaCreator:
+        query = f"CREATE SCHEMA IF NOT EXISTS {schema_name};"
+        return self._return(query)

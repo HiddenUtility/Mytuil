@@ -13,7 +13,7 @@ from pathlib import Path
 
 import psycopg2
 import pandas as pd
-
+from copy import copy
 
 from PostgresController.PostgresInterface import AbstractPostgres
 from PostgresController.User import User
@@ -31,7 +31,7 @@ class TableCreator(AbstractPostgres):
     
     def __init__(self, info: User):
         super().__init__(info)
-        self.filepaths = [f for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
+
         
     def _set_querys_from_csv(self, filepath: Path):
         df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)
@@ -61,8 +61,17 @@ class TableCreator(AbstractPostgres):
         query = "CREATE TABLE IF NOT EXISTS {} ({})".format(tableName,", ".join(querys))
         self.querys.append(query)
         
-    def set_querys_from_csv(self):
-        list(map(self._set_querys_from_csv, self.filepaths))
+    def _set_querys_from_csvfiles(self):
+        filepaths = [f for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
+        if len(filepaths) == 0 : raise FileNotFoundError(f"{self.DIRNAME_TABLE}内にファイルがありません。") 
+        list(map(self._set_querys_from_csv, filepaths))
+        
+    
+    def set_querys_from_csv(self) -> TableCreator:
+        new = copy(self)
+        new._set_querys_from_csvfiles()
+        return new
+        
         
     def set_query(self,
                   table_name: str,
@@ -99,5 +108,7 @@ class TableCreator(AbstractPostgres):
                 query = "{} {} DEFAULT '{}'".format(column, type_names[i], default_values[i])
                 
         query = "CREATE TABLE IF NOT EXISTS {} ({})".format(table_name,", ".join(querys))
-        self.querys.append(query)
+        
+        return self._return(query)
+
         

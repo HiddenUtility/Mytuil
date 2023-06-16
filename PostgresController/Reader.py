@@ -23,20 +23,22 @@ class Reader(AbstractPostgres):
     def __init__(self, info: User):
         super().__init__(info)
 
-    def set_query(self, table_name: str, columns: list[str] = None, where=""):
+
+    def set_query(self, table_name: str, columns: list[str] = None, where="") -> Reader:
         if isinstance(columns, str): columns = [columns]
         columns_query = ", ".join(columns) if columns is not None else "*"
         where = f"WHERE {where}" if where != "" else where
         query = f"SELECT {columns_query} FROM {table_name} {where};"
-        self.querys.append(query)
-
+        
+        return self._return(query)
+        
 
     def read(self) -> None:
         # connect to PostgreSQL and create table
         conn = psycopg2.connect(
             host=self.host, 
             port=self.port, 
-            user=self.user, 
+            user=self.username, 
             password=self.password, 
             database=self.database
         )
@@ -51,8 +53,8 @@ class Reader(AbstractPostgres):
     
     def getDataFrame(self, table_name: str, columns: list[str], where="") -> pd.DataFrame:
         if not isinstance(columns, list):raise TypeError
-        self.set_query(table_name, columns, where=where)
-        rows = self.read()
+        new = self.set_query(table_name, columns, where=where)
+        rows = new.read()
         if len(rows) == 0:return pd.DataFrame()
         dictionary = {}
         for column in columns:
