@@ -6,10 +6,6 @@ Created on Mon Jun  5 22:31:40 2023
 """
 
 from __future__ import annotations
-from typing import Final
-import abc
-import os
-from pathlib import Path
 
 import psycopg2
 import pandas as pd
@@ -24,11 +20,30 @@ class Reader(AbstractPostgres):
         super().__init__(info)
 
 
-    def set_query(self, table_name: str, columns: list[str] = None, where="") -> Reader:
-        if isinstance(columns, str): columns = [columns]
-        columns_query = ", ".join(columns) if columns is not None else "*"
-        where = f"WHERE {where}" if where != "" else where
-        query = f"SELECT {columns_query} FROM {table_name} {where};"
+    def set_query(self, table_name: str, 
+                  values: dict[str:str] = None,
+                  columns: list[str] = None) -> Reader:
+        """
+        
+
+        Parameters
+        ----------
+        table_name : str
+            Target Talbe name
+        values : dict[str:str], optional
+            検索したい値を辞書で指定する. The default is None.
+        columns : list[str], optional
+            得たい列名指定があれば指定する. The default is None.
+
+        Returns
+        -------
+        Reader
+            DESCRIPTION.
+
+        """
+        columns_query = "*" if columns is None else ", ".join(columns)
+        where = "" if values is None else "where" + " AND ".join([ "{key} = '{values[key]}'" for key in values])
+        query = f"select {columns_query} from {table_name} {where};"
         
         return self._return(query)
         

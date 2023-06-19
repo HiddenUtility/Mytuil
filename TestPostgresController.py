@@ -19,6 +19,7 @@ from PostgresController.Remover import Remover
 if __name__ == "__main__":
     """
     \c postgres
+    pqsl -U postgres
     DROP DATABASE test;
     CREATE DATABASE test;
     DROP OWNED BY Taro CASCADE;

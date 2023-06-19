@@ -7,10 +7,6 @@ Created on Mon Jun  5 22:31:33 2023
 
 from __future__ import annotations
 
-from copy import copy
-
-
-
 from PostgresController.PostgresInterface import AbstractPostgres
 from PostgresController.User import User
 
