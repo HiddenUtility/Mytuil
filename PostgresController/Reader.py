@@ -42,13 +42,13 @@ class Reader(AbstractPostgres):
 
         """
         columns_query = "*" if columns is None else ", ".join(columns)
-        where = "" if values is None else "where" + " AND ".join([ "{key} = '{values[key]}'" for key in values])
+        where = "" if values is None else " where " + " AND ".join([ f"{key} = '{values[key]}'" for key in values])
         query = f"select {columns_query} from {table_name} {where};"
         
         return self._return(query)
         
 
-    def read(self) -> None:
+    def read(self) -> (list[list[str]],list[str]):
         # connect to PostgreSQL and create table
         conn = psycopg2.connect(
             host=self.host, 
@@ -60,24 +60,20 @@ class Reader(AbstractPostgres):
         cur = conn.cursor()
         for query in self.querys: cur.execute(query)
         rows = cur.fetchall()
+        colnames = [col.name for col in cur.description]
         # close connection
         cur.close()
         conn.close()
         self.querys = []
-        return rows
+        return rows, colnames
     
-    def getDataFrame(self, table_name: str, columns: list[str], where="") -> pd.DataFrame:
-        if not isinstance(columns, list):raise TypeError
-        new = self.set_query(table_name, columns, where=where)
-        rows = new.read()
+    def getDataFrame(self, table_name: str, 
+                  values: dict[str:str] = None,
+                  columns: list[str] = None) -> pd.DataFrame:
+        new = self.set_query(table_name, values, columns)
+        rows,columns = new.read()
         if len(rows) == 0:return pd.DataFrame()
-        dictionary = {}
-        for column in columns:
-            dictionary[column] = []
-        for row in rows:
-            for i, column in enumerate(columns):
-                dictionary[column].append(row[i])
-        return pd.DataFrame(dictionary)
+        return pd.DataFrame(rows, columns=columns)
                 
                 
 

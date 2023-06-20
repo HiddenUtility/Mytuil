@@ -69,11 +69,10 @@ if __name__ == "__main__":
     
     #//reader
     reader = Reader(userTaro)
-    columns = ["id","name","age","rank"]
-    #whereはパターンがありすぎるので直接つくって入れる
-    reader = reader.set_query("user_info.user_info", columns, where="")
-    rows = reader.read()
-    df = reader.getDataFrame("user_info.user_info", columns, where="")
+    reader = reader.set_query("user_info.user_info",datas)
+    rows,columns = reader.read()
+    #Table全データ
+    df = reader.getDataFrame("user_info.user_info")
     
     #最後消す
     #//remover
