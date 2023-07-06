@@ -69,8 +69,6 @@ class FilelistMaker(Interface):
     #//Override
     def get_file_size(self,num=10) -> float:
         """
-        
-
         Parameters
         ----------
         num : TYPE, optional
@@ -81,7 +79,6 @@ class FilelistMaker(Interface):
         -------
         float
             平均値を返す。（kbyte）
-
         """
         if len(self.filepaths):return 0.0
         filepaths = self.filepaths if len(self.filepaths) < 10 else random.sample(self.filepaths, num)
@@ -89,7 +86,7 @@ class FilelistMaker(Interface):
         return sum(sizes) / len(sizes) //1000
     
     #@Override
-    def sort(self, reverse=False)->None:
+    def sort(self, reverse=False)->FilelistMaker:
         filepaths = sorted(self.filepaths, reverse=reverse)
         return self._return(filepaths)
     #@Override
@@ -99,7 +96,6 @@ class FilelistMaker(Interface):
         if end < start: raise ValueError
         filepaths = [f for f in self.filepaths if start < f < end]
         return self._return(filepaths)
-        
         
     #@Override
     def reduce_number(self, n: int | None)->FilelistMaker:
@@ -121,8 +117,6 @@ class FilelistMaker(Interface):
         filepaths = [f for f in self.filepaths if f.name not in names]
         return self._return(filepaths)
 
-    
-    
 class Filepath:
     def __init__(self,f: Path):
         if not f.is_file():raise ValueError
@@ -130,13 +124,12 @@ class Filepath:
         self.name = f.name
         self._datetime = self._get_datetime(f.stem)
         self.suffix = f.suffix
-        
-    @staticmethod
-    def _get_datetime(name: str)->datetime:
+    def _get_datetime(self, name: str) -> datetime:
         obj = re.search("\d{14}",name)
-        if obj is None: raise FileExistsError(f"name = {name}: ファイル名に日付情報が含まれません。")
-        _datetime = datetime.strptime(obj.group(), '%Y%m%d%H%M%S')
-        return _datetime  
+        if obj is None: 
+            return datetime.timestamp(self.filepath.stat().st_ctime)
+            #//raise FileExistsError(f"name = {name}: ファイル名に日付情報が含まれません。")
+        return datetime.strptime(obj.group(), '%Y%m%d%H%M%S')  
     def __eq__(self, o: datetime):
         return self._datetime == o
     def __ne__(self, o: datetime):

@@ -20,9 +20,10 @@ class Reader(AbstractPostgres):
         super().__init__(info)
 
 
-    def set_query(self, table_name: str, 
-                  values: dict[str:str] = None,
-                  columns: list[str] = None) -> Reader:
+    def set_query(self, table_name: str,
+                  columns: list[str] = None,
+                  wheres: dict[str:str] = None
+                  ) -> Reader:
         """
         
 
@@ -42,7 +43,7 @@ class Reader(AbstractPostgres):
 
         """
         columns_query = "*" if columns is None else ", ".join(columns)
-        where = "" if values is None else " where " + " AND ".join([ f"{key} = '{values[key]}'" for key in values])
+        where = "" if wheres is None else " where " + " AND ".join([ f"{key} = '{wheres[key]}'" for key in wheres])
         query = f"select {columns_query} from {table_name} {where};"
         
         return self._return(query)
