@@ -23,22 +23,25 @@ class Interface(metaclass=abc.ABCMeta):
     def get_file_size(self):
         raise NotImplementedError()
     @abc.abstractmethod
-    def sort(self)->FilelistMaker:
+    def sort(self)->FilepathListMaker:
         raise NotImplementedError()
     @abc.abstractmethod
-    def narrow_down_datetime(self,start: datetime, end: datetime)->FilelistMaker:
+    def narrow_down_datetime(self,start: datetime, end: datetime)->FilepathListMaker:
         raise NotImplementedError()
     @abc.abstractmethod
-    def reduce_number(self)->FilelistMaker:
+    def reduce_number(self)->FilepathListMaker:
         raise NotImplementedError()
     @abc.abstractmethod
-    def reduce_rate(self)->FilelistMaker:
+    def reduce_rate(self)->FilepathListMaker:
         raise NotImplementedError()
     @abc.abstractmethod
-    def drop_filenames(self,names: list[str])->FilelistMaker:
+    def drop_filenames(self,names: list[str])->FilepathListMaker:
+        raise NotImplementedError()
+    @abc.abstractmethod
+    def narrow_to_contain_keys(self,*key: str) -> FilepathListMaker:
         raise NotImplementedError()
         
-class FilelistMaker(Interface):
+class FilepathListMaker(Interface):
     filepaths: list[Filepath]
     empty: bool
     def __init__(self,src:Path, extension=""):
@@ -57,9 +60,11 @@ class FilelistMaker(Interface):
         return "".join(["%s\n" % f for f in self.filepaths[:10]])+"\n.\n.\n."
     def __repr__(self):
         return self.__str__()
+    def __len__(self):
+        return len(self.filepaths)
     
-    def __add__(self, obj: FilelistMaker):
-        if not isinstance(obj, FilelistMaker):raise TypeError
+    def __add__(self, obj: FilepathListMaker):
+        if not isinstance(obj, FilepathListMaker):raise TypeError
         filepaths = self.filepaths + obj.filepaths
         self._return(filepaths)
 
@@ -86,11 +91,13 @@ class FilelistMaker(Interface):
         return sum(sizes) / len(sizes) //1000
     
     #@Override
-    def sort(self, reverse=False)->FilelistMaker:
+    def sort(self, reverse=False) -> FilepathListMaker:
         filepaths = sorted(self.filepaths, reverse=reverse)
         return self._return(filepaths)
     #@Override
-    def narrow_down_datetime(self,start: datetime, end: datetime)->FilelistMaker:
+    def narrow_down_datetime(self,
+                             start: datetime=datetime(2000, 1, 1),
+                             end: datetime=datetime(2099,12,31)) -> FilepathListMaker:
         if not isinstance(start, datetime): raise TypeError
         if not isinstance(end, datetime): raise TypeError
         if end < start: raise ValueError
@@ -98,28 +105,35 @@ class FilelistMaker(Interface):
         return self._return(filepaths)
         
     #@Override
-    def reduce_number(self, n: int | None)->FilelistMaker:
+    def reduce_number(self, n: int | None)->FilepathListMaker:
         if n is None:return self
         if not isinstance(n, int): raise TypeError
         if len(self.filepaths) <= n: return self
         filepaths = random.sample(self.filepaths, n)
         return self._return(filepaths)
     #@Override
-    def reduce_rate(self, r: float | None)->FilelistMaker:
+    def reduce_rate(self, r: float | None)->FilepathListMaker:
         if r is None:return self
         if not (0 < r < 1):raise ValueError
         n = int(len(self.filepaths) * r)
         return self.reduce_number(n)
     
     #@Override
-    def drop_filenames(self,names: list[str])->FilelistMaker:
+    def drop_filenames(self,names: list[str]) -> FilepathListMaker:
         if len(names) == 0:return self
         filepaths = [f for f in self.filepaths if f.name not in names]
+        return self._return(filepaths)
+    
+    #@Override
+    def narrow_to_contain_keys(self,*keys: str) -> FilepathListMaker:
+        filepaths = []
+        for k in keys:
+            filepaths += [f for f in self.filepaths if k in f.name]
         return self._return(filepaths)
 
 class Filepath:
     def __init__(self,f: Path):
-        if not f.is_file():raise ValueError
+        if not f.is_file():raise ValueError(f"{f}はfilepathではありません。")
         self.filepath = f
         self.name = f.name
         self._datetime = self._get_datetime(f.stem)
@@ -128,7 +142,6 @@ class Filepath:
         obj = re.search("\d{14}",name)
         if obj is None: 
             return datetime.timestamp(self.filepath.stat().st_ctime)
-            #//raise FileExistsError(f"name = {name}: ファイル名に日付情報が含まれません。")
         return datetime.strptime(obj.group(), '%Y%m%d%H%M%S')  
     def __eq__(self, o: datetime):
         return self._datetime == o
@@ -146,6 +159,8 @@ class Filepath:
         return f"{self._datetime}: {self.filepath.parent.name}/{self.filepath.name}"
     def __repr__(self):
         return self.__str__()
+    def __hash__(self):
+        return hash(self._datetime)
     def get_datetime(self):
         return self._datetime
     def get_filepath(self):
@@ -155,7 +170,7 @@ class Filepath:
         
 if __name__ == "__main__":
     src = Path(r"C:\hrks\TEST\src")
-    test = FilelistMaker(src)
+    test = FilepathListMaker(src)
     print(test)
     print(test.get_file_size())
     test = test.sort()

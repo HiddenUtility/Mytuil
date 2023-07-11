@@ -47,8 +47,5 @@ class DummiyFileCreator(Interface):
             filepath = dst.joinpath(date.strftime(self.FORMAT + "_dummy.txt"))
             self._create_dummy(filepath, file_size=file_size)
     
-if __name__ == "__main__":
-    dst = Path(r"C:\hrks\TEST\src")
-    creator = DummiyFileCreator()
-    creator.create(dst,100,datetime(2023,5,1))
+
     
