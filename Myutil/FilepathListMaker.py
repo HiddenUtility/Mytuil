@@ -44,11 +44,13 @@ class Interface(metaclass=abc.ABCMeta):
 class FilepathListMaker(Interface):
     filepaths: list[Filepath]
     empty: bool
+    count: int
     def __init__(self,src:Path, extension=""):
         if not src.is_dir(): ValueError
         names = [name for name in os.listdir(src) if extension in name]
         self.filepaths = [Filepath(src.joinpath(name)) for name in names]
         self.empty = len(self.filepaths) == 0
+        self.count=0
     def _return(self,filepaths):
         new = copy(self)
         new.filepaths = filepaths
@@ -62,7 +64,13 @@ class FilepathListMaker(Interface):
         return self.__str__()
     def __len__(self):
         return len(self.filepaths)
-    
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.count == len(self.filepaths):
+            raise StopIteration
+        self.count+=1
+        return self.filepaths[self.count - 1].get_filepath()
     def __add__(self, obj: FilepathListMaker):
         if not isinstance(obj, FilepathListMaker):raise TypeError
         filepaths = self.filepaths + obj.filepaths
