@@ -7,17 +7,15 @@ Created on Mon Jun  5 22:37:54 2023
 
 from __future__ import annotations
 from typing import Final
-import abc
-import os
+
 from pathlib import Path
 
-import psycopg2
 import pandas as pd
 from copy import copy
 
-from PostgresController.PostgresInterface import AbstractPostgres
-from PostgresController.User import User
-from PostgresController.SchemaCreator import SchemaCreator
+from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.user import User
+from postgresutil.schema_creator import SchemaCreator
 
 class TableCreator(AbstractPostgres):
     DIRNAME_TABLE: Final = SchemaCreator.DIRNAME_TABLE

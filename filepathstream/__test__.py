@@ -7,8 +7,8 @@ Created on Tue Jul 11 22:11:30 2023
 from pathlib import Path
 from datetime import datetime
 import shutil
-from Myutil.DummiyFileCreator import DummiyFileCreator
-from Myutil.FilepathListMaker import FilepathListMaker
+from dummiy_creator import DummiyFileCreator
+from filepathstream import FilepathListMaker
 
 
 class TestFilepathListMaker:
@@ -19,13 +19,19 @@ class TestFilepathListMaker:
         DummiyFileCreator().create(self.dst,100,datetime(2023,5,1))
     
     def init(self):
-        maker = FilepathListMaker(self.dst)
-        print(maker)
+        self.maker = FilepathListMaker(self.dst)
+        print(self.maker)
+    
+    def itertor(self):
+        for f in self.maker:
+            print(f)
+        
         
 if __name__ == "__main__":
 
 
     test = TestFilepathListMaker()
     test.init()
+    test.itertor()
     
     

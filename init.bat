@@ -1,7 +1,9 @@
 @echo off
 
-rd /s /q Myutil\__pycache__
-rd /s /q PostgresController\__pycache__
-rd /s /q Dummiy
+rd /s /q myutil\__pycache__
+rd /s /q postgresutil\__pycache__
+rd /s /q tkinterutil\__pycache__
+rd /s /q filepathstream\__pycache__
+rd /s /q filepathstream\Dummiy
 
 pause

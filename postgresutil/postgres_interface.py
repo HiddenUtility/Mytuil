@@ -7,7 +7,7 @@ Created on Mon Jun  5 22:34:15 2023
 from __future__ import annotations
 import abc
 import psycopg2
-from PostgresController.User import User
+from postgresutil.user import User
 from copy import copy
 
     

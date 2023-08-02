@@ -14,8 +14,8 @@ from pathlib import Path
 
 from copy import copy
 
-from PostgresController.PostgresInterface import AbstractPostgres
-from PostgresController.User import User
+from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.user import User
 
 class AuthorityGiver(AbstractPostgres):
     #//Field

@@ -5,16 +5,16 @@ Created on Mon Jun  5 22:41:56 2023
 @author: iwill
 """
 
-from PostgresController.DummiyDictionary import DummiyDictionary
+from postgresutil.dummiy_dictionary import DummiyDictionary
 
-from PostgresController.User import User
-from PostgresController.SchemaCreator import SchemaCreator
-from PostgresController.TableCreator import TableCreator
-from PostgresController.Reader import Reader
-from PostgresController.Writer import Writer
-from PostgresController.RoleCreator import RoleCreator
-from PostgresController.AuthorityGiver import AuthorityGiver
-from PostgresController.Remover import Remover
+from postgresutil.user import User
+from postgresutil.schema_creator import SchemaCreator
+from postgresutil.table_creator import TableCreator
+from postgresutil.reader import Reader
+from postgresutil.writer import Writer
+from postgresutil.role_creator import RoleCreator
+from postgresutil.authority_giver import AuthorityGiver
+from postgresutil.remover import Remover
 
 if __name__ == "__main__":
     """

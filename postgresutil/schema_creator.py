@@ -14,11 +14,11 @@ from pathlib import Path
 
 
 
-from PostgresController.PostgresInterface import AbstractPostgres
-from PostgresController.User import User
+from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.user import User
 
 class SchemaCreator(AbstractPostgres):
-    DIRNAME_TABLE: Final = "PostgresController/parent_table"
+    DIRNAME_TABLE: Final = "postgresutil/parent_table"
     
     #//Field
     querys: list[str] 

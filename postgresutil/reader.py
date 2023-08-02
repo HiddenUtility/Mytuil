@@ -10,8 +10,8 @@ from __future__ import annotations
 import psycopg2
 import pandas as pd
 
-from PostgresController.PostgresInterface import AbstractPostgres
-from PostgresController.User import User
+from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.user import User
 
 class Reader(AbstractPostgres):
     #//Field

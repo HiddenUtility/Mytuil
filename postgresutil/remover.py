@@ -8,8 +8,8 @@ Created on Mon Jun  5 22:31:48 2023
 from __future__ import annotations
 from datetime import datetime
 
-from PostgresController.PostgresInterface import AbstractPostgres
-from PostgresController.User import User
+from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.user import User
 
 class Remover(AbstractPostgres):
     #//Field
