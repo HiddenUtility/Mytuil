@@ -4,7 +4,6 @@ Created on Fri Jun  2 16:42:12 2023
 
 @author: nanik
 """
-
 import time
 from datetime import datetime
 
@@ -26,7 +25,6 @@ if __name__ == "__main__":
     @timelogr
     def wite():
         time.sleep(1)
-        
     wite()
         
     

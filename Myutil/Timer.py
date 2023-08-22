@@ -5,8 +5,6 @@ Created on Fri Jun  2 08:53:13 2023
 @author: nanik
 """
 
-
-
 from __future__ import annotations
 import abc
 from pathlib import Path
