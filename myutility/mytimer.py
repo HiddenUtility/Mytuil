@@ -7,13 +7,8 @@ Created on Fri Jun  2 08:53:13 2023
 
 from __future__ import annotations
 import abc
-from pathlib import Path
-import pickle
-import hashlib
 from datetime import datetime, timedelta
-from enum import Enum, auto
 import time
-
 
 #interface
 class InterfaceTimer(metaclass=abc.ABCMeta):
@@ -25,7 +20,7 @@ class InterfaceTimer(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
 
-class Timer(InterfaceTimer):
+class EasyTimer(InterfaceTimer):
     def __init__(self):
         pass
 
@@ -87,8 +82,7 @@ class Timer(InterfaceTimer):
 
 if __name__ == "__main__":
     
-    timer = Timer()
-    
+    timer = EasyTimer()
     timer.stop(5) #5秒ストップ
     #timer.wate_hour(hour=4,minute=30) #次の４時半まで待機
     timer.wate_hour(weekday=1,hour=4,minute=30) #次の火曜日の４時半まで待機

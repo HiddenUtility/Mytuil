@@ -12,12 +12,15 @@ def timelogr(func):
         print(datetime.now())
         print("_______________________<start>___________________________")
         startTime = time.time()
-        func(*args, **kwargs)
+        v = func(*args, **kwargs)
         endTime = time.time()
         print(datetime.now())
         print("_______________________< end >___________________________")
-        print("{}の処理時間は{:5f}sでした。".format(func.__name__,endTime-startTime))
+        print("{}の処理時間は{:5f}sでした。".format(func.__name__, endTime-startTime))
+        return v
     return wrapper
+
+
 
 
 if __name__ == "__main__":
