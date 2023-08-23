@@ -10,7 +10,7 @@ from datetime import datetime
 
 class Client:
     HOST = "127.0.0.1"
-    PORT = 48888
+    PORT = 58888
     ENCODING = "utf-8"
     BUFFER = 1024
     

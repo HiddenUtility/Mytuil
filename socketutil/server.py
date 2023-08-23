@@ -12,7 +12,7 @@ from datetime import datetime
 
 class Server:
     HOST = ""
-    PORT = 48888
+    PORT = 58888
     ENCODING = "utf-8"
     BUFFER = 1024
     
@@ -24,9 +24,9 @@ class Server:
         mess = dict_.get("message")
         if mess is None:return dict(flag="Failure!!")
         print(dict_["timestamp"],dict_["message"])
-        
+        # /* 何かの処理
         time.sleep(3)
-        
+        # */
         return_data = dict(flag="Success!!")
         return_data["timestamp"] = str(datetime.now())
         return return_data
@@ -34,19 +34,30 @@ class Server:
     def recieved(self,server_socket: socket):
         print("waiting...")
         conn, _ = server_socket.accept()
-        print(datetime.now(),"Recived Request !!")
         try:
             data = conn.recv(self.BUFFER)
+            print(datetime.now(),"Recived Request !!")
+        except Exception as error:
+            conn.close()
+            raise Exception(error)
+        
+        try:
             json_data: bytes = data.decode(self.ENCODING)
             dict_ = json.loads(json_data)
-            #//何かの処理
+            # /* 何かの処理
             return_data:dict = self.process(dict_)
+            # */
             json_return_data: bytes = json.dumps(return_data).encode(self.ENCODING)
+        except Exception as error:
+            conn.close()
+            raise Exception(error)
+             
+        try:
             conn.sendall(json_return_data)
+            print(datetime.now(),"Return Response!!")
         except Exception as error:
             raise Exception(error)
         finally:
-            print(datetime.now(),"Return Response!!")
             conn.close()  
     
     def run(self):
@@ -59,7 +70,7 @@ class Server:
                 self.recieved(server_socket)
             except Exception as error:
                 server_socket.close()
-                raise Exception(error)
+                print(error)
         
 
 if __name__ == "__main__":
