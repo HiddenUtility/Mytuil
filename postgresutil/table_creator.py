@@ -11,7 +11,7 @@ from typing import Final
 from pathlib import Path
 
 import pandas as pd
-from copy import copy
+
 
 from postgresutil.creator import Creator
 from postgresutil.schema_creator import SchemaCreator
@@ -19,58 +19,61 @@ from postgresutil.schema_creator import SchemaCreator
 class TableCreator(Creator):
     DIRNAME_TABLE: Final = SchemaCreator.DIRNAME_TABLE
     COL_COLUMN = "column"
+    COL_PRIMARY_KYE = "primary_key"
     COL_TYPE = "type"
+    COL_CONST = "constraints"
     COL_DEFAULT = "default"
     COL_NOT_NULL = "not_null"
-    
     #//Field
     querys: list[str] 
     
-
-        
-    def _set_querys_from_csv(self, filepath: Path):
-        df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)
-        tableName = filepath.stem
-        rows = []
-        for _, row in df.iterrows():
-            rows.append(row)
-        self._set_table_create_query(tableName, rows)
-        
-    def _set_table_create_query(self,
-                               tableName:str,
-                               rows: list[pd.Series]):
+    def _get_table_create_query(self,
+                               table_name:str,
+                               df: pd.DataFrame) -> str:
         querys =[]
-        for row in rows:
+        primary_keys = []
+        for _, row in df.iterrows:
             col = row[self.COL_COLUMN]
-            typeName = row[self.COL_TYPE]
-            defaultValue = row[self.COL_DEFAULT]            
-            isNotNull = bool(row[self.COL_NOT_NULL])
-            if isNotNull:
-                query = "{} {} DEFAULT '{}' NOT NULL".format(col, typeName, defaultValue)
+            primary = row[self.COL_PRIMARY_KYE]
+            type_name = row[self.COL_TYPE]
+            constraints = row[self.COL_CONST]
+            constraints = "" if constraints == "null" else constraints
+            default_value = row[self.COL_DEFAULT]            
+            is_not_null = bool(row[self.COL_NOT_NULL])
+            if is_not_null:
+                query = "{} {} {} DEFAULT '{}' NOT NULL".format(col, type_name, constraints, default_value)
             else:
-                query = "{} {} DEFAULT '{}'".format(col, typeName, defaultValue)
-                
-            
+                query = "{} {} {} DEFAULT '{}'".format(col, type_name, constraints, default_value)
             querys.append(query)
+            if bool(primary):
+                primary_keys.append(primary)
         
-        query = "CREATE TABLE IF NOT EXISTS {} ({})".format(tableName,", ".join(querys))
-        self.querys.append(query)
-        
-    def _set_querys_from_csvfiles(self):
+        if len(primary_keys) == 0: raise Exception("primary_keyがありません。")
+        query = "CREATE TABLE IF NOT EXISTS {} ({}, PRIMARY KEY({}))".format(
+            table_name,", ".join(querys), ", ".join(primary_keys))
+        return query
+    
+    def _get_query_from_csv(self, filepath: Path) -> str:
+        try:
+            df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)
+        except Exception as ex:
+            raise Exception(f"{filepath} is Not reading. {ex}")
+        table_name = filepath.stem
+        return self._get_table_create_query(table_name, df)
+    
+    def _get_querys_from_csvfiles(self) -> list[str]:
         filepaths = [f for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
         if len(filepaths) == 0 : raise FileNotFoundError(f"{self.DIRNAME_TABLE}内にファイルがありません。") 
-        list(map(self._set_querys_from_csv, filepaths))
+        return list(map(self._get_query_from_csv, filepaths))
         
     
-    def set_querys_from_csv(self) -> TableCreator:
-        new = copy(self)
-        new._set_querys_from_csvfiles()
-        return new
+
         
         
     def set_query(self,
                   table_name: str,
                   columns:list[str],
+                  primary_keys: list[str],
                   type_names:list[str],
                   default_values:list[str],
                   not_null=True
@@ -102,8 +105,15 @@ class TableCreator(Creator):
             else:
                 query = "{} {} DEFAULT '{}'".format(column, type_names[i], default_values[i])
                 
-        query = "CREATE TABLE IF NOT EXISTS {} ({})".format(table_name,", ".join(querys))
+        query = "CREATE TABLE IF NOT EXISTS {} ({}, PRIMARY KEY ({}))".format(table_name,
+                                                            ", ".join(querys),
+                                                            ", ".join(primary_keys)
+                                                            )
         
         return self._return(query)
+
+    def set_querys_from_csv(self) -> TableCreator:
+        querys = self._get_querys_from_csvfiles()
+        return self._return(*querys)
 
         

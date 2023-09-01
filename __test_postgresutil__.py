@@ -30,6 +30,10 @@ if __name__ == "__main__":
     user = User(database="test")
     builder = DataBaseBuilder(user)
     
+    builder.create_schema()
+    builder.create_table()
+    
+    
     import sys
     sys.exit()
 

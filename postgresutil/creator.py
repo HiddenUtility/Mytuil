@@ -7,7 +7,7 @@ Created on Mon Jun  5 22:34:15 2023
 
 import psycopg2
 import abc
-from copy import copy
+
 from postgresutil.psql import Psql
 
 class ICreator(Psql):
@@ -16,21 +16,14 @@ class ICreator(Psql):
         pass
 
 class Creator(ICreator):
-    def __repr__(self):
-        return "\n".join(self.querys)
+
     
     def __add__(self,obj):
         if not isinstance(obj, Creator): raise TypeError
         self.querys += obj.querys
         return self
 
-    def _return(self,*querys:str):
-        if len(querys)==0:return self
-        new = copy(self)
-        for query in querys:
-            if not isinstance(query, str): raise TypeError
-            new.querys.append(query)
-        return new
+
     
     #@override
     def commit(self) -> None:

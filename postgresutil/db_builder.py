@@ -8,6 +8,7 @@ Created on Fri Sep  1 17:52:15 2023
 from postgresutil.user import User
 from postgresutil.schema_creator import SchemaCreator
 from postgresutil.table_creator import TableCreator
+from postgresutil.role_creator import RoleCreator
 
 class DataBaseBuilder:
     def __init__(self, user: User):
@@ -16,8 +17,13 @@ class DataBaseBuilder:
             raise Exception(f"接続できません。\n{user}")
         self.schema_creator = SchemaCreator(user)
         self.table_ceator = TableCreator(user)
+        self.role_ceator = RoleCreator(user)
     
     def create_schema(self):
-        creator = self.schema_creator.set_schemas_from_csv()
-        creator.commit()
-        
+        self.schema_creator.set_schemas_from_csv().commit()
+
+    def create_table(self):
+        self.table_ceator.set_querys_from_csv().commit()
+
+    def role_ceator(self):
+        self.table_ceator.set_querys_from_csv().commit()

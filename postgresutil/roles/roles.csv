@@ -1,0 +1,4 @@
+user_name,passwrod,connection_limit,schema,authority
+youko,passwrod,16,user_info,write
+hanako,passwrod,16,product,write
+takashi,passwrod,16,oder_history,edite

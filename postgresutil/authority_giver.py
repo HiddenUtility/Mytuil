@@ -14,7 +14,7 @@ class AuthorityGiver(Creator):
     querys: list[str] 
 
         
-    def set_query_to_edit(self, user_name: str, schema: str) -> AuthorityGiver:
+    def set_query_to_edite(self, user_name: str, schema: str) -> AuthorityGiver:
         querys = []
         querys.append(f"GRANT USAGE ON SCHEMA {schema} TO {user_name};")
         querys.append(f"GRANT ALL ON ALL TABLES IN SCHEMA {schema} TO {user_name};")
