@@ -1,7 +1,7 @@
 column,type,constraints,default,not_null,primary_key
-user_id,VARCHAR(255),null,Nothing,1,1
-user_name,VARCHAR(255),null,Nothing,1,1
-password,VARCHAR(255),null,Nothing,1,1
+user_id,VARCHAR(255),,Nothing,1,1
+user_name,VARCHAR(255),,Nothing,1,1
+password,VARCHAR(255),,Nothing,1,1
 age,INTEGER ,CHECK (age BETWEEN 0 AND 200),0,1,1
-user_rank,VARCHAR(8) ,"CHECK (rank IN ('copper', 'silver', 'gold'))",copper,1,1
-e_mail,VARCHAR(255),null,Nothing,1,1
+user_rank,VARCHAR(8) ,"CHECK (user_rank IN ('copper', 'silver', 'gold'))",copper,1,1
+e_mail,VARCHAR(255),,Nothing,1,1

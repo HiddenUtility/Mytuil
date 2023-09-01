@@ -25,5 +25,5 @@ class DataBaseBuilder:
     def create_table(self):
         self.table_ceator.set_querys_from_csv().commit()
 
-    def role_ceator(self):
+    def create_role(self):
         self.table_ceator.set_querys_from_csv().commit()

@@ -1,4 +1,4 @@
 column,type,constraints,default,not_null,primary_key
-product_id,CHAR(32),null,fffffffffffffffffffffffffffffffff,1,1
-product_name,text,null,noname,1,1
-price,BIGINT,null,0,1,1
+product_id,CHAR(32),,fffffffffffffffffffffffffffffffff,1,1
+product_name,text,,noname,1,1
+price,BIGINT,,0,1,1

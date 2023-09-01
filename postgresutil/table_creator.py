@@ -32,12 +32,11 @@ class TableCreator(Creator):
                                df: pd.DataFrame) -> str:
         querys =[]
         primary_keys = []
-        for _, row in df.iterrows:
+        for _, row in df.iterrows():
             col = row[self.COL_COLUMN]
             primary = row[self.COL_PRIMARY_KYE]
             type_name = row[self.COL_TYPE]
             constraints = row[self.COL_CONST]
-            constraints = "" if constraints == "null" else constraints
             default_value = row[self.COL_DEFAULT]            
             is_not_null = bool(row[self.COL_NOT_NULL])
             if is_not_null:
@@ -46,7 +45,7 @@ class TableCreator(Creator):
                 query = "{} {} {} DEFAULT '{}'".format(col, type_name, constraints, default_value)
             querys.append(query)
             if bool(primary):
-                primary_keys.append(primary)
+                primary_keys.append(col)
         
         if len(primary_keys) == 0: raise Exception("primary_keyがありません。")
         query = "CREATE TABLE IF NOT EXISTS {} ({}, PRIMARY KEY({}))".format(
@@ -55,7 +54,7 @@ class TableCreator(Creator):
     
     def _get_query_from_csv(self, filepath: Path) -> str:
         try:
-            df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str)
+            df = pd.read_csv(filepath, engine="python", encoding="cp932", dtype=str).fillna("")
         except Exception as ex:
             raise Exception(f"{filepath} is Not reading. {ex}")
         table_name = filepath.stem
@@ -65,10 +64,6 @@ class TableCreator(Creator):
         filepaths = [f for f in Path(self.DIRNAME_TABLE).glob("*.csv") if f.is_file()]
         if len(filepaths) == 0 : raise FileNotFoundError(f"{self.DIRNAME_TABLE}内にファイルがありません。") 
         return list(map(self._get_query_from_csv, filepaths))
-        
-    
-
-        
         
     def set_query(self,
                   table_name: str,

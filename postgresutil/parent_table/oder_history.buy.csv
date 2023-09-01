@@ -1,5 +1,5 @@
 column,type,constraints,default,not_null,primary_key
-id,VARCHAR(255),null,Nothing,1,1
-datetime,TIMESTAMP,null,2000-1-1 0:0:0,1,1
+id,VARCHAR(255),,Nothing,1,1
+datetime,TIMESTAMP,,2000-1-1 0:0:0,1,1
 quantity,INTEGER,CHECK (quantity BETWEEN 1 AND 99),0,1,1
-product_id,CHAR(32),null,fffffffffffffffffffffffffffffffff,1,1
+product_id,CHAR(32),,fffffffffffffffffffffffffffffffff,1,1
