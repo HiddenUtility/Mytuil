@@ -80,7 +80,7 @@ async def main_gather():
     test1 = TestAsyncSleep("aysnc1")
     print(
         """
-非同期どうしであればあたかも並列で動く。
+リアルだと可変タスクのほうが使いやすい。
         """
         )
     #awaitable asyncio.gather(*aws, loop=None, return_exceptions=False)
@@ -90,7 +90,7 @@ async def main_gather():
 async def main_loop():
     print(
         """
-実際使うとなると、別の処理を走っていて、その時の状態を送るときなどの使える。
+実際使うとなると、別の処理が走ってもよい。一方の処理の状態を送るときなどの使える。
         """
         )
     test = TestLoop()
