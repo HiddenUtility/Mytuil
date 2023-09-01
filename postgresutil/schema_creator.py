@@ -11,13 +11,10 @@ from typing import Final
 from copy import copy
 from pathlib import Path
 
-
-
-
-from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.creator import Creator
 from postgresutil.user import User
 
-class SchemaCreator(AbstractPostgres):
+class SchemaCreator(Creator):
     DIRNAME_TABLE: Final = "postgresutil/parent_table"
     
     #//Field

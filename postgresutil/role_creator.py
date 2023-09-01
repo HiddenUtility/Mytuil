@@ -6,18 +6,12 @@ Created on Wed Jun  7 21:48:33 2023
 """
 
 from __future__ import annotations
+from postgresutil.creator import Creator
 
-from copy import copy
 
-
-from postgresutil.postgres_interface import AbstractPostgres
-from postgresutil.user import User
-
-class RoleCreator(AbstractPostgres):
+class RoleCreator(Creator):
     #//Field
     querys: list[str] 
-    def __init__(self, user: User):
-        super().__init__(user)
         
     def set_query(self, user_name: str, passwrod: str,conection_limit=16) -> RoleCreator:
         querys = []

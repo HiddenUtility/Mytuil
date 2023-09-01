@@ -1,5 +1,5 @@
 @echo off
 
-python __init__
+python __init__.py
 
 pause

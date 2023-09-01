@@ -6,20 +6,13 @@ Created on Mon Jun 19 22:36:39 2023
 """
 
 from __future__ import annotations
-
 import psycopg2
-import pandas as pd
+from postgresutil.reader import Reader
 
-from PostgresController.PostgresInterface import AbstractPostgres
-from PostgresController.User import User
-
-
-
-class DataExists(AbstractPostgres):
+class DataExists(Reader):
     #//Field
     querys: list[str] 
-    def __init__(self, info: User):
-        super().__init__(info)
+
         
     def _set_query(self, table_name: str, datas: dict[str: str]):
         values = []

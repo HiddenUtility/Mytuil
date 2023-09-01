@@ -8,10 +8,10 @@ Created on Mon Jun 19 22:53:14 2023
 from __future__ import annotations
 
 
-from PostgresController.PostgresInterface import AbstractPostgres
+from postgresutil.editor import Editor
 from PostgresController.User import User
 
-class Updater(AbstractPostgres):
+class Updater(Editor):
     #//Field
     querys: list[str] 
     def __init__(self, user: User):

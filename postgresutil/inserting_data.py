@@ -7,11 +7,11 @@ Created on Mon Jun 19 22:50:37 2023
 
 from __future__ import annotations
 
-from PostgresController.PostgresInterface import AbstractPostgres
+from postgresutil.editor import Editor
 from PostgresController.User import User
 
 
-class InsertingData(AbstractPostgres):
+class InsertingData(Editor):
     #//Field
     querys: list[str] 
     def __init__(self, user: User):

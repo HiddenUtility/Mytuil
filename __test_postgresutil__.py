@@ -8,6 +8,7 @@ Created on Mon Jun  5 22:41:56 2023
 from postgresutil.dummiy_dictionary import DummiyDictionary
 
 from postgresutil.user import User
+from postgresutil.db_builder import DataBaseBuilder
 from postgresutil.schema_creator import SchemaCreator
 from postgresutil.table_creator import TableCreator
 from postgresutil.reader import Reader
@@ -26,15 +27,12 @@ if __name__ == "__main__":
     DROP ROLE Taro;
     
     """
+    user = User(database="test")
+    builder = DataBaseBuilder(user)
     
-    user = User(database="test",password="password")
-    assert user.canConnect(), "接続できません。"
-    
-    #// Create schema
-    schemaCreator = SchemaCreator(user)
-    schemaCreator = schemaCreator.set_schemas_from_csv()
-    print(schemaCreator)
-    schemaCreator.commit()
+    import sys
+    sys.exit()
+
     
     #// Create table
     tableCreator = TableCreator(user)
@@ -43,7 +41,6 @@ if __name__ == "__main__":
     print(tableCreator)
     tableCreator.commit()
     
-
     #// ロール作成
     roleCreator = RoleCreator(user)
     roleCreator = roleCreator.set_query("taro", "password")
@@ -87,9 +84,6 @@ if __name__ == "__main__":
     \dn
     \dt user_info.*
     \du
-    
-    
-    
     
     Dummiyを消す。
     select * from user_info.user_info;

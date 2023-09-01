@@ -13,11 +13,10 @@ from pathlib import Path
 import pandas as pd
 from copy import copy
 
-from postgresutil.postgres_interface import AbstractPostgres
-from postgresutil.user import User
+from postgresutil.creator import Creator
 from postgresutil.schema_creator import SchemaCreator
 
-class TableCreator(AbstractPostgres):
+class TableCreator(Creator):
     DIRNAME_TABLE: Final = SchemaCreator.DIRNAME_TABLE
     COL_COLUMN = "column"
     COL_TYPE = "type"
@@ -27,8 +26,6 @@ class TableCreator(AbstractPostgres):
     #//Field
     querys: list[str] 
     
-    def __init__(self, info: User):
-        super().__init__(info)
 
         
     def _set_querys_from_csv(self, filepath: Path):

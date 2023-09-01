@@ -8,10 +8,10 @@ Created on Mon Jun  5 22:31:48 2023
 from __future__ import annotations
 from datetime import datetime
 
-from postgresutil.postgres_interface import AbstractPostgres
+from postgresutil.editor import Editor
 from postgresutil.user import User
 
-class Remover(AbstractPostgres):
+class Remover(Editor):
     #//Field
     querys: list[str] 
     def __init__(self, user: User):

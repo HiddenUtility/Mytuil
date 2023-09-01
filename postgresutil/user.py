@@ -5,17 +5,7 @@ Created on Mon Jun  5 22:31:12 2023
 @author: iwill
 """
 
-
-from __future__ import annotations
-from typing import Final
-import abc
-import os
-from pathlib import Path
-
 import psycopg2
-import pandas as pd
-
-
 
 class User:
 
@@ -24,7 +14,7 @@ class User:
                  port: int=5432, 
                  database: str="postgres", 
                  username: str="postgres",
-                 password: str="passwrod"):
+                 password: str="password"):
         self.host = host
         self.port = port
         self.database = database
@@ -57,23 +47,26 @@ class User:
         self.database = database
         self.password = password
         
-    def canConnect(self):
+    def can_connect(self):
+
+
         try:
             conn = psycopg2.connect(
                 host=self.host, 
                 port=self.port, 
                 user=self.username, 
                 password=self.password, 
-                database=self.database
+                database=self.database,
+    
             )
-        except:
+
+        except Exception as ex:
+            print(ex)
+            raise ex
             return False
         
-        cur = conn.cursor()
-        can = False
-        if not conn.closed:
-            can = True
-        cur.close()
         conn.close()
-        return can
+        return True
+
+
     

@@ -32,7 +32,7 @@ class Logger(InterfaceLogMaker):
         self.dst = dst if dst is not None else Path()
         self.name = self.LOG_NAME if name=="" else name
         self.logs=[]
-        
+
     def write(self, *args: str, debug=False) -> None:
         data = LogData(*args)
         if debug: print(data)
@@ -67,7 +67,6 @@ class LogData:
     
     
 if __name__ == '__main__':
-    
     logmaker = Logger(name="TEST")
     for i in range(10):
         logmaker.write(str(1))
