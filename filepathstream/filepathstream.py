@@ -6,7 +6,6 @@ Created on Fri Jun  2 08:53:13 2023
 """
 from __future__ import annotations
 import abc
-import os
 from pathlib import Path
 
 import re
@@ -38,6 +37,9 @@ class Interface(metaclass=abc.ABCMeta):
     def drop_filenames(self,names: list[str])->FilepathListMaker:
         raise NotImplementedError()
     @abc.abstractmethod
+    def drop_datetimes(self,datetimes: list[datetime])->FilepathListMaker:
+        raise NotImplementedError()
+    @abc.abstractmethod
     def narrow_to_contain_keys(self,*key: str) -> FilepathListMaker:
         raise NotImplementedError()
         
@@ -45,17 +47,21 @@ class FilepathListMaker(Interface):
     filepaths: list[Filepath]
     empty: bool
     count: int
-    def __init__(self,src:Path, extension=""):
-        if not src.is_dir(): ValueError
-        names = [name for name in os.listdir(src) if extension in name]
-        self.filepaths = [Filepath(src.joinpath(name)) for name in names]
+    def __init__(self,src:Path = None, glob="*"):
+        self.filepaths = []
+        self.count = 0
+        self.empty = True
+        if src is None:return
+        if not src.is_dir(): ValueError(f"{src} is Not Directory Path")
+        self.filepaths = [Filepath(f) for f in src.glob(glob) if f.is_file()]
         self.empty = len(self.filepaths) == 0
-        self.count=0
-    def _return(self,filepaths):
+        
+    def _return(self,filepaths: list[Filepath]):
         new = copy(self)
         new.filepaths = filepaths
         new.empty = len(filepaths) == 0
         return new
+    
     def __str__(self):
         if len(self.filepaths) <= 10:
             return "".join(["%s\n" % f for f in self.filepaths])
@@ -71,10 +77,11 @@ class FilepathListMaker(Interface):
             raise StopIteration
         self.count+=1
         return self.filepaths[self.count - 1].get_filepath()
+    
     def __add__(self, obj: FilepathListMaker):
         if not isinstance(obj, FilepathListMaker):raise TypeError
         filepaths = self.filepaths + obj.filepaths
-        self._return(filepaths)
+        self._return(list(set(filepaths)))
 
     #//Override
     def get_filepaths(self)->list[Path]:
@@ -131,6 +138,11 @@ class FilepathListMaker(Interface):
         if len(names) == 0:return self
         filepaths = [f for f in self.filepaths if f.name not in names]
         return self._return(filepaths)
+    #@Override
+    def drop_datetimes(self,datetimes: list[datetime]) -> FilepathListMaker:
+        if len(datetimes) == 0:return self
+        filepaths = [f for f in self.filepaths if f._datetime not in datetimes]
+        return self._return(filepaths)
     
     #@Override
     def narrow_to_contain_keys(self,*keys: str) -> FilepathListMaker:
@@ -175,12 +187,4 @@ class Filepath:
         return self.filepath
     
 
-        
-if __name__ == "__main__":
-    src = Path(r"C:\hrks\TEST\src")
-    test = FilepathListMaker(src)
-    print(test)
-    print(test.get_file_size())
-    test = test.sort()
-    print("sorted:\n",test)
  
