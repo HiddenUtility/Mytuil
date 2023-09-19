@@ -11,10 +11,11 @@ from typing import Final
 from datetime import datetime
 from pathlib import Path
 import hashlib
+from copy import copy
 
 
 ####//Interface
-class InterfaceLogMaker(metaclass=abc.ABCMeta):
+class Logger(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def write(self, other: object) -> None:
         raise NotImplementedError()
@@ -23,8 +24,8 @@ class InterfaceLogMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
         
 ####//ParentClass
-class Logger(InterfaceLogMaker):
-    LOG_NAME:Final = "ProcessLog"
+class MyLogger(Logger):
+    LOG_NAME:Final = "mylog"
     name: str
     dst: Path
     logs: list[LogData]
@@ -32,11 +33,25 @@ class Logger(InterfaceLogMaker):
         self.dst = dst if dst is not None else Path()
         self.name = self.LOG_NAME if name=="" else name
         self.logs=[]
+        
+    def __add__(self,obj: Logger):
+        if not isinstance(obj, Logger):raise TypeError
+        new = copy(self)
+        new.logs += obj.logs
+        return new
+    
+    def start(self):
+        start = "#################START######################"
+        self.write(start,out=True)
+    def end(self):
+        end = "##################END######################"
+        self.write(end,out=True)
 
-    def write(self, *args: str, debug=False) -> None:
+    def write(self, *args: str, debug=False, out=False) -> None:
         data = LogData(*args)
         if debug: print(data)
         self.logs.append(data)
+        if out: self.out
         
     def out(self):
         logs = sorted(self.logs)
@@ -67,8 +82,21 @@ class LogData:
     
     
 if __name__ == '__main__':
-    logmaker = Logger(name="TEST")
-    for i in range(10):
-        logmaker.write(str(1))
+    loggers = {}
+    for i in range(3):
+        loggers[i] = MyLogger()
+        
+    import time
+    for i in range(3):
+        
+        time.sleep(1)
+        loggers[0].write(0,debug=True)
+        time.sleep(1)
+        loggers[1].write(1,debug=True)
+        time.sleep(1)
+        loggers[2].write(2,debug=True)
     
-    logmaker.out()
+    logger = MyLogger()
+    for i in range(3):
+        logger += loggers[i]
+    logger.out()
