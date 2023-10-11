@@ -29,9 +29,13 @@ class MyLogger(Logger):
     name: str
     dst: Path
     logs: list[LogData]
-    def __init__(self,dst:Path = None, name=""):
+    def __init__(self,dst:Path = None, name="", split_day=True, limit=5):
+        self.limit = limit
         self.dst = dst if dst is not None else Path()
         self.name = self.LOG_NAME if name=="" else name
+        self.__rmlog(self.name)
+        if split_day:
+            self.name = "{} {}".format(datetime.now().strftime("%Y-%m-%d-%a"), self.name)
         self.logs=[]
         
     def __add__(self,obj: Logger):
@@ -40,24 +44,32 @@ class MyLogger(Logger):
         new.logs += obj.logs
         return new
     
+    def __rmlog(self,name):
+        fs = [f for f in self.dst.glob(f"*.{name}.txt")]
+        n = len(fs)
+        if n < self.limit:return
+        for i in range(n - self.limit - 1):
+            fs[i].unlink()
+
     def start(self):
-        start = "#################START######################"
+        start = f"################# START {self.name} ######################"
         self.write(start,out=True)
     def end(self):
-        end = "##################END######################"
+        end = f"################## END {self.name} ######################"
         self.write(end,out=True)
 
     def write(self, *args: str, debug=False, out=False) -> None:
         data = LogData(*args)
         if debug: print(data)
         self.logs.append(data)
-        if out: self.out
+        if out: self.out()
         
     def out(self):
         logs = sorted(self.logs)
         filepath = self.dst.parent.joinpath(f"{self.name}.txt")
-        with open(filepath, "w") as f:
+        with open(filepath, "a") as f:
             [f.write("%s\n" % log) for log in logs]
+        self.logs = []
 
         
 class LogData:
@@ -82,6 +94,10 @@ class LogData:
     
     
 if __name__ == '__main__':
+    
+    logger = MyLogger()
+    logger.start()
+    
     loggers = {}
     for i in range(3):
         loggers[i] = MyLogger()
@@ -96,7 +112,7 @@ if __name__ == '__main__':
         time.sleep(1)
         loggers[2].write(2,debug=True)
     
-    logger = MyLogger()
+
     for i in range(3):
         logger += loggers[i]
-    logger.out()
+    logger.end()
