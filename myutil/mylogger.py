@@ -43,7 +43,7 @@ class MyLogger(Logger):
     def __add__(self,obj: Logger):
         if not isinstance(obj, Logger):raise TypeError
         new = copy(self)
-        new.logs += obj.logs
+        new.__logs += obj.logs
         return new
     
     def __rmlog(self,name):
@@ -53,6 +53,10 @@ class MyLogger(Logger):
         if n < self.__limit:return
         for i in range(n - self.__limit - 1):
             fs[i].unlink()
+    
+    @property  
+    def logs(self):
+        return self.__logs
 
     def start(self):
         self.start_time = time.time()
