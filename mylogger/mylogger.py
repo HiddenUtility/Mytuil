@@ -6,23 +6,17 @@ Created on Fri Jun  2 08:53:13 2023
 """
 
 from __future__ import annotations
-import abc
+
 from typing import Final
 from datetime import datetime
 from pathlib import Path
 import hashlib
 from copy import copy
 import time
+import traceback
 
 
-####//Interface
-class Logger(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def write(self, other: object) -> None:
-        raise NotImplementedError()
-    @abc.abstractmethod
-    def out(self, other: object) -> None:
-        raise NotImplementedError()
+from logger import Logger
         
 ####//ParentClass
 class MyLogger(Logger):
@@ -40,8 +34,8 @@ class MyLogger(Logger):
         self.__logs=[]
         self.start_time = time.time()
         
-    def __add__(self,obj: Logger):
-        if not isinstance(obj, Logger):raise TypeError
+    def __add__(self,obj: MyLogger):
+        if not isinstance(obj, MyLogger):raise TypeError
         new = copy(self)
         new.__logs += obj.logs
         return new
@@ -72,7 +66,13 @@ class MyLogger(Logger):
         if debug: print(data)
         self.__logs.append(data)
         if out: self.out()
-        
+    
+    def error(self, e: Exception):
+        try:
+            raise e
+        except:
+            self.write(traceback.format_exc(), debug=True, out=True)
+
     def out(self):
         logs = sorted(self.__logs)
         filepath = self.__dst.parent.joinpath(f"{self.__name}.txt")
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     for i in range(3):
         loggers[i] = MyLogger()
         
-    import time
+
     for i in range(3):
         
         time.sleep(1)

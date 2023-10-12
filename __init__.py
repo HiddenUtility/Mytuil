@@ -10,6 +10,7 @@ from glob import glob
 from shutil import rmtree
 
 
+
 def main():
     cd = str(Path.cwd() / "**/__pycache__")
     dirpaths = [Path(d) for d in glob(cd, recursive=True)]
