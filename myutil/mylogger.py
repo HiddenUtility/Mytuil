@@ -27,17 +27,17 @@ class Logger(metaclass=abc.ABCMeta):
 ####//ParentClass
 class MyLogger(Logger):
     LOG_NAME:Final = "mylog"
-    name: str
-    dst: Path
-    logs: list[LogData]
+    __name: str
+    __dst: Path
+    __logs: list[LogData]
     def __init__(self,dst:Path = None, name="", split_day=True, limit=5):
-        self.limit = limit
-        self.dst = dst if dst is not None else Path()
-        self.name = self.LOG_NAME if name=="" else name
-        self.__rmlog(self.name)
+        self.__limit = limit
+        self.__dst = dst if dst is not None else Path()
+        self.__name = self.LOG_NAME if name=="" else name
+        self.__rmlog(self.__name)
         if split_day:
-            self.name = "{} {}".format(datetime.now().strftime("%Y-%m-%d-%a"), self.name)
-        self.logs=[]
+            self.__name = "{} {}".format(datetime.now().strftime("%Y-%m-%d-%a"), self.__name)
+        self.__logs=[]
         self.start_time = time.time()
         
     def __add__(self,obj: Logger):
@@ -47,33 +47,34 @@ class MyLogger(Logger):
         return new
     
     def __rmlog(self,name):
-        fs = [f for f in self.dst.glob(f"*.{name}.txt")]
+        if self.__limit < 1: return
+        fs = [f for f in self.__dst.glob(f"*.{name}.txt")]
         n = len(fs)
-        if n < self.limit:return
-        for i in range(n - self.limit - 1):
+        if n < self.__limit:return
+        for i in range(n - self.__limit - 1):
             fs[i].unlink()
 
     def start(self):
         self.start_time = time.time()
-        start = f"################# START {self.name} ######################"
+        start = f"################# START {self.__name} ######################"
         self.write(start,out=True)
     def end(self):
-        end   = f"################## END {self.name} #######################"
+        end   = f"################## END {self.__name} #######################"
         self.write(end)
         self.write("処理時間は{:5f}sでした。".format(time.time() - self.start_time),out=True)
 
     def write(self, *args: str, debug=False, out=False) -> None:
         data = LogData(*args)
         if debug: print(data)
-        self.logs.append(data)
+        self.__logs.append(data)
         if out: self.out()
         
     def out(self):
-        logs = sorted(self.logs)
-        filepath = self.dst.parent.joinpath(f"{self.name}.txt")
+        logs = sorted(self.__logs)
+        filepath = self.__dst.parent.joinpath(f"{self.__name}.txt")
         with open(filepath, "a") as f:
             [f.write("%s\n" % log) for log in logs]
-        self.logs = []
+        self.__logs = []
 
         
 class LogData:
