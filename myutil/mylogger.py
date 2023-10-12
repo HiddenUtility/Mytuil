@@ -12,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 import hashlib
 from copy import copy
+import time
 
 
 ####//Interface
@@ -37,6 +38,7 @@ class MyLogger(Logger):
         if split_day:
             self.name = "{} {}".format(datetime.now().strftime("%Y-%m-%d-%a"), self.name)
         self.logs=[]
+        self.start_time = time.time()
         
     def __add__(self,obj: Logger):
         if not isinstance(obj, Logger):raise TypeError
@@ -52,11 +54,13 @@ class MyLogger(Logger):
             fs[i].unlink()
 
     def start(self):
+        self.start_time = time.time()
         start = f"################# START {self.name} ######################"
         self.write(start,out=True)
     def end(self):
-        end = f"################## END {self.name} ######################"
-        self.write(end,out=True)
+        end   = f"################## END {self.name} #######################"
+        self.write(end)
+        self.write("処理時間は{:5f}sでした。".format(time.time() - self.start_time),out=True)
 
     def write(self, *args: str, debug=False, out=False) -> None:
         data = LogData(*args)
