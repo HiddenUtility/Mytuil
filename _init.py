@@ -18,7 +18,7 @@ def main():
         if d.is_dir(): rmtree(d)
         print("Delete !!",d)
     
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
     
     

@@ -14,7 +14,7 @@ from copy import copy
 import time
 import pickle
 
-from logger import Logger
+from mylogger.logger import Logger
 
 class ProcessedLogger(Logger):
     LOG_NAME:Final = "mylog"
