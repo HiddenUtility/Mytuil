@@ -8,10 +8,10 @@ from pathlib import Path
 from datetime import datetime
 import shutil
 from dummiy_creator import DummiyFileCreator
-from filepathstream import FilepathListMaker
+from filepathstream import FilepathListStream
 
 
-class TestFilepathListMaker:
+class TestFilepathListStream:
     def __init__(self):
         self.dst = Path(r"Dummiy")
         if self.dst.is_dir(): shutil.rmtree(self.dst)
@@ -19,7 +19,7 @@ class TestFilepathListMaker:
         DummiyFileCreator().create(self.dst,100,datetime(2023,5,1))
     
     def init(self):
-        self.maker = FilepathListMaker(self.dst)
+        self.maker = FilepathListStream(self.dst)
         print(self.maker)
     
     def itertor(self):
@@ -30,7 +30,7 @@ class TestFilepathListMaker:
 if __name__ == "__main__":
 
 
-    test = TestFilepathListMaker()
+    test = TestFilepathListStream()
     test.init()
     test.itertor()
     
