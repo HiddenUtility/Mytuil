@@ -5,23 +5,24 @@ Created on Tue Oct 17 23:39:18 2023
 @author: nanik
 """
 
-import json
+from abc import ABCMeta, abstractclassmethod
 
-class Request:
+class Request(metaclass=ABCMeta):
     
-    ENCODING = "utf-8"
-    MUST_KYES = []
+    @abstractclassmethod
+    def load_dict(self, data: dict) -> None:
+        raise NotImplementedError()
     
-    __data : dict
+    @abstractclassmethod
+    def load_bytes(self, data: dict) -> None:
+        raise NotImplementedError()
     
-    def __init__(self, data: bytes):
-        self.__data = json.loads(data.decode(self.ENCODING))
-        self.__check_must_keys()
     
-    def __check_must_keys(self):
-        for key in self.MUST_KYES:
-            if self.__data.get(key) is None: raise KeyError(f"{key} Not has in Data")
+    @abstractclassmethod
+    def to_dict(self) -> dict:
+        raise NotImplementedError()
     
-    @property
-    def data(self) -> dict:
-        return self.__data
+    @abstractclassmethod
+    def to_bytes(self) -> bytes:
+        raise NotImplementedError()
+    
