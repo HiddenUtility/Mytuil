@@ -13,9 +13,10 @@ from socketutil.request_data import RequestData
 from socketutil.response_data import ResponseData
 from socketutil.errors import NotHasMustKeyError
 
+from socketutil.tcp_client import Client
+from socketutil.tcp_server import Server
 
-
-if __name__ == '__main__':
+def test_requ_resp():
     
     data = dict(head="", body="")
     request = RequestData().load_dict(data)
@@ -27,7 +28,13 @@ if __name__ == '__main__':
         pass
     
     data = dict(status="200", body="")
-    response = ResponseData().load_dict(data)
+    response = ResponseData().load_dict(data)           
+
+
+
+if __name__ == '__main__':
+    
+
     
     
     from _init import main

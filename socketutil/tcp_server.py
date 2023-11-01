@@ -6,54 +6,51 @@ Created on Fri Aug 11 17:02:44 2023
 """
 
 import socket
-import json
+from traceback import print_exc, format_exc
 import time
 from datetime import datetime
+
+from socketutil.request_data import RequestData
+from socketutil.response_data import ResponseData
 
 class Server:
     HOST = ""
     PORT = 58888
-    ENCODING = "utf-8"
     BUFFER = 1024
     
     def __init__(self):
         pass
     
-    def process(self,dict_: dict) -> dict:
+    def process(self,request: RequestData) -> ResponseData:
         
-        mess = dict_.get("message")
-        if mess is None:return dict(flag="Failure!!")
-        print(dict_["timestamp"],dict_["message"])
         # /* 何かの処理
         time.sleep(3)
         # */
-        return_data = dict(flag="Success!!")
-        return_data["timestamp"] = str(datetime.now())
-        return return_data
+        
+        data = dict(status="200", body="")
+        return ResponseData().load_dict(data)
+
         
     def recieved(self,server_socket: socket):
         print("waiting...")
         conn, _ = server_socket.accept()
         try:
-            data = conn.recv(self.BUFFER)
+            data:bytes = conn.recv(self.BUFFER)
             print(datetime.now(),"Recived Request !!")
         except Exception as error:
             conn.close()
             raise Exception(error)
         
+        request = RequestData().load_bytes(data)
+        
         try:
-            json_data: bytes = data.decode(self.ENCODING)
-            dict_ = json.loads(json_data)
-            # /* 何かの処理
-            return_data:dict = self.process(dict_)
-            # */
-            json_return_data: bytes = json.dumps(return_data).encode(self.ENCODING)
-        except Exception as error:
-            conn.close()
-            raise Exception(error)
-             
+            response:ResponseData = self.process(request)
+        except Exception:
+            data = dict(status="500", body=format_exc())
+            response = ResponseData().load_dict(data)
+
         try:
-            conn.sendall(json_return_data)
+            conn.sendall(response.to_bytes())
             print(datetime.now(),"Return Response!!")
         except Exception as error:
             raise Exception(error)
@@ -68,10 +65,7 @@ class Server:
         while True:
             try:
                 self.recieved(server_socket)
-            except Exception as error:
+            except Exception:
                 server_socket.close()
-                print(error)
-        
-
-if __name__ == "__main__":
-    Server().run()
+                print_exc()
+                

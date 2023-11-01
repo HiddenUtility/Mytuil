@@ -5,47 +5,35 @@ Created on Fri Aug 11 17:02:59 2023
 @author: nanik
 """
 import socket
-import json
-from datetime import datetime
+from traceback import print_exc, format_exc
+
+from socketutil.request_data import RequestData
+from socketutil.response_data import ResponseData
 
 class Client:
     HOST = "127.0.0.1"
     PORT = 58888
-    ENCODING = "utf-8"
     BUFFER = 1024
     
     def __init__(self):
-        self.responce = None
-    
-    def request(self, data: dict):
+        pass
 
-        data["timestamp"] = str(datetime.now())
-        json_data: bytes = json.dumps(data).encode(self.ENCODING)
-        
+    def send(self, data: dict) -> dict:
+        request = RequestData().load_dict(data)
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             client_socket.connect((self.HOST, self.PORT))
-            client_socket.sendall(json_data)
+            client_socket.sendall(request.to_bytes())
             print("waiting resopnce")
             data:bytes = client_socket.recv(self.BUFFER)
-            json_data:bytes = data.decode(self.ENCODING)
-            self.responce = json.loads(json_data)
-        except Exception as error:
-            print(error)
+            response = ResponseData().load_bytes(data)
+            return response.to_dict()
+        except Exception:
+            print_exc()
+            data = dict(status="400",body=format_exc())
+            return ResponseData().load_dict(data).to_dict()
         finally:
             client_socket.close()
     
-    def get_response(self):
-        if not hasattr(self, "responce"):
-            raise Exception("NOT recieved responce")
-        return self.responce
-        
 
-
-if __name__ == "__main__":
-    
-    data = dict(message="you can fly !!")
-    client = Client()
-    client.request(data)
-    print(client.get_response())
     
