@@ -53,5 +53,5 @@ if __name__ == '__main__':
     resp = client.send(request)
     print(resp)
     
-    # from _init import main
+
     main()

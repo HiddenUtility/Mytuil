@@ -5,6 +5,6 @@ Created on Tue Oct 17 22:52:33 2023
 @author: nanik
 """
 
-from df_editor import DataFrameEditor
-from drive_researcher import DriveResearcher
-from splited_list import SplitedList
+from myutil.df_editor import DataFrameEditor
+from myutil.drive_researcher import DriveResearcher
+from myutil.splited_list import SplitedList
