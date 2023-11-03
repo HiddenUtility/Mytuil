@@ -18,8 +18,8 @@ class Client:
     def __init__(self):
         pass
 
-    def send(self, data: dict) -> dict:
-        request = RequestData().load_dict(data)
+    def send(self, request: RequestData) -> ResponseData:
+        if not isinstance(request, RequestData): raise TypeError("request is RequestData")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             client_socket.connect((self.HOST, self.PORT))
@@ -27,11 +27,11 @@ class Client:
             print("waiting resopnce")
             data:bytes = client_socket.recv(self.BUFFER)
             response = ResponseData().load_bytes(data)
-            return response.to_dict()
+            return response
         except Exception:
             print_exc()
             data = dict(status="400",body=format_exc())
-            return ResponseData().load_dict(data).to_dict()
+            return ResponseData().load_dict(data)
         finally:
             client_socket.close()
     

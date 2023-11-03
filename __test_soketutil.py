@@ -9,6 +9,10 @@ Created on Wed Nov  1 21:47:16 2023
 # from socketutil.request_must_key import RequestMustKeys
 # from socketutil.response_must_key import ResponseMustKeys
 
+from threading import Thread
+from time import sleep
+from _init import main
+
 from socketutil.request_data import RequestData
 from socketutil.response_data import ResponseData
 from socketutil.errors import NotHasMustKeyError
@@ -31,11 +35,23 @@ def test_requ_resp():
     response = ResponseData().load_dict(data)           
 
 
+def run_server():
+    Server().run()
+    sleep(1)
+
 
 if __name__ == '__main__':
     
-
+    test_requ_resp()
     
+    t = Thread(target=run_server)
+    t.start()
     
-    from _init import main
+    data = dict(head="", body="")
+    request = RequestData().load_dict(data)
+    client = Client()
+    resp = client.send(request)
+    print(resp)
+    
+    # from _init import main
     main()

@@ -19,11 +19,15 @@ class Server:
     BUFFER = 1024
     
     def __init__(self):
+        #// 本番はログなどをインスタンスするとよし
+        
         pass
     
     def process(self,request: RequestData) -> ResponseData:
         
         # /* 何かの処理
+        print(f"Request: {request}")
+        print("何かしらを処理")
         time.sleep(3)
         # */
         
