@@ -45,7 +45,7 @@ class Application(tkinter.Tk):
         self.__button_start = Button(
             self.__control_frame,
             text="Start",
-            command=self.start(),
+            command=self.start,
             )
         self.__button_start.pack()
         
@@ -53,14 +53,14 @@ class Application(tkinter.Tk):
         self.__button_stop = Button(
             self.__control_frame,
             text="Stop",
-            command=self.stop(),
+            command=self.stop,
             )
         self.__button_stop.pack()
         
         self.__button_reset = Button(
             self.__control_frame,
             text="Reset",
-            command=self.reset(),
+            command=self.reset,
             )
         self.__button_reset.pack()
         

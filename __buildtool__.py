@@ -13,7 +13,6 @@ class Process(metaclass=ABCMeta):
     def run(self):
         pass
 
-
 class PycashRemover(Process):
     def __init__(self):
         pass

@@ -161,10 +161,16 @@ class Filepath:
         self._datetime = self._get_datetime(f.stem)
         self.suffix = f.suffix
     def _get_datetime(self, name: str) -> datetime:
-        obj = re.search("\d{14}",name)
-        if obj is None: 
+        findings = re.findall("\d{14}",name)
+        if len(findings) == 0:
             return datetime.timestamp(self.filepath.stat().st_ctime)
-        return datetime.strptime(obj.group(), '%Y%m%d%H%M%S')  
+        for finding in findings:
+            try:
+                return datetime.strptime(finding.group(), '%Y%m%d%H%M%S') 
+            except:
+                pass
+        raise HasNotDatetimeError(f"{name}はdatetime情報を持ちません。")
+    
     def __eq__(self, o: datetime):
         return self._datetime == o
     def __ne__(self, o: datetime):
@@ -189,4 +195,5 @@ class Filepath:
         return self.filepath
     
 
- 
+class HasNotDatetimeError(Exception):
+    pass
