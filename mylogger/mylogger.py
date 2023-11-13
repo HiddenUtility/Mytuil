@@ -7,7 +7,6 @@ Created on Fri Jun  2 08:53:13 2023
 
 from __future__ import annotations
 
-from typing import Final
 from datetime import datetime
 from pathlib import Path
 import hashlib
@@ -20,14 +19,14 @@ from mylogger.logger import Logger
         
 ####//ParentClass
 class MyLogger(Logger):
-    LOG_NAME:Final = "mylog"
+
     __name: str
     __dst: Path
     __logs: list[LogData]
     def __init__(self,dst:Path = None, name="", split_day=True, limit=5):
         self.__limit = limit
         self.__dst = dst if dst is not None else Path()
-        self.__name = self.LOG_NAME if name=="" else name
+        self.__name = f"{self.__class__.__name__}" if name=="" else name
         self.__rmlog(self.__name)
         if split_day:
             self.__name = "{} {}".format(datetime.now().strftime("%Y-%m-%d-%a"), self.__name)
@@ -42,7 +41,7 @@ class MyLogger(Logger):
     
     def __rmlog(self,name):
         if self.__limit < 1: return
-        fs = [f for f in self.__dst.glob(f"*.{name}.txt")]
+        fs = [f for f in self.__dst.glob(f"*.{name}.log")]
         n = len(fs)
         if n < self.__limit:return
         for i in range(n - self.__limit - 1):
@@ -75,10 +74,13 @@ class MyLogger(Logger):
 
     def out(self):
         logs = sorted(self.__logs)
-        filepath = self.__dst.parent.joinpath(f"{self.__name}.txt")
-        with open(filepath, "a") as f:
-            [f.write("%s\n" % log) for log in logs]
-        self.__logs = []
+        filepath = self.__dst.parent.joinpath(f"{self.__name}.log")
+        try:
+            with open(filepath, "a") as f:
+                [f.write("%s\n" % log) for log in logs]
+            self.__logs = []
+        except:
+            pass
 
         
 class LogData:

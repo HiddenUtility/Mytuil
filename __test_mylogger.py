@@ -32,6 +32,3 @@ if __name__ == '__main__':
         logger += loggers[i]
     logger.end()
     
-    from _init import main
-    main()
-    
