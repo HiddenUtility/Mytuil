@@ -2,7 +2,7 @@ import hashlib
 from pathlib import Path
 from zipfile import ZipFile
 
-class FileHashChecker:
+class FileHashCheacker:
     def __init__(self, src:Path):
         if not src.exists():
             raise FileNotFoundError(f"{src}は存在しません。")

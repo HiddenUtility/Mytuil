@@ -1,3 +1,3 @@
-from hashutil.hash_checker import HashChecker
-from hashutil.zipfile_hash_checker import ZipFileHashChecker
-from hashutil.file_hash_checker import FileHashChecker
+from hashutil.hash_cheacker import HashCheacker
+from hashutil.zipfile_hash_cheacker import ZipFileHashCheacker
+from hashutil.file_hash_cheacker import FileHashCheacker
