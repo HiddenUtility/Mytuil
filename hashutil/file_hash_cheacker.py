@@ -14,9 +14,8 @@ class FileHashCheacker(HashCheacker):
     def get_hash(self, f: Path):
         if not f.exists():
             raise FileNotFoundError(f"{f}は存在しません。")
-        with open(self.__filepath, "rb") as f:
-            data = f.read()
-            return hashlib.sha256(data).hexdigest()
+        with open(self.__src, "rb") as data:
+            return hashlib.sha256(data.read()).hexdigest()
     
     # @override
     def is_same(self, target:Path) -> bool:
