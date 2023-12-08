@@ -2,7 +2,7 @@ import hashlib
 from pathlib import Path
 from zipfile import ZipFile
 
-from hashutil.hash_checker import HashCheacker
+from hashutil.hash_cheacker import HashCheacker
 
 class FileHashCheacker(HashCheacker):
     def __init__(self, src:Path):
@@ -21,11 +21,10 @@ class FileHashCheacker(HashCheacker):
     # @override
     def is_same(self, target:Path) -> bool:
         return self.get_hash(self.__src) == self.get_hash(target)
-    
-
+    # @override
     def to_path(self) -> Path:
         return self.__src
-    
-    def to_hash(self) -> Path:
+    # @override
+    def to_hash(self) -> str:
         return self.__hash
 
