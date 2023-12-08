@@ -4,14 +4,8 @@ Created on Wed Nov  1 21:47:16 2023
 
 @author: nanik
 """
-# from socketutil.request import Request
-# from socketutil.response import Response
-# from socketutil.request_must_key import RequestMustKeys
-# from socketutil.response_must_key import ResponseMustKeys
-
 from threading import Thread
 from time import sleep
-from _init import main
 
 from socketutil.request_data import RequestData
 from socketutil.response_data import ResponseData
@@ -41,9 +35,7 @@ def run_server():
 
 
 if __name__ == '__main__':
-    
     test_requ_resp()
-    
     t = Thread(target=run_server)
     t.start()
     
@@ -52,6 +44,3 @@ if __name__ == '__main__':
     client = Client()
     resp = client.send(request)
     print(resp)
-    
-
-    main()
