@@ -1,7 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Nov  3 16:57:17 2023
+from traceback import print_exc
+from time import sleep
 
-@author: nanik
-"""
+def main():
+    pass
+
+if __name__ == "__main__":
+    try:
+        main()
+    except:
+        print_exc()
+        sleep(60*60*24)
+
 
