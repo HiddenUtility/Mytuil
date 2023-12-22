@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  2 08:53:13 2023
-
-@author: nanik
-"""
-
 from __future__ import annotations
 import abc
 from datetime import datetime, timedelta
@@ -31,6 +25,7 @@ class EasyTimer(InterfaceTimer):
         if current_time >= next_:
             next_ += timedelta(days=1)
         return next_
+    
     @staticmethod
     def _get_next_week(weekday:int, hour:int = 4, minute:int = 0, second:int = 0):
         current_time = datetime.now()
@@ -51,6 +46,7 @@ class EasyTimer(InterfaceTimer):
             minutes = int((remaining_time.total_seconds() % 3600) // 60)
             seconds = int(remaining_time.total_seconds() % 60)
             return "残り時間: {}時間 {}分 {}秒".format(hours, minutes, seconds)
+        
     @classmethod  
     def wate_datetime(cls, target_time: datetime):
         if not isinstance(target_time, datetime): TypeError
@@ -69,6 +65,7 @@ class EasyTimer(InterfaceTimer):
         else:
             target_time = cls._get_next_week(weekday,hour=hour,minute=minute,second=second)
             cls.wate_datetime(target_time)
+
     @staticmethod
     def stop(secondes: int):
         if not isinstance(secondes, int): TypeError
@@ -87,6 +84,3 @@ if __name__ == "__main__":
     #timer.wate_hour(hour=4,minute=30) #次の４時半まで待機
     timer.wate_hour(weekday=1,hour=4,minute=30) #次の火曜日の４時半まで待機
     
-
-
- 

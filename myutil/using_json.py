@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  9 14:06:41 2023
-
-@author: nanik
-"""
-
 from pathlib import Path
 import json
 
@@ -18,3 +12,4 @@ class UsingJson:
         with open(filepath, "r") as f:
             dictionary = json.load(f)
         return dictionary
+    

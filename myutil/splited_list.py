@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 17 22:55:20 2023
-
-@author: nanik
-"""
 import random
 
 class SplitedList:
@@ -25,15 +20,9 @@ class SplitedList:
         return list2
             
         
-
-
-        
 if __name__ == "__main__":
-    
     list_ = list(range(100))
-    
     sl = SplitedList(list_)
-    
     list2 = sl.random_split(4)
     
         

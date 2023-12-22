@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  2 16:28:28 2023
-
-@author: nanik
-"""
-
 import pickle
 from pathlib import Path
 class UsingPickle:

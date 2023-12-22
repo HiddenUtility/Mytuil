@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jul 17 23:37:08 2023
-
-@author: nanik
-"""
 import os
 import shutil
 from tqdm import tqdm
 from pathlib import Path
 from datetime import datetime
 import hashlib
-from UsingPickle import UsingPickle
+from myutil.using_pickle import UsingPickle
+
 
 class DuplicationRemover:
     DIRNAME_ALL = "ALL"
@@ -61,10 +57,5 @@ class DuplicationRemover:
 
         
         UsingPickle.dump(self.logpath, self.past)
-        
-        
-
-        
-        
         
         

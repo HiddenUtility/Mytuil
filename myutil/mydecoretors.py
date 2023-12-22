@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  2 16:42:12 2023
-
-@author: nanik
-"""
 import time
 from datetime import datetime
 
@@ -21,8 +16,6 @@ def timelogr(func):
     return wrapper
 
 
-
-
 if __name__ == "__main__":
     
     @timelogr
@@ -31,5 +24,3 @@ if __name__ == "__main__":
     wite()
         
     
-
- 

@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  2 08:53:13 2023
-
-@author: nanik
-"""
-
-
-
 from __future__ import annotations
 import abc
 from pathlib import Path
@@ -32,17 +24,17 @@ class FileMover(Interface):
         self.dstDripath = dstDripath
         datetime_day = self._get_datetime(self.srcFilepath.stem)
         self.day_label = self._get_date_label(datetime_day)
+
     @staticmethod
     def _get_datetime(name: str)->datetime:
         date_string = re.search("\d{14}",name).group()
         if date_string is None: raise FileExistsError("ファイル名に情報が含まれません。")
         _datetime = datetime.strptime(date_string, '%Y%m%d%H%M%S')
         return _datetime
+    
     @staticmethod
     def _get_date_label(datetime_: datetime)-> str:
         """
-        
-
         Parameters
         ----------
         datetime_ : datetime
@@ -74,11 +66,3 @@ class FileMover(Interface):
             print(f"移動失敗: {self.srcFilepath}")
         
         
-if __name__ == "__main__":
-    ...
-
-    
-    
-    
-    
- 
