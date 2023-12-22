@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  2 16:28:31 2023
-
-@author: nanik
-"""
-
 from zipfile import ZipFile, ZIP_DEFLATED
 from pathlib import Path
-
 from hashutil import ZipFileHashCheacker
 
 

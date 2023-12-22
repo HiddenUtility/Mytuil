@@ -10,33 +10,42 @@ class XXXFilepath:
         self.name = f.name
         self.__datetime = self._get_datetime(f.stem)
         self.suffix = f.suffix
+
     def _get_datetime(self, name: str) -> datetime:
         findings = re.findall("\d{14}",name)
         if len(findings) == 0:
             return datetime.timestamp(self.filepath.stat().st_ctime)
-        for finding in findings:
+        for str14 in findings:
             try:
-                return datetime.strptime(finding.group(), '%Y%m%d%H%M%S') 
+                return datetime.strptime(str14, '%Y%m%d%H%M%S') 
             except:
                 pass
         raise HasNotDatetimeError(f"{name}はdatetime情報を持ちません。")
     
     def __eq__(self, obj : XXXFilepath):
         return self.__datetime == obj.to_datetime()
+    
     def __ne__(self, obj : XXXFilepath):
         return self.__datetime != obj.to_datetime()
+    
     def __lt__(self, obj : XXXFilepath):
         return self.__datetime < obj.to_datetime()
+    
     def __le__(self, obj : XXXFilepath):
         return self.__datetime <= obj.to_datetime()
+    
     def __gt__(self, obj : XXXFilepath):
         return self.__datetime > obj.to_datetime()
+    
     def __ge__(self, obj : XXXFilepath):
         return self.__datetime >= obj.to_datetime()
+    
     def __str__(self):
         return f"{self.__datetime}: {self.filepath.parent.name}/{self.filepath.name}"
+    
     def __repr__(self):
         return self.__str__()
+    
     def __hash__(self):
         return hash(self.__datetime)
     
@@ -47,5 +56,4 @@ class XXXFilepath:
         return self.filepath
     
 
-class HasNotDatetimeError(Exception):
-    pass
+class HasNotDatetimeError(Exception):...
