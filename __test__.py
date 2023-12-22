@@ -13,5 +13,5 @@ from ziputil import *
 from filepathstream._test_filepathstream import TestFilepathListStream
 
 if __name__ == "__main__":
-    test = TestFilepathListStream()
-    test.run()
+    TestFilepathListStream().run()
+
