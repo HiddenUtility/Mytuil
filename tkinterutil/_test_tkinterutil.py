@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Aug  2 16:55:30 2023
-
-@author: nanik
-"""
-
 import tkinter
 from tkinter import Frame
 from tkinter import Label
 from tkinter import Entry
 from tkinter import Button
 
-from calender_dialog import CalendarDialog
+from tkinterutil.calender_dialog import CalendarDialog
 
-class Test:
+class TestTkinterutil:
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.geometry("200x200")
@@ -36,9 +30,3 @@ class Test:
     def run(self):
         self.root.mainloop()
 
-
-
-
-if __name__ == "__main__":
-    test = Test()
-    test.run()

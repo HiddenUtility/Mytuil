@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 26 09:44:54 2023
-
-@author: nanik
-"""
-
 import tkinter
 from tkinter.simpledialog import Dialog
 from tkcalendar import Calendar
@@ -28,6 +22,4 @@ class CalendarDialog(Dialog):
         
     def get_date(self) -> str:
         return self.date
-
-
 
