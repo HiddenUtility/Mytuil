@@ -28,7 +28,6 @@ def test_requ_resp():
     data = dict(status="200", body="")
     response = ResponseData().load_dict(data)           
 
-
 def run_server():
     Server().run()
     sleep(1)
