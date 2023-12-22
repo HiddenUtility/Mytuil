@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Aug 12 23:10:01 2023
-
-@author: nanik
-"""
-import abc
+from abc import ABC, abstractmethod
 import asyncio
 import time
 
-class Test:
+class Test(ABC):
     def __init__(self, message: str=""):
         self.message = message
         
-        
-    @abc.abstractmethod
+    @abstractmethod
     async def printf(self,str_):
         pass
 

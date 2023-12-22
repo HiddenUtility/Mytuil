@@ -19,7 +19,6 @@ from mylogger.logger import Logger
         
 ####//ParentClass
 class MyLogger(Logger):
-
     __name: str
     __dst: Path
     __logs: list[LogData]
@@ -55,6 +54,7 @@ class MyLogger(Logger):
         self.start_time = time.time()
         start = f"################# START {self.__name} ######################"
         self.write(start,out=True)
+
     def end(self):
         end   = f"################## END {self.__name} #######################"
         self.write(end)
@@ -102,5 +102,4 @@ class LogData:
         return self._timestamp() + ": " + "_".join(self.datas)
     def get_hash(self):
         return hashlib.md5(self._out_log().encode()).hexdigest()
-    
     

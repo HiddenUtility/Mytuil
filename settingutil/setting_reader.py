@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Sep 20 05:44:10 2023
-
-@author: iwill
-"""
 from abc import ABCMeta, abstractclassmethod
 from pathlib import Path
+
 
 class SettingReader(metaclass=ABCMeta):
 
@@ -16,7 +12,8 @@ class SettingReader(metaclass=ABCMeta):
     
     def to_list(self):
         pass
-    
+
+
 class TextSettingReader(SettingReader):
     def __init__(self):
         self.src = Path("settings/settings.txt")
