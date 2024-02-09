@@ -17,20 +17,29 @@ import traceback
 
 from mylogger.logger import Logger
         
-####//ParentClass
 class MyLogger(Logger):
     __name: str
     __dst: Path
-    __logs: list[LogData]
-    def __init__(self,dst:Path = None, name="", split_day=True, limit=5):
+    __logs: list[MyLogData]
+    __start_time : dict[str, float]
+    def __init__(self,
+                 dst:Path = Path("./log"), 
+                 name="", 
+                 split_day=True, 
+                 limit=5
+                 ):
+        """
+        
+        """
         self.__limit = limit
-        self.__dst = dst if dst is not None else Path()
+        self.__dst = dst
+        self.__dst.mkdir(exist_ok=True)
         self.__name = f"{self.__class__.__name__}" if name=="" else name
         self.__rmlog(self.__name)
         if split_day:
-            self.__name = "{} {}".format(datetime.now().strftime("%Y-%m-%d-%a"), self.__name)
+            self.__name = "{} {}".format(self.__name, datetime.now().strftime("%Y-%m-%d-%a"),)
         self.__logs=[]
-        self.start_time = time.time()
+        self.__start_time = {}
         
     def __add__(self,obj: MyLogger):
         if not isinstance(obj, MyLogger):raise TypeError
@@ -50,18 +59,18 @@ class MyLogger(Logger):
     def logs(self):
         return self.__logs
 
-    def start(self):
-        self.start_time = time.time()
-        start = f"################# START {self.__name} ######################"
+    def start(self, id_: str = "main") -> None:
+        self.__start_time[id_] = time.time()
+        start = f"################# {id_} START######################"
         self.write(start,out=True)
 
-    def end(self):
-        end   = f"################## END {self.__name} #######################"
+    def end(self, id_: str = "main") -> None:
+        end   = f"################## {id_} END #######################"
         self.write(end)
-        self.write("処理時間は{:5f}sでした。".format(time.time() - self.start_time),out=True)
+        self.write("{} 処理時間は{:5f}sでした。".format(id_,time.time() - self.__start_time[id_]),out=True)
 
-    def write(self, *args: str, debug=False, out=False) -> None:
-        data = LogData(*args)
+    def write(self, *args: str, debug=True, out=True) -> None:
+        data = MyLogData(*args)
         if debug: print(data)
         self.__logs.append(data)
         if out: self.out()
@@ -70,11 +79,11 @@ class MyLogger(Logger):
         try:
             raise e
         except:
-            self.write(traceback.format_exc(), debug=True, out=True)
+            self.write(traceback.format_exc())
 
     def out(self):
         logs = sorted(self.__logs)
-        filepath = self.__dst.parent.joinpath(f"{self.__name}.log")
+        filepath = self.__dst.joinpath(f"{self.__name}.log")
         try:
             with open(filepath, "a") as f:
                 [f.write("%s\n" % log) for log in logs]
@@ -83,7 +92,7 @@ class MyLogger(Logger):
             pass
 
         
-class LogData:
+class MyLogData:
     def __init__(self, *args: str):
         self.datas = [str(v) for v in args]
         self.now = datetime.now()
@@ -94,7 +103,7 @@ class LogData:
     def __str__(self):
         return self._out_log()
     def __lt__(self, other):
-        if not isinstance(other, LogData):raise TypeError
+        if not isinstance(other, MyLogData):raise TypeError
         return self.now < other.now
     def _timestamp(self):
         return self.now.strftime("%Y/%m/%d %H:%M:%S.%f")

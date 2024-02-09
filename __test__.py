@@ -1,4 +1,3 @@
-from asyncutil import *
 from filepathstream import *
 from hashutil import *
 from matplotutil import *
@@ -10,11 +9,15 @@ from streamutil import *
 from subprocessutil import *
 from ziputil import *
 
-from filepathstream._test_filepathstream import TestFilepathListStream
-from hashutil._test_hashutil import TestHashUtil
-from mylogger._test_mylogger import TestMyLogger
+from filepathstream.test._test_filepathstream import TestFilepathListStream
+from hashutil.test._test_hashutil import TestHashUtil
+from mylogger.test._test_mylogger import TestMyLogger
+
+import asyncio
 
 if __name__ == "__main__":
     TestFilepathListStream().run()
     TestHashUtil().run()
-    TestMyLogger().run()
+    asyncio.run(TestMyLogger().run())
+
+

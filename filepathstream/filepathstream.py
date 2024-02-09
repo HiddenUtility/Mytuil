@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun  2 08:53:13 2023
-
-@author: nanik
-"""
 from __future__ import annotations
 from pathlib import Path
 from datetime import datetime
@@ -15,10 +9,10 @@ from filepathstream.xxx_filepath import XXXFilepath
 class FilepathListStream(PathStream):
     __filepaths: list[XXXFilepath]
     __empty: bool
-    count: int
+    _count: int
     def __init__(self,src:Path = None, glob="*", _filepaths:list[XXXFilepath]=[]):
         self.__filepaths = _filepaths
-        self.count = 0
+        self._count = 0
         self.__empty = len(self.__filepaths) == 0
         if src is None:return
         if self.__filepaths:return
@@ -33,17 +27,21 @@ class FilepathListStream(PathStream):
         if len(self.__filepaths) <= 10:
             return "".join(["%s\n" % f for f in self.__filepaths])
         return "".join(["%s\n" % f for f in self.__filepaths[:10]])+"\n.\n.\n."
+    
     def __repr__(self):
         return self.__str__()
+    
     def __len__(self):
         return len(self.__filepaths)
+    
     def __iter__(self):
         return self
+    
     def __next__(self):
-        if self.count == len(self.__filepaths):
+        if self._count == len(self.__filepaths):
             raise StopIteration
-        self.count+=1
-        return self.__filepaths[self.count - 1].get_filepath()
+        self._count+=1
+        return self.__filepaths[self._count - 1].get_filepath()
     
     def __add__(self, obj: FilepathListStream):
         if not isinstance(obj, FilepathListStream):raise TypeError
@@ -55,8 +53,9 @@ class FilepathListStream(PathStream):
         return self.__empty
 
     #//Override
-    def get_filepaths(self)->list[Path]:
+    def to_filepaths(self)->list[Path]:
         return [f.get_filepath() for f in self.__filepaths]
+    
     #//Override
     def get_file_size(self,num=10) -> float:
         """
@@ -80,6 +79,7 @@ class FilepathListStream(PathStream):
     def sort(self, reverse=False) -> FilepathListStream:
         filepaths = sorted(self.__filepaths, reverse=reverse)
         return self._return(filepaths)
+    
     #@Override
     def narrow_down_datetime(self,
                              start: datetime=datetime(2000, 1, 1),
@@ -123,4 +123,3 @@ class FilepathListStream(PathStream):
         for k in keys:
             filepaths += [f for f in self.__filepaths if k in f.name]
         return self._return(filepaths)
-
