@@ -1,5 +1,5 @@
 from buildtool.build_process import BuildProcess
-
+from buildtool.config import Configuration
 
 from pathlib import Path
 from shutil import copy2, copytree, make_archive, rmtree
@@ -8,18 +8,10 @@ from shutil import copy2, copytree, make_archive, rmtree
 class NewPackageBuilder(BuildProcess):
     __src:Path
     __dst:Path
-    __build_name :str
-    __ignore_files: list[str]
-    __ignore_direcotry: list[str]
-    IGUNORE_DIRECTORYS =  [
-        ".git",
-        ".venv",
-        "__pycache__",
-    ]
-  
-    IGUNORE_FILENAMES = [
-        ".gitignore",
-    ]
+    __igunore_files: list[str]
+    __igunore_directory: list[str]
+    IGUNORE_DIRECTORYS =  Configuration.IGUNORE_DIRECTORYS
+    IGUNORE_FILENAMES = Configuration.IGUNORE_FILENAMES
 
     def __init__(self,
                  src: Path,
@@ -44,7 +36,7 @@ class NewPackageBuilder(BuildProcess):
         for path in dirpaths:
             if path.name in self.__igunore_directory: 
                 continue
-            copytree(path, self.__dst)
+            copytree(path, self.__dst / path.name)
 
         for path in filepaths:
             if path.name in self.__igunore_files: 

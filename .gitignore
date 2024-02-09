@@ -1,7 +1,8 @@
 __pycache__
-*/__pycache__
 .venv
 *.log
 dummiy
 *.bin
 release
+libs
+__release

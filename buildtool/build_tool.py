@@ -1,4 +1,5 @@
 from buildtool.build_process import BuildProcess
+from buildtool.config import Configuration
 from buildtool.new_package_builder import NewPackageBuilder
 from buildtool.py_chash_remover import PycashRemover
 from buildtool.system_chash_remover import SystemChashRemover
@@ -9,6 +10,7 @@ from shutil import make_archive
 
 
 class BuildTool(BuildProcess):
+    RELEASE = Configuration.RELEASE
     __src:Path
     __dst:Path
     __processes:list[type[BuildProcess]]
@@ -17,8 +19,8 @@ class BuildTool(BuildProcess):
     __initialize_dirnames: list[str]
     __out_zip : bool
     def __init__(self,
-                 src: Path,
-                 dst : Path = Path("./release"),
+                 src: Path = Path().cwd(),
+                 dst : Path = Path(RELEASE),
                  build_name = "v1000",
                  ignore_files: list[str] = [],
                  ignore_direcotry: list[str] = [],
@@ -36,13 +38,13 @@ class BuildTool(BuildProcess):
         self.__out_zip = out_zip
 
         self.__processes:list[type[BuildProcess]] = [
-            PycashRemover(self.__src),
             NewPackageBuilder(
                 self.__src,
                 self.__dst,
                 self.__ignore_files,
                 self.__ignore_direcotry
                 ),
+            PycashRemover(self.__src),
             TestRemover(self.__dst),
             SystemChashRemover(self.__dst, self.__initialize_dirnames),
             ]

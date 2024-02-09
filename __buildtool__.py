@@ -6,7 +6,7 @@ if __name__ == "__main__":
     
     dst = Path(r"C:\hrks")
     builder = BuildTool(
-        Path().cwd(),
+        src = Path().cwd(),
         build_name = "buildtool1000",
         ignore_files = [],
         ignore_direcotry = [], #//
