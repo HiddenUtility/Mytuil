@@ -1,26 +1,26 @@
 from __future__ import annotations
-from datetime import datetime
-from pathlib import Path
-from copy import copy
+from mylogger.simple_log_data import SimpleLogData
+from mylogger.logger import Logger
 import time
 import traceback
-from mylogger.my_log_data import MyLogData
-from mylogger.logger import Logger
-        
+from copy import copy
+from datetime import datetime
+from pathlib import Path
 
-class MyLogger(Logger):
+
+class SimpleLogger(Logger):
     __name: str
     __dst: Path
-    __logs: list[MyLogData]
+    __logs: list[SimpleLogData]
     __start_time : dict[str, float]
     def __init__(self,
-                 dst:Path = Path("./log"), 
-                 name="", 
-                 split_day=True, 
+                 dst:Path = Path("./log"),
+                 name="",
+                 split_day=True,
                  limit=5
                  ):
         """
-        
+
         """
         self.__limit = limit
         self.__dst = dst
@@ -31,13 +31,13 @@ class MyLogger(Logger):
             self.__name = "{} {}".format(self.__name, datetime.now().strftime("%Y-%m-%d-%a"),)
         self.__logs=[]
         self.__start_time = {}
-        
-    def __add__(self,obj: MyLogger):
-        if not isinstance(obj, MyLogger):raise TypeError
+
+    def __add__(self,obj: SimpleLogger):
+        if not isinstance(obj, SimpleLogger):raise TypeError
         new = copy(self)
         new.__logs += obj.logs
         return new
-    
+
     def __rmlog(self,name):
         if self.__limit < 1: return
         fs = [f for f in self.__dst.glob(f"*.{name}.log")]
@@ -45,8 +45,8 @@ class MyLogger(Logger):
         if n < self.__limit:return
         for i in range(n - self.__limit - 1):
             fs[i].unlink()
-    
-    @property  
+
+    @property
     def logs(self):
         return self.__logs
 
@@ -61,11 +61,11 @@ class MyLogger(Logger):
         self.write("{} 処理時間は{:5f}sでした。".format(id_,time.time() - self.__start_time[id_]),out=True)
 
     def write(self, *args: str, debug=True, out=True) -> None:
-        data = MyLogData(*args)
+        data = SimpleLogData(*args)
         if debug: print(data)
         self.__logs.append(data)
         if out: self.out()
-    
+
     def error(self, e: Exception):
         try:
             raise e
@@ -81,4 +81,3 @@ class MyLogger(Logger):
             self.__logs = []
         except:
             pass
-

@@ -1,5 +1,5 @@
 from mylogger.mylogger import MyLogger
-from mylogger.processed_logger import ProcessedLogger
+from mylogger.simple_logger import SimpleLogger
 
 __copyright__    = 'Copyright (C) 2024 HiddenUtility'
 __version__      = '1000'
@@ -10,4 +10,5 @@ __url__          = 'https://github.com/HiddenUtility/pyutil'
 
 __all__ = [
     'MyLogger',
+    "SimpleLogger",
     ]
