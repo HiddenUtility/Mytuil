@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zipfile import ZipFile, ZIP_DEFLATED
 from pathlib import Path
-from hashutil import ZipFileHashCheacker
+from pyutil.hashutil.zipfile_hash_cheacker import ZipFileHashCheacker
 
 
 class UsingZip:

@@ -7,7 +7,8 @@ from pyutil.mylogger.mylogger import MyLogger
 
 class TestMyLogger:
     def __init__(self) -> None:
-        rmtree(Path("log"))
+        if Path("log").exists():
+            rmtree(Path("log"))
         self.__logger = MyLogger()
 
     async def __run_task(self, name: str):
