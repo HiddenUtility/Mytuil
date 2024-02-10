@@ -5,7 +5,7 @@ Created on Fri Oct  6 16:23:08 2023
 @author: nanik
 """
 from __future__ import annotations
-from command import Command
+from pyutil.subprocessutil.command import Command
 
 class ServerConnecting:
     NET_PATTERN = "NET USE {address} /user:{user} {password}"

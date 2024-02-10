@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov  8 22:04:49 2023
-
-@author: nanik
-"""
-
-
-
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.animation import FuncAnimation
 # import matplotlib.pyplot as plt

@@ -2,7 +2,7 @@
 from pathlib import Path
 from datetime import datetime
 import shutil
-from dummiycreator.dummiy_creator import DummiyFileCreator
+from pyutil.dummiy.dummiy_creator import DummiyFileCreator
 from pyutil.filepathstream.filepathstream import FilepathStream
 
 class TestFilepathListStream:
