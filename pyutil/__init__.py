@@ -5,7 +5,7 @@ from pyutil.dfutil.df_editor import DataFrameEditor
 from pyutil.driveutil.drive_researcher import DriveResearcher
 from pyutil.listutil.splited_list import SplitedList
 from pyutil.pickleutil.using_pickle import UsingPickle
-from pyutil.ziputil.using_zip import UsingZip
+from pyutil.ziputil.easy_using_zip import EasyUsingZip
 from pyutil.settingutil.using_json import UsingJson
 from pyutil.hashutil.hash_cheacker import HashCheacker
 from pyutil.hashutil.zipfile_hash_cheacker import ZipFileHashCheacker
@@ -35,6 +35,6 @@ __all__ = [
     "FilepathStream",
     "MainWindow",
     "UsingJson",
-    "UsingZip",
+    "EasyUsingZip",
     
     ]
