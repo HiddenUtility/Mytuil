@@ -13,6 +13,8 @@ from pyutil.hashutil.zipfile_hash_cheacker import ZipFileHashCheacker
 from pyutil.hashutil.file_hash_cheacker import FileHashCheacker
 from pyutil.filepathstream.filepathstream import FilepathStream
 from pyutil.tkinterutil.main_window import MainWindow
+from pyutil.filetransfer.file_data_transfer import FileDataTransfer
+from pyutil.filetransfer.FileTransferError import FileTransferError
 
 
 __copyright__    = 'Copyright (C) 2024 HiddenUtility'
@@ -38,5 +40,7 @@ __all__ = [
     "UsingJson",
     "EasyUsingZip",
     "UsingZip",
+    "FileDataTransfer",
+    "FileTransferError"
     
     ]
