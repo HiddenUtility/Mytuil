@@ -12,7 +12,7 @@ class XXXFilepath:
         self.suffix = f.suffix
 
     def _get_datetime(self, name: str) -> datetime:
-        findings = re.findall("\d{14}",name)
+        findings = re.findall(r"\d{14}",name)
         if len(findings) == 0:
             return datetime.timestamp(self.filepath.stat().st_ctime)
         for str14 in findings:

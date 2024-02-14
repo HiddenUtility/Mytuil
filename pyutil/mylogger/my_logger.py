@@ -49,6 +49,7 @@ class MyLogger(Logger):
         for i in range(n - self.__limit - 1):
             fs[i].unlink()
     
+    @staticmethod
     def __out(filepath, logs):
         with open(filepath, "a") as f:
             [f.write("%s\n" % log) for log in logs]
@@ -92,7 +93,7 @@ class MyLogger(Logger):
             self.write(traceback.format_exc())
 
     def out(self):
-        logs = sorted(self.__logs)
+        logs = self.__logs
         filepath = self.__dst.joinpath(f"{self.__name}.log")
         try:
             self.__retry(self.__out, filepath, logs)

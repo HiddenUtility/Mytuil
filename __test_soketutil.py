@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov  1 21:47:16 2023
-
-@author: nanik
-"""
 from threading import Thread
 from time import sleep
 

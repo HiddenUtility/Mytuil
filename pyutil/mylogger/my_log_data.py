@@ -18,8 +18,12 @@ class MyLogData:
 
     def __lt__(self, other):
         if not isinstance(other, MyLogData):raise TypeError
-        return self.__now < other.__now
-
+        return self.__now < other.now
+    
+    def __le__(self, other):
+        if not isinstance(other, MyLogData):raise TypeError
+        return self.__now <= other.now
+    
     def _timestamp(self):
         return self.__now.strftime("%Y/%m/%d %H:%M:%S.%f")
 
@@ -28,3 +32,7 @@ class MyLogData:
 
     def get_hash(self):
         return hashlib.md5(self._out_log().encode()).hexdigest()
+    
+    @property
+    def now(self) -> datetime:
+        return self.__now
