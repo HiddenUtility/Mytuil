@@ -2,7 +2,7 @@ import asyncio
 import random
 from pathlib import Path
 from shutil import rmtree
-from pyutil.mylogger.mylogger import MyLogger
+from pyutil.mylogger.my_logger import MyLogger
 
 
 class TestMyLogger:
