@@ -1,70 +1,60 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Sep 28 05:39:57 2023
-
-@author: iwill
-"""
 from __future__ import annotations
 from pandas import DataFrame
-import unicodedata
+import re
+
+from pyutil.dfutil.search_query import SearchQuery
+
 
 class DataFrameEditor:
-    def __init__(self, df: DataFrame = DataFrame()):
-        if not isinstance(df, DataFrame): raise TypeError("arg is NOT DataFrame")
+    df: DataFrame
+    def __init__(self,df):
+        if not isinstance(df, DataFrame): raise TypeError()
         self.__df = df
         
-    def __chk_column(self, column: str):
-        if column not in set(self.__df.columns): raise NotColumnsContainsError().set_message(column)
+    def _return(self,df) -> DataFrameEditor:
+        return DataFrameEditor(df)
     
-    def narrow_down_contains(self, column:str, key: str) -> DataFrameEditor:
-        if key.upper() == "ALL":return self
-        self.__chk_column(column)
-        return DataFrameEditor(self.__df[self.__df[column].str.contains(key)])
-    
-    def narrow_down_key(self, column:str, key: any) -> DataFrameEditor:
-        if key.upper() == "ALL":return self
-        self.__chk_column(column)
-        return DataFrameEditor(self.__df[self.__df[column]==key])
-    
-    def __narrow_query(self, rows: dict, query: str) -> dict:
+    @staticmethod
+    def __narow_query(rows:dict, query:str) -> dict[int, str]:
         new_rows = {}
-        for i, v in rows.items():
-            if query in v:  new_rows[i] = v
+        for i,v in rows.items():
+            if re.search(query, v):
+                new_rows[i] = v
         return new_rows
     
-    def narrow_down_query(self, search_query: str) -> DataFrameEditor:
+    def narrow_down_contains(self,colmun:str, key:str) -> DataFrameEditor:
+        if key.upper() == "ALL":return self
+        df = self.__df[self.__df[colmun].str.contains(key)]
+        return self._return(df)
+    
+    def narrow_down_key(self,colmun:str, key:str) -> DataFrameEditor:
+        if key.upper() == "ALL":return self
+        df = self.__df[self.__df[colmun]==key]
+        return self._return(df)
+    
+    def narow_down_query(self, search_query:str):
+        if search_query.upper() == "ALL":return self
         rows = {}
         for i, row in self.__df.iterrows():
-            #row : pandas.Serires
-            rows[i] = " ".join([str(v) for v in row])
+            rows[i] = "||".join([f"{k}={v}" for k, v in row.to_dict().items()]).lower()
             
-        querys:set = SearchQuery(search_query).querys
+        
+        querys = SearchQuery(search_query).get_querys()
+        print(querys)
         for query in querys:
-            rows = self.__narrow_query(rows, query)
-        return DataFrameEditor(self.__df[list(rows.keys())])
+            rows = self.__narow_query(rows, query)
+    
+        new = self.__df.iloc[list(rows.keys())]
+        return self._return(new)
+    
+    def to_df(self) -> DataFrame:
+        return self.__df
     
     @property
     def df(self):
-        return self.__df
-    
-
-class SearchQuery:
-    __search_query: str
-    
-    def __init__(self, search_query: str):
-        self.__search_query = self.__normalize(search_query)
-    
-    @staticmethod
-    def __normalize(search_query:str) -> str:
-        return unicodedata.normalize('NFKC', search_query)
+        return self.to_df()
     
     @property
-    def querys(self) -> set[str]:
-        return set(self.__search_query.split(" "))
-    
-    
-    
-class NotColumnsContainsError(Exception):
-    def set_message(self, colmun:str) -> NotColumnsContainsError:
-        message = f"{colmun}はDataFrameに含まれません。"
-        return NotColumnsContainsError(message)
+    def columns(self):
+        return list(self.__df.columns)
+

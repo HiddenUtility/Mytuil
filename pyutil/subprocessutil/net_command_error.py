@@ -1,0 +1,2 @@
+class NetCommandConnectionError(Exception):
+    pass

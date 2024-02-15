@@ -48,6 +48,8 @@ class FileDataCoping:
         if self.__dst.exists():
             self.__dst.unlink()
 
+
+
     
     def __get_hash(self,filepath):
         with open(filepath,"rb") as f:
@@ -65,6 +67,10 @@ class FileDataCoping:
         return self.__src.stat().st_size < self.__dst.stat().st_size
     
     def __copy(self):
+
+        if self.__dst_xxx.exists():
+            self.__dst_xxx.unlink()
+
         if self.__dst.exists():
             if self.__is_same_hash():
                 FileSourceDataRemover(self.__src).run()

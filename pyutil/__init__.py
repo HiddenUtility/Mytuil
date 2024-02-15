@@ -15,6 +15,9 @@ from pyutil.filepathstream.filepathstream import FilepathStream
 from pyutil.tkinterutil.main_window import MainWindow
 from pyutil.tasklogger.task_logger import TaskLogger
 
+from pyutil.subprocessutil.sever_connection import ServerConnection
+from pyutil.subprocessutil.net_command_error import NetCommandConnectionError
+
 from pyutil.filetransfer.file_data_transfer import FileDataTransfer
 from pyutil.filetransfer.FileTransferError import FileTransferError
 from pyutil.myerror.retory_count_over_error import RetryCountOverError
@@ -46,6 +49,8 @@ __all__ = [
     "UsingZip",
     "FileDataTransfer",
     "FileTransferError",
-    "RetryCountOverError"
+    "RetryCountOverError",
+    "ServerConnection",
+    "NetCommandConnectionError"
     
     ]
