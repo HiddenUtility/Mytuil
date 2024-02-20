@@ -1,22 +1,12 @@
-# -*- coding: utf-8 -*-
 from __future__ import annotations
-import abc
 from datetime import datetime, timedelta
 import time
 
-#interface
-class InterfaceTimer(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def wate_hour(self):
-        raise NotImplementedError()
-    @abc.abstractmethod
-    def stop(self):
-        raise NotImplementedError()
 
-
-class MyTimer(InterfaceTimer):
+class MyTimer:
+    __start_time: float
     def __init__(self):
-        pass
+        self.__start_time = time.time()
 
     @staticmethod
     def _get_next_hour(hour:int = 4, minute:int = 0, second:int = 0):
@@ -67,20 +57,30 @@ class MyTimer(InterfaceTimer):
             cls.wate_datetime(target_time)
 
     @staticmethod
-    def stop(secondes: int):
+    def stop(secondes: int, free_message="一時停止中"):
         if not isinstance(secondes, int): TypeError
         for i in range(secondes):
             t = "{0:8}".format(secondes - i)
-            print(f"\r 一時停止中 残り{t}秒", end="")
+            print(f"\r {free_message} 残り{t}秒", end="")
             time.sleep(1)
         print("\r Start!!                        \n")
-        
     
+    def stop_need_elapsed_time(self,secondes: int,free_message="速すぎるため処理を遅延中"):
+        """設定時間より早く処理終わってしまった場合、処理を待機する。"""
+        elapsed_time  = int(time.time() - self.__start_time)
+        if elapsed_time > secondes:
+            return
+        self.stop(secondes - elapsed_time, free_message=free_message)
+
 
 if __name__ == "__main__":
     
     timer = MyTimer()
     timer.stop(5) #5秒ストップ
     #timer.wate_hour(hour=4,minute=30) #次の４時半まで待機
-    timer.wate_hour(weekday=1,hour=4,minute=30) #次の火曜日の４時半まで待機
+    timer.stop_need_elapsed_time(20)
+    
+    
+    
+    # timer.wate_hour(weekday=1,hour=4,minute=30) #次の火曜日の４時半まで待機
     

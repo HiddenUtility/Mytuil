@@ -75,10 +75,19 @@ class MyLogger(Logger):
         start = f"################# {id_} START######################"
         self.write(start,out=True)
 
-    def end(self, id_: str = "main") -> None:
+    def end(self, id_: str = "main", sampling=0) -> None:
         end   = f"################## {id_} END #######################"
-        self.write(end)
-        self.write("{} 処理時間は{:5f}sでした。".format(id_,time.time() - self.__start_time[id_]),out=True)
+        self.write(end, out=False)
+        processing_time = time.time() - self.__start_time[id_]
+        self.write("{} 処理時間は{:5f}sでした。".format(id_, processing_time),out=True)
+        if sampling > 0:
+            per_time = processing_time / sampling
+            self.write("{}個中の1個当たりの処理時間は{:5f}sでした。".format(
+                sampling, 
+                per_time, 
+                out=True
+                )
+            )
 
     def write(self, *args: str, debug=True, out=True) -> None:
         data = MyLogData(*args)

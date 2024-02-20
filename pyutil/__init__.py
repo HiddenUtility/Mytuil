@@ -18,7 +18,10 @@ from pyutil.tasklogger.task_logger import TaskLogger
 from pyutil.subprocessutil.sever_connection import ServerConnection
 from pyutil.subprocessutil.net_command_error import NetCommandConnectionError
 
+# // FileDataTransfer
 from pyutil.filetransfer.file_data_transfer import FileDataTransfer
+from pyutil.filetransfer.file_data_coping import FileDataCoping
+from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
 from pyutil.filetransfer.FileTransferError import FileTransferError
 from pyutil.myerror.retory_count_over_error import RetryCountOverError
 
@@ -48,6 +51,8 @@ __all__ = [
     "EasyUsingZip",
     "UsingZip",
     "FileDataTransfer",
+    "FileDataCoping",
+    "FileSourceDataRemover",
     "FileTransferError",
     "RetryCountOverError",
     "ServerConnection",
