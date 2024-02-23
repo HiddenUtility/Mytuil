@@ -1,4 +1,4 @@
-from connection.net_command_error import NetCommandConnectionError
+from usingnetuse.net_command_error import NetCommandConnectionError
 
 
 import subprocess

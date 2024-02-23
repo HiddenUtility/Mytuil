@@ -1,7 +1,7 @@
 from __future__ import annotations
 from pathlib import Path
-from connection.JsonSettingReader import JsonSettingReader
-from connection.config import SystemDirectoryName
+from usingnetuse.JsonSettingReader import JsonSettingReader
+from usingnetuse.config import SystemDirectoryName
 
 
 class ConnectionInfoReader:

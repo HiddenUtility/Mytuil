@@ -1,12 +1,15 @@
 from __future__ import annotations
-from connection.JsonSettingReader import JsonSettingReader
-from connection.ServerConnectionSubprocess import ServerConnectionSubprocess
-from connection.connection_info_reader import ConnectionInfoReader
-from connection.net_command_error import NetCommandConnectionError
+from usingnetuse.JsonSettingReader import JsonSettingReader
+from usingnetuse.ServerConnectionSubprocess import ServerConnectionSubprocess
+from usingnetuse.connection_info_reader import ConnectionInfoReader
+from usingnetuse.net_command_error import NetCommandConnectionError
 
 class ServerConnection:
     __readers : list[JsonSettingReader]
     def __init__(self):
+        """
+        `root/settings/connection`内の`*_connection_info.json`に該当するアカウントにNetUseを事項する
+        """
         self.__readers = ConnectionInfoReader().to_readers()
     
     def __str__(self):

@@ -1,5 +1,5 @@
-from connection.sever_connection import ServerConnection
-from connection.net_command_error import NetCommandConnectionError
+from usingnetuse.sever_connection import ServerConnection
+from usingnetuse.net_command_error import NetCommandConnectionError
 
 __copyright__    = 'Copyright (C) 2024 HiddenUtility'
 __version__      = '1000'
