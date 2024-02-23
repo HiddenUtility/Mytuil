@@ -1,6 +1,5 @@
-import hashlib
 from pathlib import Path
-from zipfile import ZipFile
+from pyutil.hashutil.hash_label_maker import HashLableMaker
 
 from pyutil.hashutil.hash_cheacker import HashCheacker
 
@@ -15,8 +14,8 @@ class FileHashCheacker(HashCheacker):
         if not f.exists():
             raise FileNotFoundError(f"{f}は存在しません。")
         with open(self.__src, "rb") as data:
-            return hashlib.sha256(data.read()).hexdigest()
-    
+            return HashLableMaker.get_sha256(data.read())
+
     # @override
     def is_same(self, target:Path) -> bool:
         return self.get_hash(self.__src) == self.get_hash(target)
@@ -27,3 +26,5 @@ class FileHashCheacker(HashCheacker):
     def to_hash(self) -> str:
         return self.__hash
 
+
+    

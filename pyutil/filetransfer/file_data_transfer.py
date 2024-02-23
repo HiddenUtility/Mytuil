@@ -1,7 +1,10 @@
 
 from pathlib import Path
+from pyutil.pathuil.directory_creator import DirecotryCreator
+
 from pyutil.filetransfer.file_data_coping import FileDataCoping
 from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
+
 
 class FileDataTransfer:
     __src : Path
@@ -14,11 +17,8 @@ class FileDataTransfer:
         self.__dst = dst
 
     def __mkdir(self, path: Path):
-        if path.exists(): return
-        if not path.parent.exists():
-            self.__mkdir(path.parent)
-        path.mkdir()
-            
+        DirecotryCreator.mkdir(path)
+
     def run(self, remove=True):
         self.__mkdir(self.__dst)
         FileDataCoping(self.__src, self.__dst).run()

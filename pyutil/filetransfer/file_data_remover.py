@@ -2,8 +2,8 @@
 from pathlib import Path
 import time
 from traceback import print_exc
-from pyutil.filetransfer.DeleteRetryCountOverError import DeleteRetryCountOverError
-from pyutil.filetransfer.FileDeleteError import FileDeleteError
+from pyutil.filetransfer.error.DeleteRetryCountOverError import DeleteRetryCountOverError
+from pyutil.filetransfer.error.FileDeleteError import FileDeleteError
 
 class FileSourceDataRemover:
     

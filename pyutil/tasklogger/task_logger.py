@@ -1,10 +1,9 @@
 from __future__ import annotations
-from typing import Final
 from pathlib import Path
 import pickle
 from time import sleep
 from pyutil.mylogger.logger import Logger
-from pyutil.myerror.retory_count_over_error import RetryCountOverError
+from pyutil.myerror.retry_count_over_error import RetryCountOverError
 
 class TaskLogger(Logger):
     RETRY_LIMIT = 3

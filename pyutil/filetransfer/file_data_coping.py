@@ -3,10 +3,10 @@ import hashlib
 import shutil
 import time
 from traceback import print_exc
-from pyutil.filetransfer.CopyRetryCountOverError import CopyRetryCountOverError
-from pyutil.filetransfer.DestinationSameFileExistsError import DestinationSameFileExistsError
-from pyutil.filetransfer.DestinationSmallSizeFileError import DestinationSmallSizeFileError
-from pyutil.filetransfer.FileMoveError import FileMoveError
+from pyutil.filetransfer.error.CopyRetryCountOverError import CopyRetryCountOverError
+from pyutil.filetransfer.error.DestinationSameFileExistsError import DestinationSameFileExistsError
+from pyutil.filetransfer.error.DestinationSmallSizeFileError import DestinationSmallSizeFileError
+from pyutil.filetransfer.error.FileMoveError import FileMoveError
 from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
 
 class FileDataCoping:
