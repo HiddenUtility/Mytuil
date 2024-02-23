@@ -7,8 +7,8 @@ from tkinter import Entry
 from tkinter import Label
 from tkinter import Button
 from pathlib import Path
-from pyutil.tkinterutil.setting_paramter import SettingParamter
-from pyutil.tkinterutil.main_frame import MainFrame
+from tkinterutil.setting_paramter import SettingParamter
+from tkinterutil.main_frame import MainFrame
 
 class PathInsertFrame(MainFrame):
     __src_entry : Entry

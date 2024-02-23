@@ -1,8 +1,8 @@
 import tkinter
 from tkinter import Frame
-from pyutil.tkinterutil.path_insert_frame import PathInsertFrame
-from pyutil.tkinterutil.date_insert_frame import DateInsertFrame
-from pyutil.tkinterutil.running_button_frame import RunningButtonFrame
+from tkinterutil.path_insert_frame import PathInsertFrame
+from tkinterutil.date_insert_frame import DateInsertFrame
+from tkinterutil.running_button_frame import RunningButtonFrame
 
 
 class MainWindow(tkinter.Tk):

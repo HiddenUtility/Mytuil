@@ -1,7 +1,8 @@
 from __future__ import annotations
 from pathlib import Path
-from config import SystemDirectoryName
 from connection.JsonSettingReader import JsonSettingReader
+from connection.config import SystemDirectoryName
+
 
 class ConnectionInfoReader:
     SETTINGS:Path = Path(SystemDirectoryName.SETTING_CONNECTION)

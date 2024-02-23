@@ -2,7 +2,7 @@ from __future__ import annotations
 from pathlib import Path
 from datetime import date
 from pyutil.pickleutil.using_pickle import UsingPickle
-from pyutil.tkinterutil.setting_paramter_keys import SettingParamterKeys
+from tkinterutil.setting_paramter_keys import SettingParamterKeys
 
 
 class SettingParamter:

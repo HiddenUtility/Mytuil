@@ -1,4 +1,4 @@
-from pyutil.tkinterutil._test_tkinterutil import TestTkinterutil
+from tkinterutil._test_tkinterutil import TestTkinterutil
 
 from tkinterutil import MainWindow
 

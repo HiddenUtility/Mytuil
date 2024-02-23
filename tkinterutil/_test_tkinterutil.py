@@ -5,7 +5,7 @@ from tkinter import Label
 from tkinter import Entry
 from tkinter import Button
 
-from pyutil.tkinterutil.calender_dialog import CalendarDialog
+from tkinterutil.calender_dialog import CalendarDialog
 
 class TestTkinterutil:
     def __init__(self):

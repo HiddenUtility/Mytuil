@@ -4,7 +4,6 @@ from connection.ServerConnectionSubprocess import ServerConnectionSubprocess
 from connection.connection_info_reader import ConnectionInfoReader
 from connection.net_command_error import NetCommandConnectionError
 
-
 class ServerConnection:
     __readers : list[JsonSettingReader]
     def __init__(self):
