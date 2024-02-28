@@ -9,7 +9,7 @@ from pyutil.matplotutil.plot_maker import PlotMaker
 from array import array
 import numpy as np
 
-class SingleAxisPlotMaker(PlotMaker):
+class SingleAxisMatPlotMaker(PlotMaker):
     __figure : Figure
     __axes : Axes
     # __lines : dict[int, Line2D] #更に細かく制御する場合

@@ -44,7 +44,7 @@ class MyLogger(Logger):
     
     def __rmlog(self,name):
         if self.__limit < 1: return
-        fs = [f for f in self.__dst.glob(f"*.{name}.log")]
+        fs = [f for f in self.__dst.glob(f"{name}*.log") if f.is_file()]
         n = len(fs)
         if n < self.__limit:return
         for i in range(n - self.__limit - 1):

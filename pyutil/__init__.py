@@ -14,7 +14,10 @@ from pyutil.tasklogger.task_logger import TaskLogger
 from pyutil.hashutil.hash_label_maker import HashLableMaker
 
 #// matplotutil
-from pyutil.matplotutil.SinglePlotMaker import SingleAxisPlotMaker
+from pyutil.matplotutil.single_axis_mat_plot_maker import SingleAxisMatPlotMaker
+
+#// plotry 
+from pyutil.plotlyutil.single_axis_plotly_plot_maker import SingleAxisPlotlyPlotMaker
 
 # // pickleutil
 from pyutil.pickleutil.using_pickle import UsingPickle
@@ -40,29 +43,29 @@ __url__          = 'https://github.com/HiddenUtility/pyutil'
 
 __all__ = [
     'MyLogger',
-    "SimpleLogger",
-    "TaskLogger",
+    'SimpleLogger',
+    'TaskLogger',
     'MyTimer',
-    "DataFrameEditor",
-    "SplitedList",
-    "UsingPickle",
-    "DriveResearcher",
-    "HashLableMaker",
-    "ZipFileHashCheacker",
-    "FileHashCheacker",
-    "FilepathStream",
-    "UsingJson",
-    "EasyUsingZip",
-    "UsingZip",
-    "FileDataTransfer",
-    "FileDataCoping",
-    "FileSourceDataRemover",
-    "FileTransferError",
-    "RetryCountOverError",
-    "ServerConnection",
-    "NetCommandConnectionError",
-    "DirecotryCreator",
-    "PickleFileOutputFailureError",
-    "SingleAxisPlotMaker",
-    
+    'DataFrameEditor',
+    'SplitedList',
+    'UsingPickle',
+    'DriveResearcher',
+    'HashLableMaker',
+    'ZipFileHashCheacker',
+    'FileHashCheacker',
+    'FilepathStream',
+    'UsingJson',
+    'EasyUsingZip',
+    'UsingZip',
+    'FileDataTransfer',
+    'FileDataCoping',
+    'FileSourceDataRemover',
+    'FileTransferError',
+    'RetryCountOverError',
+    'ServerConnection',
+    'NetCommandConnectionError',
+    'DirecotryCreator',
+    'PickleFileOutputFailureError',
+    'SingleAxisMatPlotMaker',
+    'SingleAxisPlotlyPlotMaker',
     ]
