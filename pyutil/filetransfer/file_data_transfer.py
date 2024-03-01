@@ -21,7 +21,7 @@ class FileDataTransfer:
 
     def run(self, remove=True):
         self.__mkdir(self.__dst)
-        FileDataCoping(self.__src, self.__dst).run()
+        FileDataCoping(self.__src, self.__dst,remove=remove).run()
         if not remove:
             return
         FileSourceDataRemover(self.__src).run()

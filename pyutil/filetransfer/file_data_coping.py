@@ -16,7 +16,7 @@ class FileDataCoping:
     __dst : Path
     __dst_xxx : Path
 
-    def __init__(self, src: Path, dst: Path):
+    def __init__(self, src: Path, dst: Path,remove=True):
         if not isinstance(src, Path):
             raise TypeError()
         if not isinstance(dst, Path):
@@ -29,6 +29,7 @@ class FileDataCoping:
         self.__src: Path = src
         self.__dst: Path = dst / src.name
         self.__dst_xxx: Path = self.__dst.with_suffix(".xxx")
+        self.__is_removing = remove
 
         
     def __retry(self,func, *args, **kwargs):
@@ -73,10 +74,10 @@ class FileDataCoping:
 
         if self.__dst.exists():
             if self.__is_same_hash():
-                FileSourceDataRemover(self.__src).run()
+                if self.__is_removing: FileSourceDataRemover(self.__src).run()
                 raise DestinationSameFileExistsError(f"{self.__dst}に既に存在します。")
             if self.__is_small():
-                FileSourceDataRemover(self.__src).run()
+                if self.__is_removing: FileSourceDataRemover(self.__src).run()
                 raise DestinationSmallSizeFileError(f"{self.__dst}よりもファイルサイズが小さいです。")
 
         try:
