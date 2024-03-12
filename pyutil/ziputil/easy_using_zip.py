@@ -1,10 +1,10 @@
 from zipfile import ZipFile, ZIP_DEFLATED
 from pathlib import Path
 from pyutil.hashutil.zipfile_hash_cheacker import ZipFileHashCheacker
-from pyutil.ziputil.CanNotFileUnlinkError import CanNotFileUnlinkError
-from pyutil.ziputil.ZipFileExistsError import ZipFileExistsError
-from pyutil.ziputil.NotSameCompressionDataBinaryError import NotSameCompressionDataBinaryError
-from pyutil.ziputil.CanNotCompressionError import CanNotCompressionError
+from pyutil.ziputil.error.CanNotFileUnlinkError import CanNotFileUnlinkError
+from pyutil.ziputil.error.ZipFileExistsError import ZipFileExistsError
+from pyutil.ziputil.error.NotSameCompressionDataBinaryError import NotSameCompressionDataBinaryError
+from pyutil.ziputil.error.CanNotCompressionError import CanNotCompressionError
 
 class EasyUsingZip:
     __filepath:Path

@@ -6,15 +6,18 @@ from traceback import print_exc
 from pyutil.filetransfer.error.CopyRetryCountOverError import CopyRetryCountOverError
 from pyutil.filetransfer.error.DestinationSameFileExistsError import DestinationSameFileExistsError
 from pyutil.filetransfer.error.DestinationSmallSizeFileError import DestinationSmallSizeFileError
+from pyutil.filetransfer.error.DestinationUnknownFileError import DestinationUnknownFileError
 from pyutil.filetransfer.error.FileMoveError import FileMoveError
 from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
 
 class FileDataCoping:
+    XXX = '.xxx'
     RETRY_COUNT = 3
     DERAY = 1
     __src : Path
     __dst : Path
     __dst_xxx : Path
+    __is_removing : bool
 
     def __init__(self, src: Path, dst: Path,remove=True):
         if not isinstance(src, Path):
@@ -28,7 +31,7 @@ class FileDataCoping:
         
         self.__src: Path = src
         self.__dst: Path = dst / src.name
-        self.__dst_xxx: Path = self.__dst.with_suffix(".xxx")
+        self.__dst_xxx: Path = self.__dst.with_suffix(self.XXX)
         self.__is_removing = remove
 
         
@@ -48,9 +51,6 @@ class FileDataCoping:
             self.__dst_xxx.unlink()
         if self.__dst.exists():
             self.__dst.unlink()
-
-
-
     
     def __get_hash(self,filepath):
         with open(filepath,"rb") as f:
@@ -75,10 +75,13 @@ class FileDataCoping:
         if self.__dst.exists():
             if self.__is_same_hash():
                 if self.__is_removing: FileSourceDataRemover(self.__src).run()
-                raise DestinationSameFileExistsError(f"{self.__dst}に既に存在します。")
+                raise DestinationSameFileExistsError(f"{self.__dst}に既に同じファイルが存在します。")
             if self.__is_small():
                 if self.__is_removing: FileSourceDataRemover(self.__src).run()
                 raise DestinationSmallSizeFileError(f"{self.__dst}よりもファイルサイズが小さいです。")
+            if self.__is_removing: FileSourceDataRemover(self.__src).run()
+            raise DestinationUnknownFileError(f"{self.__dst}ソースと異なる不明なファイルが存在します。")
+            
 
         try:
             shutil.copy2(self.__src, self.__dst_xxx)

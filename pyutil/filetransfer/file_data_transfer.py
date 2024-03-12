@@ -1,5 +1,6 @@
 
 from pathlib import Path
+from pyutil.filetransfer.failure_file_remover import FailureFileRemover
 from pyutil.pathuil.directory_creator import DirecotryCreator
 
 from pyutil.filetransfer.file_data_coping import FileDataCoping
@@ -18,6 +19,10 @@ class FileDataTransfer:
 
     def __mkdir(self, path: Path):
         DirecotryCreator.mkdir(path)
+
+    def crelar_failure_files(self):
+        '''転送失敗した途中ファイルを削除する。'''
+        FailureFileRemover(self.__dst).run()
 
     def run(self, remove=True):
         self.__mkdir(self.__dst)

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./test.css">
+    <title>TestMyHttp</title>
+    
+</head>
+<body>
+
+
+    <form action="" method="get" >
+        <p>
+            <input type="text"  id="GetRquest", value="insert_value">
+            <input type="button" value="Get送信" onclick="getTest()">
+        </p>
+    </form>
+
+    <div id="GetResult"></div>
+
+
+    <form action="" method="post" >
+        <p>
+            <input type="text" id="PostRquest", value="insert_value">
+            <input type="button" value="Post送信" onclick="postTest()">
+        </p>
+    </form>
+
+    <div id="PostResult"></div>
+
+
+    <script  src="./src/test.js"></script>
+</body>
+</html>

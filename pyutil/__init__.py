@@ -5,13 +5,17 @@ from pyutil.dfutil.df_editor import DataFrameEditor
 from pyutil.driveutil.drive_researcher import DriveResearcher
 from pyutil.listutil.splited_list import SplitedList
 from pyutil.ziputil.easy_using_zip import EasyUsingZip
-from pyutil.ziputil.using_zip import UsingZip
 from pyutil.settingutil.using_json import UsingJson
 from pyutil.hashutil.zipfile_hash_cheacker import ZipFileHashCheacker
 from pyutil.hashutil.file_hash_cheacker import FileHashCheacker
 from pyutil.filepathstream.filepathstream import FilepathStream
 from pyutil.tasklogger.task_logger import TaskLogger
 from pyutil.hashutil.hash_label_maker import HashLableMaker
+
+#// uisngzip
+from pyutil.ziputil.error.ZiputilError import ZiputilError
+from pyutil.ziputil.using_zip import UsingZip
+
 
 #// matplotutil
 from pyutil.matplotutil.single_axis_mat_plot_maker import SingleAxisMatPlotMaker
@@ -29,6 +33,7 @@ from pyutil.pathuil.directory_creator import DirecotryCreator
 # // FileDataTransfer
 from pyutil.filetransfer.file_data_transfer import FileDataTransfer
 from pyutil.filetransfer.file_data_coping import FileDataCoping
+from pyutil.filetransfer.failure_file_remover import FailureFileRemover
 from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
 from pyutil.filetransfer.error.FileTransferError import FileTransferError
 from pyutil.myerror.retry_count_over_error import RetryCountOverError
@@ -57,7 +62,9 @@ __all__ = [
     'UsingJson',
     'EasyUsingZip',
     'UsingZip',
+    'ZiputilError',
     'FileDataTransfer',
+    'FailureFileRemover',
     'FileDataCoping',
     'FileSourceDataRemover',
     'FileTransferError',

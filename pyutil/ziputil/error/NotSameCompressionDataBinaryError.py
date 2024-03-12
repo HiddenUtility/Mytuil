@@ -1,4 +1,4 @@
-from pyutil.ziputil.ZiputilError import ZiputilError
+from pyutil.ziputil.error.ZiputilError import ZiputilError
 
 
 class NotSameCompressionDataBinaryError(ZiputilError):...
