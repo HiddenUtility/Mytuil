@@ -28,11 +28,9 @@ string集合で管理する。
     
     def load(self)-> object:
         if not self.__logpath.exists():
-            self.out()
             return
         with open(self.__logpath, "rb") as f:
             self.__logs = pickle.load(f)
-
 
 
     def __out(self) -> None:

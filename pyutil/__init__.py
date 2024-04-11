@@ -15,7 +15,7 @@ from pyutil.hashutil.hash_label_maker import HashLableMaker
 #// uisngzip
 from pyutil.ziputil.error.ZiputilError import ZiputilError
 from pyutil.ziputil.using_zip import UsingZip
-
+from pyutil.ziputil.zip_properties import ZipProperties
 
 #// matplotutil
 from pyutil.matplotutil.single_axis_mat_plot_maker import SingleAxisMatPlotMaker
@@ -30,6 +30,8 @@ from pyutil.pickleutil.PickleFileOutputFailureError import PickleFileOutputFailu
 
 # // pathutil
 from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.windows_available_path_name import WindowsAvailablePathName
+
 # // FileDataTransfer
 from pyutil.filetransfer.file_data_transfer import FileDataTransfer
 from pyutil.filetransfer.file_data_coping import FileDataCoping
@@ -57,6 +59,7 @@ __all__ = [
     'DriveResearcher',
     'HashLableMaker',
     'ZipFileHashCheacker',
+    'ZipProperties',
     'FileHashCheacker',
     'FilepathStream',
     'UsingJson',
@@ -67,12 +70,16 @@ __all__ = [
     'FailureFileRemover',
     'FileDataCoping',
     'FileSourceDataRemover',
+    
     'FileTransferError',
     'RetryCountOverError',
     'ServerConnection',
     'NetCommandConnectionError',
-    'DirecotryCreator',
     'PickleFileOutputFailureError',
+
+    'DirecotryCreator',
+    'WindowsAvailablePathName',
+
     'SingleAxisMatPlotMaker',
     'SingleAxisPlotlyPlotMaker',
     ]
