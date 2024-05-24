@@ -65,7 +65,7 @@ class MyTimer:
             time.sleep(1)
         print("\r Start!!                        \n")
     
-    def stop_need_elapsed_time(self,secondes: int,free_message="速すぎるため処理を遅延中"):
+    def stop_need_elapsed_time(self,secondes: int, free_message="速すぎるため処理を遅延中"):
         """設定時間より早く処理終わってしまった場合、処理を待機する。"""
         elapsed_time  = int(time.time() - self.__start_time)
         if elapsed_time > secondes:

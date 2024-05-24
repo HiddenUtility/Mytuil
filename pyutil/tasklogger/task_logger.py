@@ -24,15 +24,16 @@ string集合で管理する。
         self.__name = f"{self.__class__.__name__}" if name=="" else name
         self.__logpath = self.__dst / f"{self.__name}.bin"
         self.__logs = set()
-        self.load()
+        self.__load()
     
-    def load(self)-> object:
+    def __load(self) -> None:
+        """ストレージに出力済みの場合それを読み込む。
+        """
         if not self.__logpath.exists():
-            self.out()
             return
         with open(self.__logpath, "rb") as f:
             self.__logs = pickle.load(f)
-
+            print(f'{self.__logpath}読み取りました。')
 
 
     def __out(self) -> None:
@@ -53,14 +54,27 @@ string集合で管理する。
             
     #@override
     def write(self, log: any, debug=True, out=True):
+        """ログに登録する。
+
+        Args:
+            log (any): _description_
+            debug (bool, optional): プリントする。__str__を呼ぶのでオリジナルオブジェクトの場合は実装してね。. Defaults to True.
+            out (bool, optional): 登録と同時にストレージに出力する。大量に登録するときはFalseにしてあとで out メンバー読んでください. Defaults to True.
+        """
         if debug:
-            print(f"{log}を登録します")
+            try:
+                print(f"{log}を登録します")
+            except Exception:
+                pass
+
         self.__logs.add(log)
         if out:
             self.out()
 
     #@override  
-    def out(self) -> None:
+    def out(self, debug=False) -> None:
+        """ストレージに出力する。
+        """
         
         try:
             self.__retry(self.__out)
@@ -70,7 +84,23 @@ string集合で管理する。
         except Exception as e:
             raise e
         else:
+            if debug: print(f'{self.__logpath}出力しました。')
             return
 
-    def exists(self, log: str):
+    def exists(self, log: any):
+        """過去に処理したかどうか
+
+        Args:
+            log (any): _description_
+
+        Returns:
+            _type_: _description_
+        """
         return log in self.__logs
+    
+    def clear(self) -> None:
+        """ログの初期化を行う。
+        ストレージに過去ログあった場合も削除する。
+        """
+        self.__logpath.unlink(missing_ok=True)
+        self.__logs = set()

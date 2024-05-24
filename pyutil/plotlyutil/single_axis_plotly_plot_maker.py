@@ -1,5 +1,6 @@
 
 from plotly.graph_objects import Figure, Scatter
+from plotly.subplots import make_subplots
 from array import array
 from pathlib import Path
 
