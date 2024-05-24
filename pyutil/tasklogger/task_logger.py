@@ -35,7 +35,6 @@ string集合で管理する。
             self.__logs = pickle.load(f)
             print(f'{self.__logpath}読み取りました。')
 
-
     def __out(self) -> None:
         with open(self.__logpath, "wb") as f:
             pickle.dump(self.__logs, f)

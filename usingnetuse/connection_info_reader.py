@@ -1,14 +1,16 @@
 from __future__ import annotations
 from pathlib import Path
-from usingnetuse.JsonSettingReader import JsonSettingReader
-from usingnetuse.config import SystemDirectoryName
+from usingnetuse.json_setting_reader import JsonSettingReader
+
+from usingnetuse.config import SystemDirectory, SettingSuffix
 
 
 class ConnectionInfoReader:
-    SETTINGS:Path = Path(SystemDirectoryName.SETTING_CONNECTION)
+    SRC:Path = SystemDirectory.SETTING_CONNECTION_PATH
+    PATTERN : str = SettingSuffix.PATTERN
 
     def __init__(self):
-        self.__readers = [JsonSettingReader(f) for f in self.SETTINGS.glob("*_connection_info.json") if f.is_file()]
+        self.__readers = [JsonSettingReader(f) for f in self.SRC.glob(self.PATTERN) if f.is_file()]
 
     @property
     def readers(self) -> list[JsonSettingReader]:
