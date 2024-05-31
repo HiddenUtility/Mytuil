@@ -1,6 +1,6 @@
 {
 
-    "address" : "\\\\172.23.77.138",
+    "address" : "localhost",
     "user": "Administrator",
     "password": "password"
 

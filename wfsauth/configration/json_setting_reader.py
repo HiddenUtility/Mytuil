@@ -2,14 +2,13 @@ import json
 from pathlib import Path
 
 
-class JsonSettingReader:
-    MUST_KEYS = [
-        "address",
-        "user",
-        "password",
-        ]
+from wfsauth.configration.SettingJsonFileKeyName import SettingJsonFileKeyName
 
-    __settings: dict
+
+class JsonSettingReader:
+    """jsonを読み取った結果"""
+    MUST_KEYS = [v.name for v in SettingJsonFileKeyName]
+    __settings: dict[str, str]
 
     def __init__(self, src: Path):
         self.__settings =self.__load(src)
@@ -21,10 +20,14 @@ class JsonSettingReader:
     def __repr__(self):
         return self.__str__()
     
-    def __getitem__(self,key):
+    def __getitem__(self, key: str) -> str:
+        return self.__settings[key]
+    
+
+    def get(self, key:str) -> str | None:
         return self.__settings.get(key)
 
-    def __load(self,src:Path) -> dict:
+    def __load(self,src:Path) -> dict[str, str]:
         if not src.is_file(): raise FileNotFoundError(f"{src}がありません。")
         with open(src, "r", encoding="utf-8") as f:
             data: dict = json.load(f)
@@ -33,11 +36,14 @@ class JsonSettingReader:
         return data
 
     @property
-    def address(self):
-        return self.__settings["address"]
+    def address(self) -> str:
+        return self.__settings[SettingJsonFileKeyName.address.name]
+    
     @property
-    def user(self):
-        return self.__settings["user"]
+    def user(self) -> str:
+        return self.__settings[SettingJsonFileKeyName.address.name]
+    
     @property
-    def password(self):
-        return self.__settings["password"]
+    def password(self) -> str:
+        return self.__settings[SettingJsonFileKeyName.address.name]
+    

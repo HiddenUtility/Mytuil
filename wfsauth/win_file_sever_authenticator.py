@@ -1,19 +1,20 @@
 from __future__ import annotations
-from usingnetuse.json_setting_reader import JsonSettingReader
-from usingnetuse.server_connection_subprocess import ServerConnectionSubprocess
-from usingnetuse.connection_info_reader import ConnectionInfoReader
-from usingnetuse.net_command_error import NetCommandConnectionError
+from wfsauth.configration.json_setting_reader import JsonSettingReader
+from wfsauth.executor.server_connection_subprocess import FileSeverAuthenticationCommandExecutor
+from wfsauth.configration.connection_info_builder import ConnectionInformationBuilder
+from wfsauth.error.net_command_error import NetUseCommandCError
 
-class ServerConnection:
+class WindFileServerAuthenticator:
+    """Windowsのファイル共有の認証を通す"""
     __readers : list[JsonSettingReader]
     def __init__(self):
-        self.__readers = ConnectionInfoReader().to_readers()
+        self.__readers = ConnectionInformationBuilder().to_readers()
     
     def __str__(self):
         return "\n+++++++++++++++++++++++++++++++++\n".join([str(r) for r in self.__readers])
     
     def __send(self, reader: JsonSettingReader,ignore:bool):
-        ServerConnectionSubprocess(
+        FileSeverAuthenticationCommandExecutor(
             address=reader.address,
             user=reader.user,
             password=reader.password,
@@ -28,7 +29,7 @@ class ServerConnection:
         for reader in self.__readers:
             try:
                 self.__send(reader, False)
-            except NetCommandConnectionError as e:
+            except NetUseCommandCError as e:
                 errors[str(reader)] = str(e)
             except Exception as e:
                 raise e

@@ -6,6 +6,7 @@ from pyutil.filetransfer.error.DeleteRetryCountOverError import DeleteRetryCount
 from pyutil.filetransfer.error.FileDeleteError import FileDeleteError
 
 class FileSourceDataRemover:
+    """ファイルを削除する"""
     
     RETRY_COUNT = 3
     DERAY = 1

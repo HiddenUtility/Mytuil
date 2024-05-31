@@ -1,11 +1,12 @@
-from usingnetuse.net_command_error import NetCommandConnectionError
 
 
 import subprocess
 from subprocess import CalledProcessError
+from wfsauth.error.net_command_error import NetUseCommandCError
 
 
-class ServerConnectionSubprocess:
+class FileSeverAuthenticationCommandExecutor:
+    """NET USEを使って認証を通す"""
     NET_PATTERN = "NET USE {0} /user:{1} {2}"
 
     def __init__(self,address="",user="",password=""):
@@ -26,6 +27,6 @@ class ServerConnectionSubprocess:
 
         if err != "":
             if not ignore:
-                raise NetCommandConnectionError(err)
+                raise NetUseCommandCError(err)
             else:
                 print(err)

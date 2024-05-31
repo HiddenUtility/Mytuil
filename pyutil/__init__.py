@@ -44,8 +44,9 @@ from pyutil.myerror.retry_count_over_error import RetryCountOverError
 from pyutil.jwtutil.myjwt import MyJsonWebToken
 
 # // Text
-from pyutil.textutil.TextExtraction import TextExtraction
+from pyutil.textutil.TextExtraction import TextExtractionMethod
 from pyutil.textutil.NcCommentOutRemovedText import NcCommentOutRemovedText
+from pyutil.textutil.datetime_label_creator import DatetimeLabelCreator
 
 __copyright__    = 'Copyright (C) 2024 HiddenUtility'
 __version__      = '1000'
@@ -91,7 +92,8 @@ __all__ = [
 
     'MyJsonWebToken',
 
-    'TextExtraction',
+    'TextExtractionMethod',
     'NcCommentOutRemovedText',
+    'DatetimeLabelCreator',
     
     ]

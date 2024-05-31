@@ -4,10 +4,12 @@ from pathlib import Path
 from copy import copy
 import time
 import traceback
+
+
 from pyutil.mylogger.my_log_data import MyLogData
 from pyutil.mylogger.logger import Logger
 from pyutil.myerror.retry_count_over_error import RetryCountOverError 
-
+from pyutil.pathuil.directory_creator import DirecotryCreator
 
 class MyLogger(Logger):
     RETRY_LIMIT = 3
@@ -17,17 +19,27 @@ class MyLogger(Logger):
     __logs: list[MyLogData]
     __start_time : dict[str, float]
     def __init__(self,
-                 dst:Path = Path("./log"), 
+                 dest:Path = Path("../log"), 
                  name="", 
                  split_day=True, 
-                 limit=5
+                 limit=5,
+                 mkdir: bool = True,
                  ):
-        """
-        ログを作成する。排他とか無いので注意
-        
+        """簡易的にログを取る
+        排他とかないので注意
+        基本的には追記していく
+
+        Args:
+            dest (Path, optional): 出力先を指定. Defaults to Path("../log").
+            name (str, optional): ログに任意の名前を付けることができる.排他処理ないので衝突しそうなときは名前分けて使ってね。 Defaults to "".
+            split_day (bool, optional): 日付をログに付ける。インスタンス時の日付でログを作るため、日付でファイル分けたい場合は都度都度インスタンス必要 Defaults to True.
+            limit (int, optional): ログのファイル数.日付を分けるて出力先した場合の最大値数を設定する。超えたらインスタンス時に消す。 Defaults to 5.
+            mkdir (bool, optional): 出力先が無ければディレクトを生成する. Defaults to True.
         """
         self.__limit = limit
-        self.__dst = dst
+        self.__dst = dest
+        if mkdir:
+            DirecotryCreator.mkdir(dest)
         self.__dst.mkdir(exist_ok=True)
         self.__name = f"{self.__class__.__name__}" if name=="" else name
         self.__rmlog(self.__name)

@@ -2,6 +2,7 @@ import re
 
 
 class NcCommentOutRemovedText:
+    """文字列から()が追加部分を削除する。"""
     __origin : str
     def __init__(self, text: str) -> None:
         self.__origin = text
