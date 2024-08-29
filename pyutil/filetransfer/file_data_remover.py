@@ -12,10 +12,16 @@ class FileSourceDataRemover:
     DERAY = 1
     
     def __init__(self, src: Path):
+        """ファイルを削除する
+
+        Args:
+            src (Path): target path
+
+        Raises:
+            TypeError: _description_
+        """
         if not isinstance(src, Path):
             raise TypeError()
-        if not src.exists():
-            raise FileNotFoundError()
         self.__src: Path = src
 
         
@@ -38,4 +44,6 @@ class FileSourceDataRemover:
             raise FileDeleteError(f"{self.__src}の削除に失敗しました。")
 
     def run(self):
+        if not self.__src.exists():
+            return
         self.__retry(self.__remove)

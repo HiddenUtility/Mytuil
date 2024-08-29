@@ -10,12 +10,11 @@ class FileHashCheacker(HashCheacker):
         self.__src = src
         self.__hash = self.get_hash(self.__src)
 
-    def get_hash(self, f: Path):
-        if not f.exists():
-            raise FileNotFoundError(f"{f}は存在しません。")
-        with open(self.__src, "rb") as data:
-            return HashLableMaker.get_sha256(data.read())
 
+    def get_hash(self, f: Path)-> str:
+        return HashLableMaker.get_file_hash(f)
+
+    
     # @override
     def is_same(self, target:Path) -> bool:
         return self.get_hash(self.__src) == self.get_hash(target)

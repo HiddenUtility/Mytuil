@@ -1,9 +1,14 @@
+from __future__ import annotations
+
+from pathlib import Path
 import hashlib
 
 
+
 class HashLableMaker:
+    """文字列まはたバイト配列、ファイルからhash値のstringを得る"""
     @staticmethod
-    def _try_parse(data:bytes | str) -> bytes:
+    def __try_parse(data:bytes | str) -> bytes:
         if isinstance(data, str):
             data = data.encode()
         if not isinstance(data, bytes):raise TypeError()
@@ -19,7 +24,7 @@ class HashLableMaker:
         Returns:
             str: 32文字列
         """
-        return hashlib.md5(cls._try_parse(data)).hexdigest()
+        return hashlib.md5(cls.__try_parse(data)).hexdigest()
     
 
     @classmethod
@@ -28,9 +33,9 @@ class HashLableMaker:
         """sha256の文字配列を得る
 
         Returns:
-            str: 64桁の文字列
+            str: 64桁のSHA256のハッシュ
         """
-        return hashlib.sha256(cls._try_parse(data)).hexdigest()
+        return hashlib.sha256(cls.__try_parse(data)).hexdigest()
     
 
     @classmethod
@@ -38,8 +43,28 @@ class HashLableMaker:
         """認証用のハッシュを発生させる
 
         Returns:
-            str: 64桁の文字列
+            str: 64桁のSHA256のハッシュ
         """
         data = f'{name}:{password}'
-        return hashlib.sha256(cls._try_parse(data)).hexdigest()
+        return hashlib.sha256(cls.__try_parse(data)).hexdigest()
     
+    @classmethod
+    def get_file_hash(cls, filepath: str | Path) -> str:
+        """ファイルのハッシュ値を得る
+
+        Args:
+            filepath (str | Path): ファイルパス
+
+        Raises:
+            FileNotFoundError: 存在しない
+
+        Returns:
+            str: SHA256のハッシュ
+        """
+        filepath = Path(filepath)
+        if not filepath.exists():
+            raise FileNotFoundError(f"{filepath}は存在しません。")
+        with open(filepath, "rb") as data:
+            return cls.get_sha256(data.read())
+    
+

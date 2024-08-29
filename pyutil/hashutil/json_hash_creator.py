@@ -1,0 +1,38 @@
+
+
+import json
+from typing import Self
+from pyutil.hashutil.hash_label_maker import HashLableMaker
+
+
+class JsonHashCreator:
+    """辞書等をjsonにしてhash値を得る"""
+    __json : str
+    def __init__(self, data: dict = {}) -> None:
+        """辞書等をjsonにしてhash値を得る
+
+        Args:
+            data (dict, optional): ハッシュ化したい辞書. Defaults to {}.
+        """
+        self.__json = json.dumps(data)
+
+    def set_dict(self, data: dict[str,str]) -> Self:
+        return JsonHashCreator(data)
+
+    def get_md5(self) -> str:
+        return HashLableMaker.get_md5(self.__json.encode())
+
+    def get_sha256(self) -> str:
+        return HashLableMaker.get_sha256(self.__json.encode())
+    
+    def get_security(self, password:str) -> str:
+        """暗号化hash
+
+        Args:
+            password (str): _description_
+
+        Returns:
+            str: _description_
+        """
+        return HashLableMaker.get_security(self.__json.encode(),password)
+    

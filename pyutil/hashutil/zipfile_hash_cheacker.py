@@ -5,6 +5,7 @@ from pyutil.hashutil.hash_cheacker import HashCheacker
 from pyutil.hashutil.hash_label_maker import HashLableMaker
 
 class ZipFileHashCheacker(HashCheacker):
+    """中身のチェック"""
     def __init__(self, src:Path):
         if not src.exists():
             raise FileNotFoundError(f"{src}は存在しません。")

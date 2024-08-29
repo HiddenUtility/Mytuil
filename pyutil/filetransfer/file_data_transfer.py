@@ -1,6 +1,5 @@
 
 from pathlib import Path
-from pyutil.filetransfer.failure_file_remover import FailureFileRemover
 from pyutil.pathuil.directory_creator import DirecotryCreator
 
 from pyutil.filetransfer.file_data_coping import FileDataCoping
@@ -8,26 +7,39 @@ from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
 
 
 class FileDataTransfer:
+    """ファイルを転送する"""
     __src : Path
     __dst : Path
-    def __init__(self, src: Path, dst:Path):
-        if not isinstance(src, Path): raise TypeError()
-        if not isinstance(dst, Path): raise TypeError()
-        if not src.exists(): raise FileNotFoundError()
-        self.__src = src
-        self.__dst = dst
+    def __init__(self, src_filepath: Path, dest_dirpath:Path):
+        """ファイルを転送する
+
+        Args:
+            src_filepath (Path): コピー対象のファイルパス
+            dest_dirpath (Path): コピー先のディレクトリパス
+
+        """
+
+        if not isinstance(src_filepath, Path): raise TypeError()
+        if not isinstance(dest_dirpath, Path): raise TypeError()
+        if not src_filepath.exists(): raise FileNotFoundError(f'{src_filepath}は存在しません。')
+        self.__src = src_filepath
+        self.__dst = dest_dirpath
 
     def __mkdir(self, path: Path):
         DirecotryCreator.mkdir(path)
 
-    def crelar_failure_files(self):
-        '''転送失敗した途中ファイルを削除する。'''
-        FailureFileRemover(self.__dst).run()
+    def run(self, overwrite=True, unlink_src=True):
+        """転送開始
 
-    def run(self, remove=True):
+        Args:
+            overwrite (bool, optional): 既に存在していたら上書きするかどうか. Defaults to True.
+            unlink_src (bool, optional): 移動に成功したらソースを消すかどうか. Defaults to True.
+        """
         self.__mkdir(self.__dst)
-        FileDataCoping(self.__src, self.__dst,remove=remove).run()
-        if not remove:
-            return
-        FileSourceDataRemover(self.__src).run()
+        FileDataCoping(self.__src, self.__dst, overwrite=overwrite).run()
+        if unlink_src:
+            FileSourceDataRemover(self.__src).run()
+
+
+        
         
