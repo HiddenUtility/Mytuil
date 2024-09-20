@@ -16,7 +16,7 @@ class PathStream(metaclass=ABCMeta):
         raise NotImplementedError()
     
     @abstractmethod
-    def narrow_down_datetime(self,start: datetime, end: datetime)->PathStream:
+    def filter_datetime(self,start: datetime, end: datetime)->PathStream:
         raise NotImplementedError()
     
     @abstractmethod

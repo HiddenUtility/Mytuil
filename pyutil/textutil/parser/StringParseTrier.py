@@ -17,9 +17,10 @@ class StringParseFloatTrier(IParseTrier):
             raise TypeError(f'valueは{type(value)}です。strオブジェクトではありません。')
         
         self.__value = value
+
         try:
             self.__value = float(value)
-        except Exception:
+        except:
             pass
 
     @property

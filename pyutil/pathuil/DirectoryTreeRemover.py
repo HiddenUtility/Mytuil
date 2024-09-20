@@ -6,24 +6,25 @@ from pathlib import Path
 
 class DirectoryTreeRemover:
     """再回帰でディレクトリ内を削除する。
+    - .venv, .git, .gitignoreは消さない
 
         target (Path): 出力するディレクトリ
-        ignore_dirname_patterns (_type_, optional): 無視するディレクトリ名。パターン可. Defaults to set(['.venv']).
-        ignore_filename_patterns (_type_, optional): 無視するファイル名。パターン可. Defaults to set(['.gitignore']).
+        ignore_dirname_patterns (_type_, optional): 無視するディレクトリ名。正規表現の前方一致. Defaults to set().
+        ignore_filename_patterns (_type_, optional): 無視するファイル名。正規表現の前方一致. Defaults to set().
     """
     __target : Path
     __igno_dirnames : set[str]
     def __init__(self,
                  target: Path,
                  ignore_dirname_patterns  = set(),
-                 ignore_filename_patterns  = set(['.gitignore']),
+                 ignore_filename_patterns  = set(),
                  ) -> None:
         """再回帰でディレクトリ内を削除する。
 
         Args:
             target (Path): 出力するディレクトリ
-            ignore_dirname_patterns (_type_, optional): 無視するディレクトリ名。パターン可. Defaults to set(['.venv']).
-            ignore_filename_patterns (_type_, optional): 無視するファイル名。パターン可. Defaults to set(['.gitignore']).
+            ignore_dirname_patterns (_type_, optional): 無視するディレクトリ名。正規表現の前方一致. Defaults to set().
+            ignore_filename_patterns (_type_, optional): 無視するファイル名。正規表現の前方一致. Defaults to set().
         """
 
 
@@ -49,7 +50,6 @@ class DirectoryTreeRemover:
             if not DirectoryTreeCopierCanCopyNameIgnoredPolicy(self.__igno_dirnames, d.name).is_ok():
                 continue
             self.__unlink(d)
-
             rmdir(d)
 
 

@@ -3,7 +3,7 @@
 from pathlib import Path
 from time import sleep
 
-from pyutil.jsonutil.ProcessNumberJsonLogger import ProcessNumberJsonLogger
+from pyutil.logger.ProcessNumberJsonLogger import ProcessNumberJsonLogger
 
 
 

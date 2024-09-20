@@ -1,10 +1,10 @@
 from pathlib import Path
 from zipfile import ZipFile
 
-from pyutil.hashutil.hash_cheacker import HashCheacker
+from pyutil.hashutil.i_hash_cheacker import IHashCheacker
 from pyutil.hashutil.hash_label_maker import HashLableMaker
 
-class ZipFileHashCheacker(HashCheacker):
+class ZipFileHashCheacker(IHashCheacker):
     """中身のチェック"""
     def __init__(self, src:Path):
         if not src.exists():

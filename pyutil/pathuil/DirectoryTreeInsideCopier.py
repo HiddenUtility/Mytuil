@@ -1,5 +1,5 @@
 from pyutil.pathuil.DirectoryTreeCopierCanCopyNamePolicy import DirectoryTreeCopierCanCopyNameIgnoredPolicy
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 
 
 from pathlib import Path
@@ -58,7 +58,7 @@ class ToInsideDirectoryTreeCopier:
         fs = [p for p in target.glob('*') if p.is_file()]
         ds = [p for p in target.glob('*') if p.is_dir()]
 
-        DirecotryCreator(self.__dest,clear=self.__is_clear)
+        DirectoryCreator(self.__dest,clear=self.__is_clear)
 
         for f in fs:
             if not DirectoryTreeCopierCanCopyNameIgnoredPolicy(self.__igno_filenames, f.name).is_ok():
@@ -69,7 +69,7 @@ class ToInsideDirectoryTreeCopier:
             if not DirectoryTreeCopierCanCopyNameIgnoredPolicy(self.__igno_dirnames, d.name).is_ok():
                 continue
             new_dest = dest / d.name
-            DirecotryCreator(new_dest,clear=self.__is_clear)
+            DirectoryCreator(new_dest,clear=self.__is_clear)
             self.__copy(d, new_dest)
 
     def run(self):

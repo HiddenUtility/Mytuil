@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""wfsauth\__init__.py
+"""__init__.py
 
 Explain : コマンドをつかってWindowsFileServerに認証を通す
 

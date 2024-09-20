@@ -1,3 +1,17 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""__init__.py
+
+Explain : settingsの情報に従ってbuildする
+          
+Create  : 2024-06-12(水): H.U
+          
+Todo    : 
+          
+"""
+
+
+
 from buildtool.build_tool import BuildTool
 
 __copyright__    = 'Copyright (C) 2024 HiddenUtility'

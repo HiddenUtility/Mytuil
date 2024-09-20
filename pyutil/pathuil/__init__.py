@@ -11,8 +11,8 @@ Todo    :
 
 from pyutil.pathuil.pathstream.filepathstream import FilepathStream
 
-from pyutil.pathuil.TestDirectoryPreparator import TestDirectoryPreparator
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.CrelerTestDirectoryPreparator import CrearTestDirectoryPreparator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 from pyutil.pathuil.windows_available_path_name import WindowsAvailablePathName
 from pyutil.pathuil.py_chash_remover import PycacheRemover
 
@@ -33,9 +33,9 @@ __all__ = [
     ## パスストリーム
     'FilepathStream',
     ## 作成
-    'DirecotryCreator',
+    'DirectoryCreator',
     'WindowsAvailablePathName',
-    'TestDirectoryPreparator',
+    'CrearTestDirectoryPreparator',
     'PycacheRemover',
     ## /再回帰系
     'DirectoryTreeCopier',

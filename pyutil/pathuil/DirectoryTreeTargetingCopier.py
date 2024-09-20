@@ -3,7 +3,7 @@
 from pathlib import Path
 from shutil import copy
 
-from pyutil.pathuil import DirecotryCreator
+from pyutil.pathuil import DirectoryCreator
 from pyutil.textutil import TextPatternsMutchPolicy
 
 
@@ -58,7 +58,7 @@ class TargetDirectoryOnlyCopier:
         for d in ds:
             if TextPatternsMutchPolicy(self.__target_dirnames, d.name).is_ok():
                 new_dest = dest / d.name
-                DirecotryCreator(new_dest,clear=self.__is_clear)
+                DirectoryCreator(new_dest,clear=self.__is_clear)
                 self.__sub_copy(d, new_dest)
 
     def __sub_copy(self, target:Path, dest:Path):
@@ -70,7 +70,7 @@ class TargetDirectoryOnlyCopier:
 
         for d in ds:
             new_dest = dest / d.name
-            DirecotryCreator(new_dest,clear=self.__is_clear)
+            DirectoryCreator(new_dest,clear=self.__is_clear)
             self.__sub_copy(d, new_dest)
 
 

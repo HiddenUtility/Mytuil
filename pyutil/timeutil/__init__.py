@@ -11,6 +11,7 @@ Todo    :
 
 from pyutil.timeutil.XDatetimePassingFromReferenceTimePolicy import XTimePassingFromReferenceTimePolicy
 from pyutil.timeutil.XdayDateTimePassingFromReferenceTimePolicy import XdayDateTimePassingFromReferenceTimePolicy
+from pyutil.timeutil.mytimer.ElapsedTimeMeasurer import ElapsedTimeMeasurer
 from pyutil.timeutil.mytimer.LoopTimer import LoopTimer
 from pyutil.timeutil.mytimer.my_timer import MyTimer
 from pyutil.timeutil.FileTimestampUpdater import FileTimestampUpdater
@@ -26,6 +27,7 @@ __all__ = [
     ## タイマー系
     'MyTimer',
     'LoopTimer',
+    'ElapsedTimeMeasurer',
     ## ファイル
     'FileTimestampUpdater',
     ## 比較

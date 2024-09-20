@@ -7,7 +7,7 @@ from xml.etree.ElementTree import Element
 
 from pathlib import Path
 
-from pyutil.pathuil import DirecotryCreator
+from pyutil.pathuil import DirectoryCreator
 
 
 class XmlUtility:
@@ -28,7 +28,7 @@ class XmlUtility:
             dest_filepath (Path): 出力するファイル名
             unicode (str, optional): _description_. Defaults to 'utf-8'.
         """
-        DirecotryCreator(dest_filepath.parent)
+        DirectoryCreator(dest_filepath.parent)
         
         doc = minidom.parseString(ElementTree.tostring(self.__root, unicode))
         with open(dest_filepath,'w') as f:

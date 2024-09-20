@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 from pyutil.pickleutil.error.PickleFileLoadingFailureError import PickleFileLoadingFailureError
 from pyutil.pickleutil.error.PickleFileOutputFailureError import PickleFileOutputFailureError
 
@@ -39,7 +39,7 @@ class PickleCompressor:
         self.__obj = obj
         self.__over_write = over_write
         if ok_mkdir:
-            DirecotryCreator(filepath.parent)
+            DirectoryCreator(filepath.parent)
 
     @classmethod
     def __load(cls, filepath : Path) -> object:

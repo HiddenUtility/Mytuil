@@ -3,7 +3,7 @@ from pathlib import Path
 from shutil import copy
 
 
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 from pyutil.pathuil.DirectoryTreeCopierCanCopyNamePolicy import DirectoryTreeCopierCanCopyNameIgnoredPolicy
 
 
@@ -57,6 +57,7 @@ class DirectoryTreeCopier:
 
         self.__igno_dirnames.add(".venv")
         self.__igno_dirnames.add(".git")
+        self.__igno_filenames.add("LICENSE")
 
 
     def __copy(self, target:Path, dest:Path):
@@ -72,12 +73,12 @@ class DirectoryTreeCopier:
             if not DirectoryTreeCopierCanCopyNameIgnoredPolicy(self.__igno_dirnames, d.name).is_ok():
                 continue
             new_dest = dest / d.name
-            DirecotryCreator(new_dest,clear=self.__is_clear)
+            DirectoryCreator(new_dest,clear=self.__is_clear)
             self.__copy(d, new_dest)
 
     def run(self):
         root_dest = self.__dest / self.__src.name
-        DirecotryCreator(root_dest,clear=self.__is_clear)
+        DirectoryCreator(root_dest,clear=self.__is_clear)
         self.__copy(self.__src, root_dest)
 
 

@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from pyutil.pathuil import DirecotryCreator
+from pyutil.pathuil import DirectoryCreator
 
 from pyutil.prefeutil.interface.PreferencesFileSerializer import PreferencesFileSerializer
 from pyutil.prefeutil.json.db.DataBaseJsonKeyName import DataBaseJsonKeyName
@@ -52,7 +52,7 @@ class DataBasePreferencesJsonFileSerializer(PreferencesFileSerializer):
             DataBaseJsonKeyName.username.name : "postgres",
             DataBaseJsonKeyName.password.name : "postgres",
         }
-        DirecotryCreator(dest.parent)
+        DirectoryCreator(dest.parent)
         with open(dest, 'w') as json_file:
             json.dump(data, json_file, indent=len(data))
 

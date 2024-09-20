@@ -2,7 +2,6 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 import time
 
-
 class MyTimer:
     """タイマー詰め合わせ"""
     __start_time: float

@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 
 from pyutil.pickleutil.error.PickleFileOutputFailureError import PickleFileOutputFailureError
 
@@ -23,7 +23,7 @@ class UsingPickle:
     @classmethod
     def dump(cls, filepath: Path | str, obj: object, ok_mkdir=True, is_verified=False)-> None:
         filepath = Path(filepath)
-        if ok_mkdir: DirecotryCreator(filepath.parent)
+        if ok_mkdir: DirectoryCreator(filepath.parent)
         if not filepath.parent.exists():
             raise NotADirectoryError(f"{filepath.parent}は在りません。")
         with open(filepath, "wb") as f:

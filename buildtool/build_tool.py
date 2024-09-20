@@ -1,56 +1,59 @@
-from buildtool.build_process import BuildProcess
-from buildtool.config import Configuration
-from buildtool.new_package_builder import NewPackageBuilder
-from buildtool.py_chash_remover import PycashRemover
-from buildtool.system_chash_remover import SystemChashRemover
-from buildtool.test_remover import TestRemover
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""build_tool.py
 
-from pathlib import Path
-from shutil import make_archive
+Explain : Mainモジュール
+          
+Create  : 2024-06-12(水): H.U
+          
+Todo    : 
+          
+"""
+
+from shutil import copy
+from pyutil import DirectoryTreeCopier, DirectoryCreator
+from pyutil import EasyLogger
+
+from buildtool.configration.setting_loader import SettingLoader
+from buildtool.configration.IgunoreDirecotryName import IgunoreDirecotryName
+from buildtool.configration.BuildProject import BuildProject
 
 
-class BuildTool(BuildProcess):
-    RELEASE = Configuration.RELEASE
-    __src:Path
-    __dst:Path
-    __processes:list[type[BuildProcess]]
-    __ignore_files: list[str]
-    __ignore_direcotry: list[str]
-    __initialize_dirnames: list[str]
-    __out_zip : bool
-    def __init__(self,
-                 src: Path = Path().cwd(),
-                 dst : Path = Path(RELEASE),
-                 build_name = "v1000",
-                 ignore_files: list[str] = [],
-                 ignore_direcotry: list[str] = [],
-                 initialize_dirnames: list[str] = [],
-                 out_zip = False,
-                 ):
-        if not dst.parent.exists(): 
-            raise NotADirectoryError()
-        dst.mkdir(exist_ok=True)
-        self.__src = src
-        self.__dst = dst / build_name
-        self.__ignore_files = ignore_files
-        self.__ignore_direcotry = ignore_direcotry 
-        self.__initialize_dirnames = initialize_dirnames
-        self.__out_zip = out_zip
+class BuildTool:
+    """リリース用にファイルを整理する"""
+    __logger : EasyLogger
+    __loader : SettingLoader
+    def __init__(self) -> None:
+        self.__loader = SettingLoader()
+        self.__logger = EasyLogger(self.__loader.log_path, name=f'{self.__class__.__name__}')
 
-        self.__processes:list[type[BuildProcess]] = [
-            NewPackageBuilder(
-                self.__src,
-                self.__dst,
-                self.__ignore_files,
-                self.__ignore_direcotry
-                ),
-            PycashRemover(self.__src),
-            TestRemover(self.__dst),
-            SystemChashRemover(self.__dst, self.__initialize_dirnames),
-            ]
-        if self.__out_zip:
-            make_archive(self.__dst , "zip" , self.__dst)
+    def __build(self, pjt : BuildProject):
+        self.__logger.write(pjt)
+        DirectoryCreator(pjt.dest_path, clear=True)
+        for dirpath in pjt.dirpaths:
+            DirectoryTreeCopier(
+                dirpath,
+                pjt.dest_path,
+                ignore_dirname_patterns=IgunoreDirecotryName.VALUE + pjt.ignore_dirname,
+                ignore_filename_patterns=pjt.ignore_filename,
+                clear=True,
+                ).run()
+        for filepath in pjt.filepaths:
+            copy(filepath, pjt.dest_path / filepath.name)
 
-    def run(self):
-        for process in self.__processes:
-            process.run()
+    def run(self, clear = True):
+        """ビルド開始
+
+        Args:
+            clear (bool, optional): 出力先を初期化する. Defaults to True.
+        """
+        self.__logger.start()
+        if clear:
+            self.__loader.clear_dest()
+        try:
+            for pjt in self.__loader.to_pjts():
+                self.__build(pjt)
+        except Exception as e:
+            self.__logger.error_stack_trace(e)
+        self.__logger.end()
+

@@ -92,7 +92,7 @@ class PoolResultTypeDefinition:
     def write_error_stack_trace(self, 
                     e: Exception) -> Self:
         """トラックトレース書き込む"""
-        self.write_error('\n'.join(format_exception(e)))
+        return self.write_error('\n'.join(format_exception(e)))
 
     def write_cache(self, cache:object) -> Self:
         """キャッシュプロパティーを変更した結果を返す。

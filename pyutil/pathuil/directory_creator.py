@@ -14,7 +14,7 @@ import shutil
 from pathlib import Path
 
 
-class DirecotryCreator:
+class DirectoryCreator:
     """再回帰的にディレクトリを作る
     mkdir
     """
