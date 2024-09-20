@@ -82,9 +82,23 @@ class FilepathStream(PathStream):
         return self._return(filepaths)
     
     #@Override
-    def narrow_down_datetime(self,
+    def filter_datetime(self,
                              start: datetime=datetime(2000, 1, 1),
                              end: datetime=datetime(2099,12,31)) -> FilepathStream:
+        """ファイパスをdatetimeで絞る
+
+        Args:
+            start (datetime, optional): 開始. Defaults to datetime(2000, 1, 1).
+            end (datetime, optional): 終了. Defaults to datetime(2099,12,31).
+
+        Raises:
+            TypeError: _description_
+            TypeError: _description_
+            ValueError: _description_
+
+        Returns:
+            FilepathStream: _description_
+        """
         if not isinstance(start, datetime): raise TypeError
         if not isinstance(end, datetime): raise TypeError
         if end < start: raise ValueError

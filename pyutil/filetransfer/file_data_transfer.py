@@ -1,6 +1,6 @@
 
 from pathlib import Path
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 
 from pyutil.filetransfer.file_data_coping import FileDataCoping
 from pyutil.filetransfer.file_data_remover import FileSourceDataRemover
@@ -26,7 +26,7 @@ class FileDataTransfer:
         self.__dst = dest_dirpath
 
     def __mkdir(self, path: Path):
-        DirecotryCreator.mkdir(path)
+        DirectoryCreator.mkdir(path)
 
     def run(self, overwrite=True, unlink_src=True):
         """転送開始

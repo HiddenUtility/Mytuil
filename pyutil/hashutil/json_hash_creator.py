@@ -25,14 +25,16 @@ class JsonHashCreator:
     def get_sha256(self) -> str:
         return HashLableMaker.get_sha256(self.__json.encode())
     
-    def get_security(self, password:str) -> str:
+    def get_security(self, secrety:str) -> str:
         """暗号化hash
 
         Args:
-            password (str): _description_
+            secrety (str): 暗号化キー
 
         Returns:
-            str: _description_
+            str: SHA256で暗号化したハッシュ値
         """
-        return HashLableMaker.get_security(self.__json.encode(),password)
+        return HashLableMaker.get_encryption_hash(self.__json.encode(), secrety.encode())
     
+
+

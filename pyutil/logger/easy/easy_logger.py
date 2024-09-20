@@ -15,7 +15,7 @@ from typing import Literal, overload
 from pathlib import Path
 import time
 from traceback import format_exception
-from pyutil.pathuil.directory_creator import DirecotryCreator
+from pyutil.pathuil.directory_creator import DirectoryCreator
 
 
 from pyutil.logger.log_data import LogLevel
@@ -62,7 +62,7 @@ class EasyLogger(ILogger):
         self.__max_write_num = max_write_num
         self.__dest = dest
         if mkdir: 
-            DirecotryCreator(dest)
+            DirectoryCreator(dest)
         self.__log_datas=[]
         self.__start_time_map = {}
         self.__base_name = f"{self.__class__.__name__}" if name=="" else name
@@ -124,7 +124,7 @@ class EasyLogger(ILogger):
         処理時間は現在時刻で初期化されるため、もう一度呼ぶとラップタイムになる
         Args:
             id_ (str, optional): _description_. Defaults to "main".
-            sampling (int, optional): _description_. Defaults to 0.
+            sampling (int, optional): 何個あたりの処理時間をラベルして欲しい時. Defaults to 0.
         """
         if not isinstance(sampling, int):
             raise TypeError(f'samplingは{type(sampling)}です。intオブジェクトではありません。')
@@ -138,11 +138,12 @@ class EasyLogger(ILogger):
         self.write("{} 処理時間は{:5f}sでした。".format(id_, processing_time),out=True)
         if sampling > 0:
             per_time = processing_time / sampling
-            self.write("{}個中の1個当たりの処理時間は{:5f}sでした。".format(
+            self.write(
+                "{}個中の1個当たりの処理時間は{:5f}sでした。".format(
                 sampling, 
                 per_time, 
-                out=True
-                )
+                ),
+            out=True,
             )
 
     @overload

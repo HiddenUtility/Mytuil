@@ -1,10 +1,5 @@
-from __future__ import annotations
-
-
+from typing import Self
 from pyutil.jsonutil.json_serializer import JsonSerializer
-
-
-
 from enum import Enum, auto
 from pathlib import Path
 
@@ -42,7 +37,7 @@ class SingleDictionaryJsonSerializer:
         """
         JsonSerializer.to_json(dest, self.__data)
 
-    def load(self, src : Path) -> SingleDictionaryJsonSerializer:
+    def load(self, src : Path) -> Self:
         data = JsonSerializer.read_json(src)
         return SingleDictionaryJsonSerializer(
             data[self.ResultKey.data_id.name],
@@ -62,4 +57,5 @@ class SingleDictionaryJsonSerializer:
     def to_dict(self) -> dict:
         """このオブジェクト全体を辞書に変換する"""
         return self.__data
+    
     

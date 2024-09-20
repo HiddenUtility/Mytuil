@@ -19,19 +19,40 @@ class TextPatternsMutchPolicy:
         self.__text = text
 
     def is_ok(self) -> bool:
-        """パターンのどれかに一致した
+        """パターンに一致した
+        - 前方一致
 
         Returns:
             bool: パターンのどれかに一致
         """
         for pattern in self.__patterns:
-            if re.search(pattern, self.__text):
-                return True
+            try:
+                if re.match(pattern, self.__text) is not None:
+                    return True
+            except Exception as e:
+                e.add_note(pattern)
+                raise e
+        return False
+    
+    def is_parts_ok(self) -> bool:
+        """パターンに部分一致した
+        - サーチ
+
+        Returns:
+            bool: パターンに部分一致した
+        """
+        for pattern in self.__patterns:
+            try:
+                if re.search(pattern, self.__text) is not None:
+                    return True
+            except Exception as e:
+                e.add_note(pattern)
+                raise e
         return False
 
 
     def is_all_ok(self) -> bool:
-        """パターンのどれかに一致した
+        """パターンすべてに一致した
 
         Returns:
             bool: すべてに一致

@@ -13,7 +13,10 @@ from pyutil.jwtutil.PayLoadDictionary import PayLoadDictionary
 
 
 class MyJwtAuthorizer:
-    """jwt認証おこなう"""
+    """jwtの生成や確認を行う
+    - 内部的に秘密鍵もっているため,利用者はこのオブジェクトをstaticにする
+    
+    """
     ALGORITHMS = 'HS256'
     __secret : str
     __header: HeaderDictionary
@@ -27,7 +30,9 @@ class MyJwtAuthorizer:
                  timezone: str = 'Asia/Tokyo',
                  secret: str = 'hoge',
                  ) -> None:
-        """jwt認証おこなう
+        
+        """jwtの生成や確認を行う
+        - 内部的に秘密鍵もっているため,利用者はこのオブジェクトをstaticにする
 
         Args:
             init_payload (dict[str, str], optional): ペイロードに必ず含めるデータ。有効期限とタイプは自動入力するので不要。. Defaults to {}.

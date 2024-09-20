@@ -1,0 +1,358 @@
+{
+	"main文": {
+		"prefix": "main",
+		"body": [
+			"class ${1:Main}:",
+			"    def __init__(self):...",
+			"",
+			"    @staticmethod",
+			"    def main():",
+			"        ${2:...}",
+			"",
+			"if __name__ == '__main__':",
+			"    Main.main()"
+		]
+		
+	},
+
+	"test文": {
+		"prefix": "test",
+		"body": [
+			"class ${1:Test}:",
+			"    def __init__(self):...",
+			"",
+			"    def ${2:test_mehotd0}(self):",
+			"        ...",
+			"",
+			"    def ${3:test_mehotd1}(self):",
+			"        ...",
+			"",
+
+			"if __name__ == '__main__':",
+			"    test = $1()",
+			"    test.$2()",
+			"    test.$3()"
+
+		]
+		
+	},
+
+
+
+	"インタフェース": {
+		"prefix": "interface",
+		"body": [
+			"from abc import ABC, abstractmethod",
+			"",
+			"",
+			"class Interface(ABC):",
+			"    ${1:...}"
+		]
+	},
+
+	"エラー": {
+		"prefix": "custom_errors",
+		"body": [
+			"class ${1:Custom}Error(Exception):",
+			"    \"\"\"基底エラー\"\"\"",
+			"",
+			"class ${2:Child}Error($1Error):",
+			"    \"\"\"${3:...}\"\"\""
+		],
+		"description" : "カスタムエラーを発生させる"
+		
+	},
+
+
+    
+
+	"override": {
+		"prefix": "override",
+		"body": [
+			"from typing import override",
+			""
+		]
+	},
+
+	"BaseModel": {
+		"prefix": "base_model",
+		"body": [
+
+			"from pydantic import BaseModel",
+			"",
+			"",
+			"class ${1:MyQueryParameter}(BaseModel):",
+			"    ${2:user_id} : ${3:str}",
+			""
+		]
+	},
+
+
+	"TypeDcit": {
+		"prefix": "my_dict",
+		"body": [
+
+			"from typing import TypedDict, Required, NotRequired",
+			"",
+			"",
+			"class ${1:MyDictionary}(TypedDict):",
+			"    ${2:user_id} : Required[${3:str}]",
+			""
+		]
+	},
+
+
+
+	"アノテーション": {
+		"prefix": "annotations",
+		"body": [
+			"from __future__ import annotations\n"
+		]
+	},
+
+	"エントリーポイント": {
+		"prefix": "entrypoint",
+		"body": [
+            "#!/usr/bin/python",
+            "# -*- coding: utf-8 -*-",
+            "$BLOCK_COMMENT_START$TM_FILENAME",
+            "Explain : ${1:_description_}",
+            "          ",
+            "Create  : $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE($CURRENT_DAY_NAME_SHORT): H.U",
+            "          ",
+            "Todo    : ",
+            "          ",
+            "$BLOCK_COMMENT_END\n\n",
+			"__copyright__    = 'Copyright (C) 2024 Hiroki Uchimura'",
+			"__version__      = '1000'",
+			"__license__      = 'BSD-3-Clause'",
+			"__author__       = 'H.U'",
+			"__author_email__ = 'hiroki_uchimura_zb@mail.toyota.co.jp'",
+			"__url__          = 'https://tmc-droom-gitlab.com/HirokiUchimura'\n__all__ = [",
+			"    $0",
+			"]"
+		]
+		
+	},
+
+	"エントリーポイント2": {
+		"prefix": "entrypoint_github",
+		"body": [
+            "#!/usr/bin/python",
+            "# -*- coding: utf-8 -*-",
+            "$BLOCK_COMMENT_START$TM_FILENAME",
+            "Explain : ${1:_description_}",
+            "          ",
+            "Create  : $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE($CURRENT_DAY_NAME_SHORT): H.U",
+            "          ",
+            "Todo    : ",
+            "          ",
+            "$BLOCK_COMMENT_END\n\n",
+			"__copyright__    = 'Copyright (C) 2024 Hiroki Uchimura'",
+			"__version__      = '1000'",
+			"__license__      = 'BSD-3-Clause'",
+			"__author__       = 'HiddenUtility'",
+			"__author_email__ = 'i.will.be.able.to.see.you@gmail.com'",
+			"__url__          = 'https://github.com/HiddenUtility/pyutil'\n__all__ = [",
+			"    $0",
+			"]"
+		]
+		
+	},
+
+
+	"トライキャッチ": {
+		"prefix": "trychatch",
+		"body": [
+			"try:",
+			"    ${1:...}",
+			"except Exception as e:",
+			"    raise e",
+		]
+		
+	},
+
+	"ロギングトライキャッチ": {
+		"prefix": "try_chatch_logger",
+		"body": [
+			"self.__logger.start()",
+			"try:",
+			"    ${1:...}",
+			"except Exception as e:",
+			"    self.__logger.error_stack_trace(e)",
+			"finally:",
+			"    self.__logger.end()"
+		]
+		
+	},
+
+
+	"型チェック": {
+		"prefix": "typecheck",
+		"body": [
+			"if not isinstance(${1:object}, ${2:type}):",
+			"    raise TypeError(f'$1は{type($1)}です。$2オブジェクトではありません。')",
+			"$0",
+		]
+		
+	},
+
+	"クラス名": {
+		"prefix": "selfclassname",
+		"body": "f'{self.__class__.__name__}$0'"
+	},
+
+
+	"ジェネリクス": {
+		"prefix": "generics",
+		"body": [
+			"from typing import TypeVar, Sequence",
+			"",
+			"",
+			"T = TypeVar('T', ${1:type})",
+		]
+		
+	},
+
+	"クラスプロパティ": {
+		"prefix": "encapsulate",
+		"body": [
+			"__${1:value} : ${2:object}",
+			"$0",
+			"",
+			"@property",
+			"def ${3:value}(self) -> $2:",
+			"    return self.__$1"
+		],
+		"description" : "クラスのプロパティを作成する。"
+	},
+
+	"内包リスト": {
+		"prefix": "comprehension_list",
+		"body": [
+			"[${2:v} for ${3:v} in ${1:iterator}]",
+
+		],
+		"description" : "内包表記を各。pythonの内包はオブジェクトに対してかけないので戻らないといけない。"
+	},
+
+	"内包辞書": {
+		"prefix": "comprehension_dict",
+		"body": [
+			"{${2:k : v} for ${2:k, v} in ${1:iterator}}",
+
+		],
+		"description" : "内包表記を各。pythonの内包はオブジェクトに対してかけないので戻らないといけない。"
+	},
+
+
+
+
+    "モジュールのヘッダー": {
+        "prefix": "module_header",
+        "body": [
+            "#!/usr/bin/python",
+            "# -*- coding: utf-8 -*-",
+            "$BLOCK_COMMENT_START$TM_FILENAME",
+			"",
+            "Explain : ${1:_description_}",
+            "          ",
+            "Create  : $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE($CURRENT_DAY_NAME_SHORT): H.U",
+            "          ",
+            "Todo    : ",
+            "          ",
+            "$BLOCK_COMMENT_END",
+			""
+        ],
+        "description": "module header template"
+    },
+
+    "インポートのユーティル": {
+        "prefix": "fast_import",
+        "body": [
+			"from __future__ import annotations",
+			"from typing import override, TypedDict, Required",
+			"from pydantic import BaseModel",
+			"import asyncio",
+			"import shutil",
+			"from datetime import datetime, timedelta",
+			"from pathlib import Path",
+			"from threading import Thread",
+			"from multiprocessing import Pool",
+			"from multiprocessing import Process",
+			"from time import sleep",
+			"from traceback import print_exc, format_exc",
+			"from pandas import DataFrame, read_csv",
+			"from pprint import pprint",
+			"",
+			""
+
+        ],
+        "description": "import template"
+    },
+
+
+	
+	
+	"Poolでマルチプロセス": {
+		"prefix": "my_pool",
+		"body": [
+			"# from multiprocessing import Pool",
+			"# from tqdm import tqdm",
+			"",
+			"with Pool() as pool:",
+			"    ite = pool.imap(${1:method_name}, ${2:iteratable})",
+			"    tq = tqdm($2, desc=f'{self.__class__.__name__}')",
+			"    while True:",
+			"        try:",
+			"            tq.update()",
+			"            result: PoolResultTypeDefinition = ite.next(timeout=None)",
+			"            if result.is_error():",
+			"                self.__logger.error(result.error)",
+			"            else:",
+			"                self.__logger.info(result.message)",
+			"        except StopIteration:",
+			"            break",
+			"        except Exception as e:",
+			"            raise e"
+
+
+		],
+		"description": "import template"
+	},
+
+	"policyパターン": {
+		"prefix": "my_policy",
+		"body": [
+			"class ${1:MyPolicy}:",
+			"    __info : ${2:any}",
+			"    def __init__(self, info: $2) -> None:",
+			"        self.__info = info",
+			"",
+			"    def is_ok(self) -> bool:",
+			"        return ..."
+
+
+		],
+		"description": "import template"
+	},
+
+
+	"列挙型": {
+		"prefix": "enum",
+		"body": [
+			"from enum import Enum, auto",
+			"",
+			"",
+			"class ${1:MyEnum}(Enum):",
+			"    ${2:name} = auto()",
+		],
+		"description" : "列挙型を作成する。"
+		
+
+	}
+
+
+
+
+}

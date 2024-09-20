@@ -11,7 +11,7 @@ Todo    :
 from pyutil.jsonutil.SingleDictionaryJsonSerializer import SingleDictionaryJsonSerializer
 from pyutil.jsonutil.single_value_json_serializer import SingleValueJsonSerializer
 from pyutil.jsonutil.json_serializer import JsonSerializer
-from pyutil.jsonutil.ProcessNumberJsonLogger import ProcessNumberJsonLogger
+from pyutil.logger.ProcessNumberJsonLogger import ProcessNumberJsonLogger
 
 __copyright__    = 'Copyright(C) 2024 Hiroki Uchimura'
 __version__      = '1000'

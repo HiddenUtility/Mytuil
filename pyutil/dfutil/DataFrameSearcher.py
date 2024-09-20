@@ -1,5 +1,5 @@
 from typing import Any, Generator
-from pyutil.dfutil.NotFindAtDaraFrame import NotFindAtDaraFrame
+from pyutil.dfutil.NotFindAtDaraFrame import NotFindAtDaraFrameError
 from pyutil.dfutil.data_frame_formatter import DataFrameFormatter
 
 
@@ -92,7 +92,7 @@ class DataFrameSearcher:
         for colmun, key in colmuns_keys.items():
             dff = self.__dff.filter_key(colmun, key)
         if dff.empty:
-            raise NotFindAtDaraFrame('一致する箇所がありませんでした')
+            raise NotFindAtDaraFrameError('一致する箇所がありませんでした')
         for _, row in dff.df.iterrows():
             yield str(row[target_column])
         raise StopIteration()

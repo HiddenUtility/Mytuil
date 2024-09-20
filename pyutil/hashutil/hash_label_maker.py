@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hmac
 from pathlib import Path
 import hashlib
 
@@ -68,3 +69,19 @@ class HashLableMaker:
             return cls.get_sha256(data.read())
     
 
+
+    @classmethod
+    def get_encryption_hash(cls, data: bytes | str, security : bytes | str) -> str:
+        """暗号化ハッシュを発生させる
+
+        Args:
+            data (bytes | str): 元データ
+            security (bytes | str): 秘密鍵
+
+        Returns:
+            str: 暗号化済み
+        """
+
+        return hmac.new(cls.__try_parse(data), cls.__try_parse(security), hashlib.sha256).hexdigest()
+
+    

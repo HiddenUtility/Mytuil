@@ -6,6 +6,7 @@ import pickle
 from time import sleep
 from pyutil.logger.i_logger import ILogger
 from pyutil.myerror.retry_count_over_error import RetryCountOverError
+from pyutil.pathuil.directory_creator import DirectoryCreator
 from pyutil.pickleutil import UsingPickle
 
 
@@ -14,27 +15,29 @@ class EasyCacher(ILogger):
     RETRY_LIMIT = 3
     DELAY_TIME = 0.1
     __name: str
-    __dst: Path
+    __dest: Path
     __cache_datas: set[str]
     __load_error_clear :bool
     def __init__(self,
-                 dst:Path = Path("./cache"), 
+                 dest:Path = Path("./cache"), 
                  name="",
                  load_error_clear= True,
+                 mkdir = True,
                  ):
         """処理履歴をローカルにバイナリ形式で保持することを目的とする。
 string集合で管理する。
   
         Args:
-            dst (Path, optional): _description_. Defaults to Path("./cache").
-            name (str, optional): _description_. Defaults to "".
+            dest (Path, optional): キャッシュの出力先. Defaults to Path("./cache").
+            name (str, optional): ファイル名. Defaults to "".
             load_error_clear (bool, optional): 読み取り失敗時は破損扱いとし削除する. Defaults to True.
+            mkdir (bool, optional): ディレクトリがなければ作る Defaults to True.
         """
 
-        self.__dst = dst
-        self.__dst.mkdir(exist_ok=True)
+        self.__dest = dest
+        DirectoryCreator(self.__dest)
         self.__name = f"{self.__class__.__name__}" if name=="" else name
-        self.__cache_path = self.__dst / f"{self.__name}.cache"
+        self.__cache_path = self.__dest / f"{self.__name}.cache"
         self.__cache_datas = set()
         self.__load_error_clear = load_error_clear
         self.__load()

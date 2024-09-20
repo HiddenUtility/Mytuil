@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 
-class JsonSaver:
+class JsonDataSaver:
     """json保存中は拡張子をユニークにすることができるセーバー
     保存途中やすでにファイルがある場合は削除する。
     """

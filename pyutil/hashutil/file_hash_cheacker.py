@@ -1,9 +1,9 @@
 from pathlib import Path
 from pyutil.hashutil.hash_label_maker import HashLableMaker
 
-from pyutil.hashutil.hash_cheacker import HashCheacker
+from pyutil.hashutil.i_hash_cheacker import IHashCheacker
 
-class FileHashCheacker(HashCheacker):
+class FileHashCheacker(IHashCheacker):
     def __init__(self, src:Path):
         if not src.exists():
             raise FileNotFoundError(f"{src}は存在しません。")

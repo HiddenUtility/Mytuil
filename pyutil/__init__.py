@@ -70,6 +70,7 @@ __all__ = [
     ## タイマー系
     'MyTimer',
     'LoopTimer',
+    'ElapsedTimeMeasurer',
     ## ファイル
     'FileTimestampUpdater',
     ## 比較
@@ -163,9 +164,9 @@ __all__ = [
     ## パスストリーム
     'FilepathStream',
     ## 作成
-    'DirecotryCreator',
+    'DirectoryCreator',
     'WindowsAvailablePathName',
-    'TestDirectoryPreparator',
+    'CrearTestDirectoryPreparator',
     'PycacheRemover',
     ## /再回帰系
     'DirectoryTreeCopier',
